@@ -1,3 +1,4 @@
+import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { getSessionUser } from "@/lib/session";
 
 const cards = [
@@ -11,93 +12,112 @@ export default async function DashboardPage() {
   const user = await getSessionUser();
 
   return (
-    <div className="min-h-screen grid md:grid-cols-[260px_1fr]">
-      <aside className="bg-[color:var(--color-sidebar)] text-white p-6 hidden md:flex flex-col gap-8">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-white/70">
-            Moxman
-          </p>
-          <h2 className="text-xl font-semibold">Control Center</h2>
-        </div>
-        <nav className="space-y-3 text-sm">
-          {[
-            "Overview",
-            "Users",
-            "Clients",
-            "Policies",
-            "Commissions",
-            "Payments",
-            "Reports",
-          ].map((item) => (
-            <div
-              key={item}
-              className="rounded-lg px-3 py-2 hover:bg-white/10"
-            >
-              {item}
-            </div>
-          ))}
-        </nav>
-        <div className="mt-auto text-xs text-white/60">
-          Signed in as {user?.name ?? "User"}
-        </div>
-      </aside>
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+      <Container maxWidth="xl" sx={{ py: 4 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Dashboard
+            </Typography>
+            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              Welcome back, {user?.name ?? "Team"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Role: {user?.role ?? "ADMIN"} · Track your branch performance and
+              client activity.
+            </Typography>
+          </Box>
 
-      <main className="bg-[color:var(--color-surface)] p-6 md:p-10 space-y-8">
-        <header className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-500">Dashboard</p>
-          <h1 className="text-3xl font-semibold text-slate-900">
-            Welcome back, {user?.name ?? "Team"}
-          </h1>
-          <p className="text-sm text-slate-500">
-            Role: {user?.role ?? "ADMIN"} · Track your branch performance and
-            client activity.
-          </p>
-        </header>
-
-        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {cards.map((card) => (
-            <div
-              key={card.label}
-              className="rounded-2xl bg-white p-5 shadow-sm border border-slate-100"
-            >
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                {card.label}
-              </p>
-              <p className="mt-3 text-2xl font-semibold text-slate-900">
-                {card.value}
-              </p>
-              <div className="mt-4 h-1 w-16 rounded-full bg-[color:var(--color-accent)]" />
-            </div>
-          ))}
-        </section>
-
-        <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-          <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Client Activity</h2>
-              <span className="text-xs text-slate-400">Last 30 days</span>
-            </div>
-            <div className="mt-6 h-48 rounded-xl bg-slate-50 border border-dashed border-slate-200 flex items-center justify-center text-sm text-slate-400">
-              Chart placeholder
-            </div>
-          </div>
-          <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-100 space-y-4">
-            <h2 className="text-lg font-semibold">Recent Activity</h2>
-            {[
-              "New partner onboarded",
-              "Policy payout approved",
-              "Client status updated",
-            ].map((item) => (
-              <div
-                key={item}
-                className="rounded-lg border border-slate-100 px-3 py-2 text-sm text-slate-600"
-              >
-                {item}
-              </div>
+          <Grid container spacing={2}>
+            {cards.map((card) => (
+              <Grid key={card.label} item xs={12} sm={6} md={3}>
+                <Paper sx={{ p: 2.5, borderRadius: 3 }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ letterSpacing: "0.2em" }}
+                  >
+                    {card.label}
+                  </Typography>
+                  <Typography variant="h5" sx={{ mt: 1, fontWeight: 600 }}>
+                    {card.value}
+                  </Typography>
+                  <Box
+                    sx={{
+                      mt: 2,
+                      height: 4,
+                      width: 64,
+                      borderRadius: 999,
+                      bgcolor: "secondary.main",
+                    }}
+                  />
+                </Paper>
+              </Grid>
             ))}
-          </div>
-        </section>
-      </main>
-    </div>
+          </Grid>
+
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={8}>
+              <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 2,
+                  }}
+                >
+                  <Typography variant="h6">Client Activity</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Last 30 days
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    mt: 3,
+                    height: 200,
+                    borderRadius: 2,
+                    border: "1px dashed rgba(0,0,0,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "text.secondary",
+                  }}
+                >
+                  Chart placeholder
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  Recent Activity
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+                  {[
+                    "New partner onboarded",
+                    "Policy payout approved",
+                    "Client status updated",
+                  ].map((item) => (
+                    <Box
+                      key={item}
+                      sx={{
+                        border: "1px solid rgba(0,0,0,0.08)",
+                        borderRadius: 2,
+                        px: 2,
+                        py: 1.2,
+                        color: "text.secondary",
+                      }}
+                    >
+                      {item}
+                    </Box>
+                  ))}
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Box>
+      </Container>
+    </Box>
   );
 }

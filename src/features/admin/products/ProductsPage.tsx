@@ -1,10 +1,14 @@
+import { Box, Typography } from "@mui/material";
+
 export default function ProductsPage() {
   return (
-    <section className="space-y-3">
-      <h1 className="text-2xl font-semibold text-slate-900">Products</h1>
-      <p className="text-sm text-slate-500">
+    <Box>
+      <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        Products
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
         Manage policy products and commission rules.
-      </p>
-    </section>
+      </Typography>
+    </Box>
   );
 }

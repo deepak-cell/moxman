@@ -1,10 +1,14 @@
+import { Box, Typography } from "@mui/material";
+
 export default function PaymentsPage() {
   return (
-    <section className="space-y-3">
-      <h1 className="text-2xl font-semibold text-slate-900">Payments</h1>
-      <p className="text-sm text-slate-500">
+    <Box>
+      <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        Payments
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
         Track payouts, approvals, and payment history.
-      </p>
-    </section>
+      </Typography>
+    </Box>
   );
 }

@@ -1,10 +1,14 @@
+import { Box, Typography } from "@mui/material";
+
 export default function PoliciesPage() {
   return (
-    <section className="space-y-3">
-      <h1 className="text-2xl font-semibold text-slate-900">Policies</h1>
-      <p className="text-sm text-slate-500">
+    <Box>
+      <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        Policies
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
         Review issued policies, renewals, and lifecycle status.
-      </p>
-    </section>
+      </Typography>
+    </Box>
   );
 }

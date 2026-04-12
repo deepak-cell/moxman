@@ -1,10 +1,14 @@
+import { Box, Typography } from "@mui/material";
+
 export default function UsersPage() {
   return (
-    <section className="space-y-3">
-      <h1 className="text-2xl font-semibold text-slate-900">Users</h1>
-      <p className="text-sm text-slate-500">
+    <Box>
+      <Typography variant="h4" sx={{ fontWeight: 600 }}>
+        Users
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
         Manage admins, branch managers, RMs, and partners.
-      </p>
-    </section>
+      </Typography>
+    </Box>
   );
 }

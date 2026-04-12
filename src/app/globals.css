@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root {
   --background: #ffffff;
   --foreground: #0b1220;
@@ -10,20 +8,6 @@
   --sidebar-color: #012269;
   --header-color: #0b1b4d;
   --icon-color: #1c2f7a;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary-color);
-  --color-accent: var(--accent-color);
-  --color-surface: var(--bg-color);
-  --color-sidebar: var(--sidebar-color);
-  --color-header: var(--header-color);
-  --color-icon: var(--icon-color);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
 }
 
 [data-role="ADMIN"] {
@@ -61,8 +45,21 @@
   --icon-color: #26448b;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html,
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
