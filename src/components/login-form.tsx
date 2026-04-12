@@ -180,7 +180,7 @@ export default function LoginForm() {
         <Button
           type="submit"
           variant="contained"
-          color="secondary"
+          color="primary"
           disabled={loading}
           sx={{ py: 1.2, fontWeight: 600, textTransform: "none" }}
         >

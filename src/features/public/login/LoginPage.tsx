@@ -25,7 +25,7 @@ export default function LoginPage() {
         <Box
           sx={{
             width: "100%",
-            maxWidth: 980,
+            maxWidth: 900,
             borderRadius: 4,
             border: "1px solid rgba(255,255,255,0.15)",
             backgroundColor: "rgba(255,255,255,0.05)",
