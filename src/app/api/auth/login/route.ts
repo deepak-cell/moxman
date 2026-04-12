@@ -29,7 +29,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  const csrfCookie = cookies().get("csrf_token")?.value;
+  const cookieStore = await cookies();
+  const csrfCookie = cookieStore.get("csrf_token")?.value;
   if (!csrfCookie || csrfCookie !== parsed.data.csrfToken) {
     return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }

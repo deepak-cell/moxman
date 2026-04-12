@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import { getSessionUser } from "@/lib/session";
 
 const cards = [
@@ -28,94 +28,100 @@ export default async function DashboardPage() {
             </Typography>
           </Box>
 
-          <Grid container spacing={2}>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+              gap: 2,
+            }}
+          >
             {cards.map((card) => (
-              <Grid key={card.label} item xs={12} sm={6} md={3}>
-                <Paper sx={{ p: 2.5, borderRadius: 3 }}>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ letterSpacing: "0.2em" }}
-                  >
-                    {card.label}
-                  </Typography>
-                  <Typography variant="h5" sx={{ mt: 1, fontWeight: 600 }}>
-                    {card.value}
-                  </Typography>
-                  <Box
-                    sx={{
-                      mt: 2,
-                      height: 4,
-                      width: 64,
-                      borderRadius: 999,
-                      bgcolor: "secondary.main",
-                    }}
-                  />
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
-
-          <Grid container spacing={2}>
-            <Grid item xs={12} lg={8}>
-              <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 2,
-                  }}
+              <Paper key={card.label} sx={{ p: 2.5, borderRadius: 3 }}>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ letterSpacing: "0.2em" }}
                 >
-                  <Typography variant="h6">Client Activity</Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    Last 30 days
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    mt: 3,
-                    height: 200,
-                    borderRadius: 2,
-                    border: "1px dashed rgba(0,0,0,0.15)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "text.secondary",
-                  }}
-                >
-                  Chart placeholder
-                </Box>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} lg={4}>
-              <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
-                <Typography variant="h6" sx={{ mb: 2 }}>
-                  Recent Activity
+                  {card.label}
                 </Typography>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                  {[
-                    "New partner onboarded",
-                    "Policy payout approved",
-                    "Client status updated",
-                  ].map((item) => (
-                    <Box
-                      key={item}
-                      sx={{
-                        border: "1px solid rgba(0,0,0,0.08)",
-                        borderRadius: 2,
-                        px: 2,
-                        py: 1.2,
-                        color: "text.secondary",
-                      }}
-                    >
-                      {item}
-                    </Box>
-                  ))}
-                </Box>
+                <Typography variant="h5" sx={{ mt: 1, fontWeight: 600 }}>
+                  {card.value}
+                </Typography>
+                <Box
+                  sx={{
+                    mt: 2,
+                    height: 4,
+                    width: 64,
+                    borderRadius: 999,
+                    bgcolor: "secondary.main",
+                  }}
+                />
               </Paper>
-            </Grid>
-          </Grid>
+            ))}
+          </Box>
+
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" },
+              gap: 2,
+            }}
+          >
+            <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 2,
+                }}
+              >
+                <Typography variant="h6">Client Activity</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Last 30 days
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  mt: 3,
+                  height: 200,
+                  borderRadius: 2,
+                  border: "1px dashed rgba(0,0,0,0.15)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "text.secondary",
+                }}
+              >
+                Chart placeholder
+              </Box>
+            </Paper>
+            <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                Recent Activity
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+                {[
+                  "New partner onboarded",
+                  "Policy payout approved",
+                  "Client status updated",
+                ].map((item) => (
+                  <Box
+                    key={item}
+                    sx={{
+                      border: "1px solid rgba(0,0,0,0.08)",
+                      borderRadius: 2,
+                      px: 2,
+                      py: 1.2,
+                      color: "text.secondary",
+                    }}
+                  >
+                    {item}
+                  </Box>
+                ))}
+              </Box>
+            </Paper>
+          </Box>
         </Box>
       </Container>
     </Box>
