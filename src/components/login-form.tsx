@@ -6,8 +6,10 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
   IconButton,
-  TextField,
+  InputLabel,
+  OutlinedInput,
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -85,49 +87,51 @@ export default function LoginForm() {
           </Box>
         </Box>
 
-        <TextField
-          label="User ID"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-          fullWidth
-          variant="outlined"
-          InputLabelProps={{ style: { color: "rgba(255,255,255,0.75)" } }}
-          InputProps={{
-            style: {
+        <FormControl variant="outlined" fullWidth>
+          <InputLabel
+            htmlFor="login-email"
+            sx={{ color: "rgba(255,255,255,0.75)" }}
+          >
+            User ID
+          </InputLabel>
+          <OutlinedInput
+            id="login-email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            label="User ID"
+            required
+            sx={{
               color: "white",
               background: "rgba(255,255,255,0.08)",
-            },
-          }}
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "rgba(255,255,255,0.2)",
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "rgba(255,255,255,0.4)",
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#D0142C",
-            },
-          }}
-        />
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.2)",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.4)",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#D0142C",
+              },
+            }}
+          />
+        </FormControl>
 
-        <TextField
-          label="Password"
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-          fullWidth
-          variant="outlined"
-          InputLabelProps={{ style: { color: "rgba(255,255,255,0.75)" } }}
-          InputProps={{
-            style: {
-              color: "white",
-              background: "rgba(255,255,255,0.08)",
-            },
-            endAdornment: (
+        <FormControl variant="outlined" fullWidth>
+          <InputLabel
+            htmlFor="login-password"
+            sx={{ color: "rgba(255,255,255,0.75)" }}
+          >
+            Password
+          </InputLabel>
+          <OutlinedInput
+            id="login-password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            label="Password"
+            required
+            endAdornment={
               <IconButton
                 onClick={() => setShowPassword((prev) => !prev)}
                 edge="end"
@@ -135,20 +139,22 @@ export default function LoginForm() {
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
-            ),
-          }}
-          sx={{
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "rgba(255,255,255,0.2)",
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "rgba(255,255,255,0.4)",
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#D0142C",
-            },
-          }}
-        />
+            }
+            sx={{
+              color: "white",
+              background: "rgba(255,255,255,0.08)",
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.2)",
+              },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "rgba(255,255,255,0.4)",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#D0142C",
+              },
+            }}
+          />
+        </FormControl>
 
         <Box
           sx={{

@@ -51,8 +51,8 @@ export async function POST() {
       expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 30,
     });
 
-    setHttpOnlyCookie("access_token", accessToken, 60 * 15);
-    setHttpOnlyCookie("refresh_token", newRefreshToken, 60 * 60 * 24 * 30);
+    await setHttpOnlyCookie("access_token", accessToken, 60 * 15);
+    await setHttpOnlyCookie("refresh_token", newRefreshToken, 60 * 60 * 24 * 30);
 
     return NextResponse.json({ ok: true });
   } catch {

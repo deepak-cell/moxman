@@ -4,6 +4,6 @@ import { setPublicCookie } from "@/lib/http";
 
 export async function GET() {
   const token = generateCsrfToken();
-  setPublicCookie("csrf_token", token, 60 * 60);
+  await setPublicCookie("csrf_token", token, 60 * 60);
   return NextResponse.json({ csrfToken: token });
 }

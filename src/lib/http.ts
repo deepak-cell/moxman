@@ -9,16 +9,27 @@ export const cookieOptions = {
   path: "/",
 };
 
-export function setHttpOnlyCookie(name: string, value: string, maxAgeSeconds: number) {
-  cookies().set({ name, value, maxAge: maxAgeSeconds, ...cookieOptions });
+export async function setHttpOnlyCookie(
+  name: string,
+  value: string,
+  maxAgeSeconds: number
+) {
+  const store = await cookies();
+  store.set({ name, value, maxAge: maxAgeSeconds, ...cookieOptions });
 }
 
-export function clearCookie(name: string) {
-  cookies().set({ name, value: "", maxAge: 0, ...cookieOptions });
+export async function clearCookie(name: string) {
+  const store = await cookies();
+  store.set({ name, value: "", maxAge: 0, ...cookieOptions });
 }
 
-export function setPublicCookie(name: string, value: string, maxAgeSeconds: number) {
-  cookies().set({
+export async function setPublicCookie(
+  name: string,
+  value: string,
+  maxAgeSeconds: number
+) {
+  const store = await cookies();
+  store.set({
     name,
     value,
     maxAge: maxAgeSeconds,

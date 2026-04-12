@@ -10,8 +10,8 @@ export async function POST() {
     revokeRefreshToken(hashToken(token));
   }
 
-  clearCookie("access_token");
-  clearCookie("refresh_token");
+  await clearCookie("access_token");
+  await clearCookie("refresh_token");
 
   return NextResponse.json({ ok: true });
 }

@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import LoginForm from "@/components/login-form";
 
 export default function LoginPage() {
@@ -33,11 +33,13 @@ export default function LoginPage() {
             backdropFilter: "blur(8px)",
           }}
         >
-          <Grid container>
-            <Grid
-              item
-              xs={12}
-              md={6}
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            }}
+          >
+            <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -45,7 +47,7 @@ export default function LoginPage() {
                 p: 4,
               }}
             >
-              <Box textAlign="center">
+              <Box sx={{ textAlign: "center" }}>
                 <Typography
                   variant="h5"
                   sx={{ letterSpacing: "0.35em", color: "white", fontWeight: 600 }}
@@ -59,11 +61,8 @@ export default function LoginPage() {
                   Fintech App
                 </Typography>
               </Box>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={6}
+            </Box>
+            <Box
               sx={{
                 borderTop: { xs: "1px solid rgba(255,255,255,0.12)", md: "none" },
                 borderLeft: { xs: "none", md: "1px solid rgba(255,255,255,0.12)" },
@@ -71,8 +70,8 @@ export default function LoginPage() {
               }}
             >
               <LoginForm />
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </Box>
