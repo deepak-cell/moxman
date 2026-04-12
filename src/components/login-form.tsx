@@ -21,7 +21,7 @@ export default function LoginForm() {
 
     try {
       await login({ email, password, csrfToken }).unwrap();
-      const next = params.get("next") ?? "/dashboard";
+    const next = params.get("next") ?? "/admin/dashboard";
       router.push(next);
     } catch (err) {
       const message =

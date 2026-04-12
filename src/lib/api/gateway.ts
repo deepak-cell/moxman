@@ -1,5 +1,4 @@
 import type { NextRequest } from "next/server";
-import { Agent } from "undici";
 import { verifyAccessToken } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 
@@ -72,11 +71,6 @@ const hopByHopHeaders = new Set([
   "upgrade",
   "host",
 ]);
-
-const dispatcher = new Agent({
-  keepAliveTimeout: 10_000,
-  keepAliveMaxTimeout: 60_000,
-});
 
 const cacheStore = new Map<
   string,
@@ -205,7 +199,6 @@ export async function proxyRequest(
     headers,
     body,
     redirect: "manual",
-    dispatcher,
   });
 
   const responseHeaders = new Headers(response.headers);

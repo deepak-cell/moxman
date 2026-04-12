@@ -1,17 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Moxman Fintech App",
@@ -26,13 +15,11 @@ export default function RootLayout({
   const role = "ADMIN";
 
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body
         data-role={role}
         className="min-h-full flex flex-col bg-[color:var(--color-surface)]"
+        suppressHydrationWarning
       >
         <Providers>{children}</Providers>
       </body>

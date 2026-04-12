@@ -1,3 +1,5 @@
+import { getSessionUser } from "@/lib/session";
+
 const cards = [
   { label: "Active Clients", value: "1,248" },
   { label: "Policies", value: "3,410" },
@@ -5,9 +7,9 @@ const cards = [
   { label: "Pending Payouts", value: "₹4.2L" },
 ];
 
-const user = { name: "User", role: "ADMIN" };
+export default async function DashboardPage() {
+  const user = await getSessionUser();
 
-export default function DashboardPage() {
   return (
     <div className="min-h-screen grid md:grid-cols-[260px_1fr]">
       <aside className="bg-[color:var(--color-sidebar)] text-white p-6 hidden md:flex flex-col gap-8">
@@ -36,7 +38,7 @@ export default function DashboardPage() {
           ))}
         </nav>
         <div className="mt-auto text-xs text-white/60">
-          Signed in as {user.name}
+          Signed in as {user?.name ?? "User"}
         </div>
       </aside>
 
@@ -44,11 +46,11 @@ export default function DashboardPage() {
         <header className="flex flex-col gap-2">
           <p className="text-sm font-medium text-slate-500">Dashboard</p>
           <h1 className="text-3xl font-semibold text-slate-900">
-            Welcome back, {user.name}
+            Welcome back, {user?.name ?? "Team"}
           </h1>
           <p className="text-sm text-slate-500">
-            Role: {user.role} · Track your branch performance and client
-            activity.
+            Role: {user?.role ?? "ADMIN"} · Track your branch performance and
+            client activity.
           </p>
         </header>
 
