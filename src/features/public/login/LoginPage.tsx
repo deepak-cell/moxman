@@ -78,7 +78,7 @@ export default function LoginPage() {
                 borderLeft: { xs: "none", md: "1px solid rgba(255,255,255,0.12)" },
                 p: 4,
                 // ↓ Dark solid background instead of transparent
-                backgroundColor: "rgba(1, 34, 105, 0.48)",
+                backgroundColor: "rgba(10, 10, 20, 0.85)",
                 backdropFilter: "blur(12px)",
               }}
             >
