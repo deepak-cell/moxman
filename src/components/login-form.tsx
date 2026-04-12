@@ -8,7 +8,6 @@ import {
   Divider,
   FormControl,
   IconButton,
-  InputLabel,
   OutlinedInput,
   Typography,
 } from "@mui/material";
@@ -59,11 +58,14 @@ export default function LoginForm() {
     color: "white",
     background: "rgba(255,255,255,0.08)",
     borderRadius: 1,
-    // ↓ Make the input taller
     "& .MuiOutlinedInput-input": {
       paddingTop: "20px",
       paddingBottom: "20px",
-      textAlign: "left",
+      // Style the placeholder
+      "&::placeholder": {
+        color: "rgba(255,255,255,0.35)",
+        opacity: 1,
+      },
     },
     "& .MuiOutlinedInput-notchedOutline": {
       borderColor: "rgba(255,255,255,0.2)",
@@ -73,16 +75,6 @@ export default function LoginForm() {
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "#D0142C",
-    },
-  };
-
-  const labelStyles = {
-    color: "rgba(255,255,255,0.75)",
-    transformOrigin: "left",
-    // ↓ Vertically center the label in the taller input when not shrunk
-    "&:not(.MuiInputLabel-shrink)": {
-      top: "50%",
-      transform: "translate(14px, -50%) scale(1)",
     },
   };
 
@@ -118,31 +110,41 @@ export default function LoginForm() {
           </Box>
         </Box>
 
+        {/* User ID field */}
         <FormControl variant="outlined" fullWidth>
-          <InputLabel htmlFor="login-email" sx={labelStyles}>
+          {/* Static label always above the input */}
+          <Typography
+            variant="caption"
+            sx={{ mb: 0.8, color: "rgba(255,255,255,0.75)", fontWeight: 500 }}
+          >
             User ID
-          </InputLabel>
+          </Typography>
           <OutlinedInput
             id="login-email"
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            label="User ID"
+            placeholder="e.g.- user@example.com"
             required
             sx={inputStyles}
           />
         </FormControl>
 
+        {/* Password field */}
         <FormControl variant="outlined" fullWidth>
-          <InputLabel htmlFor="login-password" sx={labelStyles}>
+          {/* Static label always above the input */}
+          <Typography
+            variant="caption"
+            sx={{ mb: 0.8, color: "rgba(255,255,255,0.75)", fontWeight: 500 }}
+          >
             Password
-          </InputLabel>
+          </Typography>
           <OutlinedInput
             id="login-password"
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            label="Password"
+            placeholder="e.g.- G7#vQ9!rT2@kL5^zX8&n"
             required
             endAdornment={
               <IconButton

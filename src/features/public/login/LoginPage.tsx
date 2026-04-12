@@ -28,7 +28,6 @@ export default function LoginPage() {
             maxWidth: 900,
             minHeight: 560,
             borderRadius: 2,
-            border: "1px solid rgba(255,255,255,0.15)",
             backgroundColor: "rgba(255,255,255,0.16)",
             boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
             backdropFilter: "blur(8px)",
