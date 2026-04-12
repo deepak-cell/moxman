@@ -6,7 +6,7 @@ export default function LoginPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "url('/images/loginbg.png')",
+        backgroundImage: "url('/images/bglogin.avif')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -26,24 +26,30 @@ export default function LoginPage() {
           sx={{
             width: "100%",
             maxWidth: 900,
-            borderRadius: 4,
+            minHeight: 560,
+            borderRadius: 2,
             border: "1px solid rgba(255,255,255,0.15)",
-            backgroundColor: "rgba(255,255,255,0.05)",
+            backgroundColor: "rgba(255,255,255,0.16)",
             boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
             backdropFilter: "blur(8px)",
+            overflow: "hidden", // ← needed so child borderRadius clips correctly
           }}
         >
           <Box
             sx={{
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+              minHeight: 560,
             }}
           >
+            {/* Left — branding panel, stays glassy */}
             <Box
               sx={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
+                minHeight: "100%",
                 p: 4,
               }}
             >
@@ -62,11 +68,19 @@ export default function LoginPage() {
                 </Typography>
               </Box>
             </Box>
+
+            {/* Right — dark form panel */}
             <Box
               sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
                 borderTop: { xs: "1px solid rgba(255,255,255,0.12)", md: "none" },
                 borderLeft: { xs: "none", md: "1px solid rgba(255,255,255,0.12)" },
                 p: 4,
+                // ↓ Dark solid background instead of transparent
+                backgroundColor: "rgba(10, 10, 20, 0.85)",
+                backdropFilter: "blur(12px)",
               }}
             >
               <LoginForm />
@@ -75,6 +89,5 @@ export default function LoginPage() {
         </Box>
       </Box>
     </Box>
-
-);
+  );
 }

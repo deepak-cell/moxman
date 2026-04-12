@@ -55,6 +55,37 @@ export default function LoginForm() {
     router.push(next);
   };
 
+  const inputStyles = {
+    color: "white",
+    background: "rgba(255,255,255,0.08)",
+    borderRadius: 1,
+    // ↓ Make the input taller
+    "& .MuiOutlinedInput-input": {
+      paddingTop: "20px",
+      paddingBottom: "20px",
+      textAlign: "left",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.2)",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(255,255,255,0.4)",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#D0142C",
+    },
+  };
+
+  const labelStyles = {
+    color: "rgba(255,255,255,0.75)",
+    transformOrigin: "left",
+    // ↓ Vertically center the label in the taller input when not shrunk
+    "&:not(.MuiInputLabel-shrink)": {
+      top: "50%",
+      transform: "translate(14px, -50%) scale(1)",
+    },
+  };
+
   return (
     <Box component="form" onSubmit={onSubmit} sx={{ color: "white" }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
@@ -88,10 +119,7 @@ export default function LoginForm() {
         </Box>
 
         <FormControl variant="outlined" fullWidth>
-          <InputLabel
-            htmlFor="login-email"
-            sx={{ color: "rgba(255,255,255,0.75)" }}
-          >
+          <InputLabel htmlFor="login-email" sx={labelStyles}>
             User ID
           </InputLabel>
           <OutlinedInput
@@ -101,27 +129,12 @@ export default function LoginForm() {
             onChange={(event) => setEmail(event.target.value)}
             label="User ID"
             required
-            sx={{
-              color: "white",
-              background: "rgba(255,255,255,0.08)",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(255,255,255,0.2)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(255,255,255,0.4)",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#D0142C",
-              },
-            }}
+            sx={inputStyles}
           />
         </FormControl>
 
         <FormControl variant="outlined" fullWidth>
-          <InputLabel
-            htmlFor="login-password"
-            sx={{ color: "rgba(255,255,255,0.75)" }}
-          >
+          <InputLabel htmlFor="login-password" sx={labelStyles}>
             Password
           </InputLabel>
           <OutlinedInput
@@ -140,19 +153,7 @@ export default function LoginForm() {
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
             }
-            sx={{
-              color: "white",
-              background: "rgba(255,255,255,0.08)",
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(255,255,255,0.2)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "rgba(255,255,255,0.4)",
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#D0142C",
-              },
-            }}
+            sx={inputStyles}
           />
         </FormControl>
 
@@ -163,9 +164,6 @@ export default function LoginForm() {
             alignItems: "center",
           }}
         >
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.7)" }}>
-            Secure sign-in enabled
-          </Typography>
           <Button variant="text" sx={{ color: "white", textTransform: "none" }}>
             Forgot password?
           </Button>
