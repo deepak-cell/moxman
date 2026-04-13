@@ -62,6 +62,7 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
         color: "white",
         zIndex: 1202,
         borderRight: "1px solid rgba(255,255,255,0.08)",
+        overflow: "visible",
       },
     }),
     [open]
@@ -122,7 +123,10 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
         </Toolbar>
         <List>
           {navItems.map((item) => {
-            const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
+            const isActive =
+              pathname === item.href ||
+              pathname?.startsWith(`${item.href}/`) ||
+              (item.href === "/admin/dashboard" && pathname === "/admin");
             return (
               <ListItemButton
                 key={item.label}
@@ -130,25 +134,80 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
                 href={item.href}
                 selected={isActive}
                 sx={{
+                  mr: 0,
+                  ml: open ? 2 : 1,
                   px: open ? 2 : 1.5,
                   py: 1.2,
-                  color: "white",
-                  borderLeft: "3px solid transparent",
+                  color: "rgba(255,255,255,0.78)",
+                  borderRadius: "999px 0 0 999px",
+                  position: "relative",
                   "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
                   "&.Mui-selected": {
-                    bgcolor: "rgba(255,255,255,0.08)",
-                    borderLeftColor: "var(--accent-color)",
+                    bgcolor: "var(--bg-color)",
+                    color: "#6d5dfc",
+                    boxShadow: "16px 0 0 var(--bg-color)",
                   },
-                  "&.Mui-selected:hover": { bgcolor: "rgba(255,255,255,0.12)" },
+                  "&.Mui-selected:hover": { bgcolor: "var(--bg-color)" },
+                  "&.Mui-selected::before": {
+                    content: '""',
+                    position: "absolute",
+                    top: -30,
+                    insetInlineEnd: 0,
+                    bottom: 0,
+                    height: 30,
+                    width: 30,
+                    borderTopColor: "transparent",
+                    borderLeftColor: "transparent",
+                    borderBottom: "transparent",
+                    borderStartStartRadius: 0,
+                    borderStartEndRadius: 0,
+                    borderEndEndRadius: 48,
+                    borderEndStartRadius: 0,
+                    borderInlineEnd: "20px solid var(--sidebar-color)",
+                    zIndex: 9,
+                  },
+                  "&.Mui-selected::after": {
+                    content: '""',
+                    position: "absolute",
+                    insetInlineEnd: 0,
+                    bottom: -30,
+                    width: 30,
+                    height: 30,
+                    borderBottomColor: "transparent",
+                    borderLeftColor: "transparent",
+                    borderTop: "transparent",
+                    borderStartStartRadius: 0,
+                    borderStartEndRadius: 48,
+                    borderEndEndRadius: 0,
+                    borderEndStartRadius: 0,
+                    borderInlineEnd: "20px solid var(--sidebar-color)",
+                    zIndex: 9,
+                  },
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: open ? 40 : 32,
                     color: "inherit",
+                    "& .nav-icon": {
+                      display: "grid",
+                      placeItems: "center",
+                      width: 32,
+                      height: 32,
+                      borderRadius: "50%",
+                      border: "1px solid rgba(255,255,255,0.16)",
+                      transition: "all 0.2s ease",
+                    },
+                    ".Mui-selected & .nav-icon": {
+                      background:
+                        "linear-gradient(135deg, rgba(109,93,252,1) 0%, rgba(99,84,247,1) 100%)",
+                      borderColor: "transparent",
+                      boxShadow: "0 6px 12px rgba(109,93,252,0.35)",
+                      color: "#fff",
+                    },
                   }}
                 >
-                  {item.icon}
+                  <Box className="nav-icon">{item.icon}</Box>
                 </ListItemIcon>
                 <ListItemText
                   primary={item.label}
