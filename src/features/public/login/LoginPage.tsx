@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import Image from "next/image";
 import LoginForm from "@/components/login-form";
 
 export default function LoginPage() {
@@ -53,18 +54,16 @@ export default function LoginPage() {
               }}
             >
               <Box sx={{ textAlign: "center" }}>
-                <Typography
-                  variant="h5"
-                  sx={{ letterSpacing: "0.35em", color: "white", fontWeight: 600 }}
-                >
-                  MOXMAN
-                </Typography>
-                <Typography
-                  variant="caption"
-                  sx={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.7)" }}
-                >
-                  Fintech App
-                </Typography>
+                <Box sx={{ mb: 2 }}>
+                  <Image
+                    src="/logo.png"
+                    alt="Moxman"
+                    width={256}
+                    height={54}
+                    style={{ width: "256px", height: "auto" }}
+                    priority
+                  />
+                </Box>
               </Box>
             </Box>
 

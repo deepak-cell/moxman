@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
 import {
   Box,
   Button,
@@ -82,33 +83,19 @@ export default function LoginForm() {
     <Box component="form" onSubmit={onSubmit} sx={{ color: "white" }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <Box
-            sx={{
-              height: 32,
-              width: 32,
-              borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,0.2)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 12,
-              fontWeight: 700,
-            }}
-          >
-            M
-          </Box>
-          <Box>
-            <Typography
-              variant="caption"
-              sx={{ letterSpacing: "0.2em", color: "rgba(255,255,255,0.7)" }}
-            >
-              MOXMAN
-            </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
-              Sign in
-            </Typography>
+          <Box sx={{ width: 40, height: 40 }}>
+            <Image
+              src="/logo.png"
+              alt="Moxman"
+              width={256}
+              height={54}
+              style={{ width: "256px", height: "54px", objectFit: "contain" }}
+            />
           </Box>
         </Box>
+        <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
+              Sign in
+        </Typography>
 
         {/* User ID field */}
         <FormControl variant="outlined" fullWidth>
