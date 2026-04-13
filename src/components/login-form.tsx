@@ -6,7 +6,6 @@ import Image from "next/image";
 import {
   Box,
   Button,
-  colors,
   Divider,
   FormControl,
   IconButton,
