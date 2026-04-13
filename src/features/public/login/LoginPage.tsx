@@ -32,6 +32,37 @@ export default function LoginPage() {
             boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
             backdropFilter: "blur(8px)",
             overflow: "hidden", // ← needed so child borderRadius clips correctly
+            position: "relative",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              top: 24,
+              left: 24,
+              width: 220,
+              height: 140,
+              background:
+                "linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.1))",
+              clipPath:
+                "polygon(0% 100%, 0% 65%, 12% 65%, 12% 100%, 24% 100%, 24% 50%, 36% 50%, 36% 100%, 48% 100%, 48% 35%, 60% 35%, 60% 100%, 72% 100%, 72% 22%, 84% 22%, 84% 100%, 96% 100%, 96% 10%, 100% 10%, 100% 100%)",
+              boxShadow: "0 12px 30px rgba(1,34,105,0.18)",
+              filter: "blur(0.2px)",
+              opacity: 0.7,
+              pointerEvents: "none",
+              zIndex: 0,
+            },
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              top: 20,
+              left: 20,
+              width: 228,
+              height: 148,
+              borderRadius: 2,
+              border: "1px solid rgba(255,255,255,0.18)",
+              opacity: 0.35,
+              pointerEvents: "none",
+              zIndex: 0,
+            },
           }}
         >
           <Box
@@ -39,6 +70,8 @@ export default function LoginPage() {
               display: "grid",
               gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
               minHeight: 560,
+              position: "relative",
+              zIndex: 1,
             }}
           >
             {/* Left — branding panel, stays glassy */}
