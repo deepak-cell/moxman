@@ -29,7 +29,7 @@ export default function LoginPage() {
             minHeight: 560,
             borderRadius: 2,
             backgroundColor: "rgba(255,255,255,0.16)",
-            boxShadow: "0 24px 60px rgba(0,0,0,0.25)",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
             backdropFilter: "blur(8px)",
             overflow: "hidden", // ← needed so child borderRadius clips correctly
           }}
