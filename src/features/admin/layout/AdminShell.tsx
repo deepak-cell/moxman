@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   AppBar,
   Box,
@@ -9,11 +11,21 @@ import {
   IconButton,
   List,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
+import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
+import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
+import PolicyRoundedIcon from "@mui/icons-material/PolicyRounded";
+import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
+import LayersRoundedIcon from "@mui/icons-material/LayersRounded";
+import PercentRoundedIcon from "@mui/icons-material/PercentRounded";
+import PaymentsRoundedIcon from "@mui/icons-material/PaymentsRounded";
+import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 
 const drawerWidth = 240;
 
@@ -24,19 +36,20 @@ export type AdminShellProps = {
 };
 
 const navItems = [
-  { label: "Dashboard", href: "/admin/dashboard" },
-  { label: "Users", href: "/admin/users" },
-  { label: "Clients", href: "/admin/clients" },
-  { label: "Policies", href: "/admin/policies" },
-  { label: "Products", href: "/admin/products" },
-  { label: "Slabs", href: "/admin/slabs" },
-  { label: "Commissions", href: "/admin/commissions" },
-  { label: "Payments", href: "/admin/payments" },
-  { label: "Reports", href: "/admin/reports" },
+  { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardRoundedIcon /> },
+  { label: "Users", href: "/admin/users", icon: <PeopleAltRoundedIcon /> },
+  { label: "Clients", href: "/admin/clients", icon: <BusinessRoundedIcon /> },
+  { label: "Policies", href: "/admin/policies", icon: <PolicyRoundedIcon /> },
+  { label: "Products", href: "/admin/products", icon: <Inventory2RoundedIcon /> },
+  { label: "Slabs", href: "/admin/slabs", icon: <LayersRoundedIcon /> },
+  { label: "Commissions", href: "/admin/commissions", icon: <PercentRoundedIcon /> },
+  { label: "Payments", href: "/admin/payments", icon: <PaymentsRoundedIcon /> },
+  { label: "Reports", href: "/admin/reports", icon: <AssessmentRoundedIcon /> },
 ];
 
 export default function AdminShell({ userName, userRole, children }: AdminShellProps) {
   const [open, setOpen] = useState(true);
+  const pathname = usePathname();
 
   const drawerSx = useMemo(
     () => ({
@@ -47,6 +60,7 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
         boxSizing: "border-box",
         bgcolor: "var(--sidebar-color)",
         color: "white",
+        zIndex: 1202,
         borderRight: "1px solid rgba(255,255,255,0.08)",
       },
     }),
@@ -59,10 +73,13 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
         position="fixed"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          bgcolor: "var(--header-color)",
+          bgcolor: "rgb(255, 255, 255)",
           color: "white",
-          boxShadow: "none",
+          boxShadow: "-7.829px 11.607px 20px 0 rgba(144, 143, 160, .09)",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
+          ml: open ? `${drawerWidth}px` : "72px",
+          width: open ? `calc(100% - ${drawerWidth}px)` : "calc(100% - 72px)",
+          transition: "margin 0.2s ease, width 0.2s ease",
         }}
       >
         <Toolbar sx={{ gap: 2 }}>
@@ -73,9 +90,6 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Moxman Admin
-          </Typography>
           <Box sx={{ flex: 1 }} />
           <Box sx={{ textAlign: "right" }}>
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
@@ -89,46 +103,67 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
       </AppBar>
 
       <Drawer variant="permanent" sx={drawerSx}>
-        <Toolbar />
-        <Box sx={{ px: open ? 2 : 1, py: 2 }}>
-          <Typography
-            variant="caption"
-            sx={{
-              opacity: open ? 0.7 : 0,
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-            }}
-          >
-            Navigation
-          </Typography>
-        </Box>
-        <Divider sx={{ borderColor: "rgba(255,255,255,0.1)" }} />
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: open ? "flex-start" : "center",
+            px: open ? 2 : 1.5,
+          }}
+        >
+          <Image
+            src="/logo-white.svg"
+            alt="Moxman"
+            width={140}
+            height={30}
+            style={{ width: open ? "140px" : "32px", height: "auto" }}
+            priority
+          />
+        </Toolbar>
         <List>
-          {navItems.map((item) => (
-            <ListItemButton
-              key={item.label}
-              component="a"
-              href={item.href}
-              sx={{
-                px: open ? 2 : 1.5,
-                py: 1.2,
-                color: "white",
-                "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
-              }}
-            >
-              <ListItemText
-                primary={item.label}
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
+            return (
+              <ListItemButton
+                key={item.label}
+                component="a"
+                href={item.href}
+                selected={isActive}
                 sx={{
-                  opacity: open ? 1 : 0,
-                  transition: "opacity 0.2s",
-                  "& .MuiListItemText-primary": {
-                    fontSize: 14,
-                    fontWeight: 500,
+                  px: open ? 2 : 1.5,
+                  py: 1.2,
+                  color: "white",
+                  borderLeft: "3px solid transparent",
+                  "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
+                  "&.Mui-selected": {
+                    bgcolor: "rgba(255,255,255,0.08)",
+                    borderLeftColor: "var(--accent-color)",
                   },
+                  "&.Mui-selected:hover": { bgcolor: "rgba(255,255,255,0.12)" },
                 }}
-              />
-            </ListItemButton>
-          ))}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: open ? 40 : 32,
+                    color: "inherit",
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.label}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    transition: "opacity 0.2s",
+                    "& .MuiListItemText-primary": {
+                      fontSize: 14,
+                      fontWeight: 500,
+                    },
+                  }}
+                />
+              </ListItemButton>
+            );
+          })}
         </List>
       </Drawer>
 
