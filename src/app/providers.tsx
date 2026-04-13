@@ -23,7 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         },
         shape: { borderRadius: 12 },
         typography: {
-          fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+          fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
         },
       }),
     []

@@ -7,7 +7,7 @@ export default function LoginPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        backgroundImage: "url('/images/bglogin.avif')",
+        backgroundImage: "url('/images/explosive-data-stream-dynamic-burst-glowing-particles-digital-energy-futuristic-light.jpg.jpeg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -15,7 +15,6 @@ export default function LoginPage() {
       <Box
         sx={{
           minHeight: "100vh",
-          bgcolor: "rgba(0,0,0,0.2)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -56,7 +55,7 @@ export default function LoginPage() {
               <Box sx={{ textAlign: "center" }}>
                 <Box sx={{ mb: 2 }}>
                   <Image
-                    src="/logo.png"
+                    src="/logo.svg"
                     alt="Moxman"
                     width={256}
                     height={54}
@@ -77,7 +76,7 @@ export default function LoginPage() {
                 borderLeft: { xs: "none", md: "1px solid rgba(255,255,255,0.12)" },
                 p: 4,
                 // ↓ Dark solid background instead of transparent
-                backgroundColor: "rgba(10, 10, 20, 0.85)",
+                // backgroundColor: "rgba(10, 10, 20, 0.85)",
                 backdropFilter: "blur(12px)",
               }}
             >

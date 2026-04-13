@@ -6,6 +6,7 @@ import Image from "next/image";
 import {
   Box,
   Button,
+  colors,
   Divider,
   FormControl,
   IconButton,
@@ -62,17 +63,18 @@ export default function LoginForm() {
     "& .MuiOutlinedInput-input": {
       paddingTop: "20px",
       paddingBottom: "20px",
+      color: 'var(--primary-color)',
       // Style the placeholder
       "&::placeholder": {
-        color: "rgba(255,255,255,0.35)",
+        color: "#a5acb9",
         opacity: 1,
       },
     },
     "& .MuiOutlinedInput-notchedOutline": {
-      borderColor: "rgba(255,255,255,0.2)",
+      borderColor: "#a5acb9",
     },
     "&:hover .MuiOutlinedInput-notchedOutline": {
-      borderColor: "rgba(255,255,255,0.4)",
+      borderColor: "#a5acb9",
     },
     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "#D0142C",
@@ -82,19 +84,36 @@ export default function LoginForm() {
   return (
     <Box component="form" onSubmit={onSubmit} sx={{ color: "white" }}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-          <Box sx={{ width: 40, height: 40 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center", 
+            width: "100%",            
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <Image
-              src="/logo.png"
+              src="/logocricle.png"
               alt="Moxman"
-              width={256}
-              height={54}
-              style={{ width: "256px", height: "54px", objectFit: "contain" }}
+              width={100}
+              height={77}
+              style={{
+                width: "100px",
+                height: "77px",
+                objectFit: "contain",
+              }}
             />
           </Box>
         </Box>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
-              Sign in
+        <Typography variant="h6" sx={{ fontWeight:800,  color: "var(--primary-color)" }}>
+          SIGN IN
         </Typography>
 
         {/* User ID field */}
@@ -102,7 +121,11 @@ export default function LoginForm() {
           {/* Static label always above the input */}
           <Typography
             variant="caption"
-            sx={{ mb: 0.8, color: "rgba(255,255,255,0.75)", fontWeight: 500 }}
+            sx={{
+              mb: 0.8, color: "var(--primary-color)",
+              fontWeight: 500,
+              fontSize: '14px'
+            }}
           >
             User ID
           </Typography>
@@ -122,7 +145,11 @@ export default function LoginForm() {
           {/* Static label always above the input */}
           <Typography
             variant="caption"
-            sx={{ mb: 0.8, color: "rgba(255,255,255,0.75)", fontWeight: 500 }}
+            sx={{
+              mb: 0.8, color: "var(--primary-color)",
+              fontWeight: 500,
+              fontSize: '14px'
+            }}
           >
             Password
           </Typography>
@@ -137,7 +164,7 @@ export default function LoginForm() {
               <IconButton
                 onClick={() => setShowPassword((prev) => !prev)}
                 edge="end"
-                sx={{ color: "rgba(255,255,255,0.7)" }}
+                sx={{ color: "#a5acb9" }}
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}
               </IconButton>
@@ -153,7 +180,11 @@ export default function LoginForm() {
             alignItems: "center",
           }}
         >
-          <Button variant="text" sx={{ color: "white", textTransform: "none" }}>
+          <Button variant="text" sx={{
+            color: "var(--primary-color)",
+            textTransform: "none",
+            pl: "0 !important"
+          }}>
             Forgot password?
           </Button>
         </Box>
