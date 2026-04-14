@@ -162,7 +162,6 @@ export default function AdminShell({
                   "&.Mui-selected": {
                     bgcolor: "var(--bg-color)",
                     color: "#6d5dfc",
-                    boxShadow: "16px 0 0 var(--bg-color)",
                   },
                   "&.Mui-selected .MuiListItemText-primary": {
                     color: "var(--primary-color)",
@@ -171,51 +170,55 @@ export default function AdminShell({
                   "&.Mui-selected::before": {
                     content: '""',
                     position: "absolute",
-                    top: -30,
+                    top: -20,
                     right: 0,
-                    width: 30,
-                    height: 30,
+                    width: 20,
+                    height: 20,
                     background: "var(--sidebar-color)",
-                    borderBottomRightRadius: 30,
+                    borderBottomRightRadius: 20,
                     zIndex: 9,
                   },
                   "&.Mui-selected::after": {
                     content: '""',
                     position: "absolute",
-                    bottom: -30,
+                    bottom: -20,
                     right: 0,
-                    width: 30,
-                    height: 30,
+                    width: 20,
+                    height: 20,
                     background: "var(--sidebar-color)",
-                    borderTopRightRadius: 30,
+                    borderTopRightRadius: 20,
                     zIndex: 9,
                   },
                 }}
               >
-                <Box
-                  component="span"
-                  className="for-top-curve"
-                  sx={{
-                    position: "absolute",
-                    top: "-30px",
-                    right: "-1px",
-                    width: "30px",
-                    height: "30px",
-                    background: "var(--bg-color)",
-                  }}
-                />
-                <Box
-                  component="span"
-                  className="for-bottom-curve"
-                  sx={{
-                    position: "absolute",
-                    bottom: "-30px",
-                    right: "-1px",
-                    width: "30px",
-                    height: "30px",
-                    background: "var(--bg-color)",
-                  }}
-                />
+                {isActive && (
+                  <>
+                    <Box
+                      component="span"
+                      className="for-top-curve"
+                      sx={{
+                        position: "absolute",
+                        top: "-20px",
+                        right: 0,
+                        width: "20px",
+                        height: "20px",
+                        background: "var(--bg-color)",
+                      }}
+                    />
+                    <Box
+                      component="span"
+                      className="for-bottom-curve"
+                      sx={{
+                        position: "absolute",
+                        bottom: "-20px",
+                        right: 0,
+                        width: "20px",
+                        height: "20px",
+                        background: "var(--bg-color)",
+                      }}
+                    />
+                  </>
+                )}
                 <ListItemIcon
                   sx={{
                     minWidth: open ? 40 : 32,
