@@ -421,7 +421,10 @@ export default function AdminShell({
         bgcolor: "var(--sidebar-color)",
         color: "white",
         zIndex: 1202,
-        borderRight: "1px solid rgba(255,255,255,0.08)",
+        // Use an inset shadow instead of a border so active menu items can sit flush
+        // to the edge without needing layout hacks (negative margins / width tweaks).
+        borderRight: "none",
+        boxShadow: "inset -1px 0 0 rgba(255,255,255,0.08)",
         overflow: "visible",
         display: "flex",
         flexDirection: "column",
