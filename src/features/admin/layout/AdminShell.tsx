@@ -15,7 +15,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
@@ -57,6 +56,72 @@ const navItems = [
   { label: "Payments", href: "/admin/payments", icon: <PaymentsRoundedIcon /> },
   { label: "Reports", href: "/admin/reports", icon: <AssessmentRoundedIcon /> },
 ];
+
+// Custom hamburger / close toggle icon
+function MenuToggleIcon({ open }: { open: boolean }) {
+  const color = "#012269";
+  const bar = {
+    display: "block",
+    height: "2px",
+    background: color,
+    borderRadius: "2px",
+    transition: "all 0.25s ease",
+  };
+
+  if (!open) {
+    // Two-bar X / close shape
+    return (
+      <Box
+        sx={{
+          width: 22,
+          height: 22,
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {/* First diagonal bar (top-left to bottom-right) */}
+        <Box
+          component="span"
+          sx={{
+            ...bar,
+            position: "absolute",
+            width: "22px",
+            transform: "rotate(45deg)",
+          }}
+        />
+        {/* Second diagonal bar (top-right to bottom-left) */}
+        <Box
+          component="span"
+          sx={{
+            ...bar,
+            position: "absolute",
+            width: "22px",
+            transform: "rotate(-45deg)",
+          }}
+        />
+      </Box>
+    );
+  }
+
+  // Three-bar hamburger — middle bar is shorter (default open state)
+  return (
+    <Box
+      sx={{
+        width: 22,
+        height: 16,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <Box component="span" sx={{ ...bar, width: "22px" }} />
+      <Box component="span" sx={{ ...bar, width: "14px" }} />
+      <Box component="span" sx={{ ...bar, width: "22px" }} />
+    </Box>
+  );
+}
 
 export default function AdminShell({
   userName,
@@ -102,11 +167,15 @@ export default function AdminShell({
       >
         <Toolbar sx={{ gap: 2 }}>
           <IconButton
-            color="inherit"
             edge="start"
             onClick={() => setOpen((prev) => !prev)}
+            disableRipple
+            sx={{
+              p: "6px",
+              "&:hover": { bgcolor: "transparent" },
+            }}
           >
-            <MenuIcon />
+            <MenuToggleIcon open={open} />
           </IconButton>
           <Box sx={{ flex: 1 }} />
           <Box sx={{ textAlign: "right" }}>
