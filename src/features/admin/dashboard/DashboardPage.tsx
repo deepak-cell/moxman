@@ -1,73 +1,118 @@
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Button, Container, Paper, Typography } from "@mui/material";
+import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import UploadOutlinedIcon from "@mui/icons-material/UploadOutlined";
 import { getSessionUser } from "@/lib/session";
 
-const cards = [
-  { label: "Active Clients", value: "1,248" },
-  { label: "Policies", value: "3,410" },
-  { label: "Monthly Revenue", value: "₹28.4L" },
-  { label: "Pending Payouts", value: "₹4.2L" },
+type ActivityItem = {
+  name: string;
+  partner: string;
+  status: "Pending" | "Approved" | "Paid";
+  date: string;
+};
+
+const summaryCards = [
+  {
+    label: "New Requests",
+    value: "18",
+    change: "12% Higher",
+  },
+  {
+    label: "Approved Customers",
+    value: "64",
+    change: "5% Increased",
+  },
+  {
+    label: "Payments Pending",
+    value: "₹2.45L",
+    change: "8% Decrease",
+  },
+];
+
+const recentRequests: ActivityItem[] = [
+  { name: "Riya Sharma", partner: "Partner A", status: "Pending", date: "12 Apr 2026" },
+  { name: "Arjun Mehta", partner: "Partner B", status: "Approved", date: "11 Apr 2026" },
+  { name: "Nisha Verma", partner: "Partner C", status: "Paid", date: "10 Apr 2026" },
+  { name: "Rahul Singh", partner: "Partner A", status: "Pending", date: "09 Apr 2026" },
+  { name: "Meera Iyer", partner: "Partner D", status: "Approved", date: "08 Apr 2026" },
+];
+
+const actionQueue = [
+  "Approve 6 customer requests",
+  "Mark 3 payments as paid",
+  "Review 4 KYC submissions",
 ];
 
 export default async function DashboardPage() {
   const user = await getSessionUser();
+  const userName = user?.name ?? "Super Admin";
 
   return (
     <Box sx={{ minHeight: "100vh" }}>
-      <Container maxWidth={false} sx={{ p:"0 !important" }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-            <Typography variant="subtitle2" color="text.secondary">
-              Dashboard
-            </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 600 }}>
-              Welcome back, {user?.name ?? "Team"}
+      <Container maxWidth={false} sx={{ p: "0 !important" }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5, mb: 2 }}>
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 700 }}>
+              Welcome To Dashboard
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Role: {user?.role ?? "ADMIN"} · Track your branch performance and
-              client activity.
+              Home / Super Admin Dashboard
             </Typography>
           </Box>
-
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
-              gap: 2,
-            }}
-          >
-            {cards.map((card) => (
-              <Paper key={card.label} sx={{ p: 2.5, borderRadius: 3 }}>
-                <Typography
-                  variant="caption"
-                  color="text.secondary"
-                  sx={{ letterSpacing: "0.2em" }}
-                >
-                  {card.label}
-                </Typography>
-                <Typography variant="h5" sx={{ mt: 1, fontWeight: 600 }}>
-                  {card.value}
-                </Typography>
-                <Box
-                  sx={{
-                    mt: 2,
-                    height: 4,
-                    width: 64,
-                    borderRadius: 999,
-                    bgcolor: "secondary.main",
-                  }}
-                />
-              </Paper>
-            ))}
+          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+            <Button variant="outlined" startIcon={<UploadOutlinedIcon />}>Add Customer</Button>
+            <Button variant="outlined" startIcon={<FilterAltOutlinedIcon />}>Filter Requests</Button>
+            <Button variant="contained" startIcon={<CloudDownloadOutlinedIcon />}>Download Report</Button>
           </Box>
+        </Box>
 
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" },
-              gap: 2,
-            }}
-          >
-            <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" },
+            gap: 2,
+          }}
+        >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            <Paper
+              sx={{
+                p: 2.5,
+                borderRadius: "0.688rem",
+                bgcolor: "#5C57D6",
+                color: "#fff",
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                {userName}!
+              </Typography>
+              <Typography variant="body2" sx={{ opacity: 0.9, mt: 1 }}>
+                You have 18 new customer requests waiting for approval. Approval completion this month is 57%.
+              </Typography>
+            </Paper>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" },
+                gap: 1.5,
+              }}
+            >
+              {summaryCards.map((card) => (
+                <Paper key={card.label} sx={{ p: 2, borderRadius: "0.688rem" }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ letterSpacing: "0.12em" }}>
+                    {card.label}
+                  </Typography>
+                  <Typography variant="h5" sx={{ mt: 1, fontWeight: 700 }}>
+                    {card.value}
+                  </Typography>
+                  <Typography variant="body2" color="success.main" sx={{ mt: 1 }}>
+                    {card.change}
+                  </Typography>
+                </Paper>
+              ))}
+            </Box>
+
+            <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
               <Box
                 sx={{
                   display: "flex",
@@ -76,16 +121,18 @@ export default async function DashboardPage() {
                   gap: 2,
                 }}
               >
-                <Typography variant="h6">Client Activity</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  Monthly Requests vs Approvals
+                </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  Last 30 days
+                  Last 12 months
                 </Typography>
               </Box>
               <Box
                 sx={{
-                  mt: 3,
+                  mt: 2,
                   height: 200,
-                  borderRadius: 2,
+                  borderRadius: "0.688rem",
                   border: "1px dashed rgba(0,0,0,0.15)",
                   display: "flex",
                   alignItems: "center",
@@ -96,23 +143,79 @@ export default async function DashboardPage() {
                 Chart placeholder
               </Box>
             </Paper>
-            <Paper sx={{ p: 3, borderRadius: 3, height: "100%" }}>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                Recent Activity
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                Recent Customer Requests
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Latest approvals and status updates
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                {[
-                  "New partner onboarded",
-                  "Policy payout approved",
-                  "Client status updated",
-                ].map((item) => (
+                {recentRequests.map((item) => (
+                  <Box
+                    key={`${item.name}-${item.date}`}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 2,
+                    }}
+                  >
+                    <Box>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                        {item.name}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {item.partner} · {item.date}
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        px: 1.25,
+                        py: 0.4,
+                        borderRadius: 999,
+                        bgcolor:
+                          item.status === "Paid"
+                            ? "rgba(46, 204, 113, 0.12)"
+                            : item.status === "Approved"
+                            ? "rgba(52, 152, 219, 0.12)"
+                            : "rgba(241, 196, 15, 0.15)",
+                        color:
+                          item.status === "Paid"
+                            ? "#2ecc71"
+                            : item.status === "Approved"
+                            ? "#3498db"
+                            : "#f39c12",
+                        fontSize: 12,
+                        fontWeight: 600,
+                      }}
+                    >
+                      {item.status}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Paper>
+
+            <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                Action Queue
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Priority tasks waiting for your approval
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.25 }}>
+                {actionQueue.map((item) => (
                   <Box
                     key={item}
                     sx={{
                       border: "1px solid rgba(0,0,0,0.08)",
-                      borderRadius: 2,
-                      px: 2,
-                      py: 1.2,
+                      borderRadius: "0.688rem",
+                      px: 1.5,
+                      py: 1,
                       color: "text.secondary",
                     }}
                   >
