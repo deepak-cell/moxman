@@ -526,14 +526,14 @@ export default function AdminShell({
 
       <Drawer variant="permanent" sx={drawerSx}>
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-        <Toolbar
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: open ? "flex-start" : "center",
-            px: open ? 2 : 1.5,
-          }}
-        >
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              px: open ? 2 : 1.5,
+            }}
+          >
           {open ? (
             <Image
               src="/logo-white.svg"
