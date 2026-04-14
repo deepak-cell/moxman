@@ -37,22 +37,64 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
-  const adminEmail = process.env.ADMIN_EMAIL ?? "admin@moxman.local";
-  const adminPassword = process.env.ADMIN_PASSWORD ?? "Admin@1234";
+  const mockUsers = [
+    {
+      id: "admin-001",
+      role: "ADMIN",
+      email: process.env.ADMIN_EMAIL ?? "admin@moxman.local",
+      password: process.env.ADMIN_PASSWORD ?? "Admin@1234",
+      name: "System Admin",
+      branchId: null,
+    },
+    {
+      id: "partner-001",
+      role: "PARTNER",
+      email: process.env.PARTNER_EMAIL ?? "partner@moxman.local",
+      password: process.env.PARTNER_PASSWORD ?? "Partner@1234",
+      name: "Partner User",
+      branchId: null,
+    },
+    {
+      id: "rm-001",
+      role: "RELATIONSHIP_MANAGER",
+      email: process.env.RM_EMAIL ?? "rm@moxman.local",
+      password: process.env.RM_PASSWORD ?? "RM@1234",
+      name: "Relationship Manager",
+      branchId: "BR-01",
+    },
+    {
+      id: "bm-001",
+      role: "BRANCH_MANAGER",
+      email: process.env.BM_EMAIL ?? "bm@moxman.local",
+      password: process.env.BM_PASSWORD ?? "BM@1234",
+      name: "Branch Manager",
+      branchId: "BR-01",
+    },
+    {
+      id: "subadmin-001",
+      role: "SUB_ADMIN",
+      email: process.env.SUBADMIN_EMAIL ?? "subadmin@moxman.local",
+      password: process.env.SUBADMIN_PASSWORD ?? "SubAdmin@1234",
+      name: "Sub Admin",
+      branchId: "BR-02",
+    },
+  ];
 
-  if (
-    parsed.data.email !== adminEmail ||
-    parsed.data.password !== adminPassword
-  ) {
+  const matchedUser = mockUsers.find(
+    (user) =>
+      user.email === parsed.data.email && user.password === parsed.data.password,
+  );
+
+  if (!matchedUser) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   const payload = {
-    sub: "admin-001",
-    role: "ADMIN",
-    email: adminEmail,
-    name: "System Admin",
-    branchId: null,
+    sub: matchedUser.id,
+    role: matchedUser.role,
+    email: matchedUser.email,
+    name: matchedUser.name,
+    branchId: matchedUser.branchId,
   };
 
   const accessToken = await signAccessToken(payload);

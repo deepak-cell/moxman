@@ -17,34 +17,39 @@
   --sidebar-color: #012269;
   --header-color: #091a4a;
   --icon-color: #233a8c;
+  --primary-color: #012269;
 }
 
 [data-role="SUB_ADMIN"] {
-  --bg-color: #f1f4fb;
-  --sidebar-color: #15357d;
-  --header-color: #112c69;
-  --icon-color: #2a4491;
+  --bg-color: #f5f4ff;
+  --sidebar-color: #4f46e5;
+  --header-color: #3f37c9;
+  --icon-color: #4338ca;
+  --primary-color: #4f46e5;
 }
 
 [data-role="BRANCH_MANAGER"] {
-  --bg-color: #f4f6fb;
-  --sidebar-color: #1e3c78;
-  --header-color: #183365;
-  --icon-color: #304c87;
+  --bg-color: #fff8e6;
+  --sidebar-color: #f59e0b;
+  --header-color: #d97706;
+  --icon-color: #b45309;
+  --primary-color: #f59e0b;
 }
 
 [data-role="RELATIONSHIP_MANAGER"] {
-  --bg-color: #f7f9fc;
-  --sidebar-color: #2a4b8a;
-  --header-color: #214072;
-  --icon-color: #355a97;
+  --bg-color: #ecfdfb;
+  --sidebar-color: #0f766e;
+  --header-color: #0f5e58;
+  --icon-color: #0f6a62;
+  --primary-color: #0f766e;
 }
 
 [data-role="PARTNER"] {
-  --bg-color: #ffffff;
-  --sidebar-color: #e9effa;
-  --header-color: #f5f7fc;
-  --icon-color: #26448b;
+  --bg-color: #fff5f5;
+  --sidebar-color: #b91c1c;
+  --header-color: #991b1b;
+  --icon-color: #b91c1c;
+  --primary-color: #b91c1c;
 }
 
 * {

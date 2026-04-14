@@ -94,7 +94,7 @@ export default async function DashboardPage() {
               sx={{
                 p: 2.5,
                 borderRadius: "0.688rem",
-                bgcolor: "#5C57D6",
+                bgcolor: "var(--primary-color)",
                 color: "#fff",
               }}
             >

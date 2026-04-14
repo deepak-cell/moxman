@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   AppBar,
+  Avatar,
   Box,
   Collapse,
   Drawer,
@@ -13,6 +14,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -32,6 +35,12 @@ import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
 import SupervisorAccountRoundedIcon from "@mui/icons-material/SupervisorAccountRounded";
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
+import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
+import MailOutlineRoundedIcon from "@mui/icons-material/MailOutlineRounded";
+import TimelineRoundedIcon from "@mui/icons-material/TimelineRounded";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 const drawerWidth = 240;
 
@@ -127,12 +136,6 @@ const navGroups: NavGroup[] = [
         label: "Slabs",
         href: "/admin/slabs",
         icon: <LayersRoundedIcon />,
-        roles: ["ADMIN"],
-      },
-      {
-        label: "Commissions",
-        href: "/admin/commissions",
-        icon: <PercentRoundedIcon />,
         roles: ["ADMIN"],
       },
       {
@@ -236,7 +239,9 @@ export default function AdminShell({
   children,
 }: AdminShellProps) {
   const [open, setOpen] = useState(true);
+  const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const roleKey = (userRole ?? "ADMIN")
     .toUpperCase()
     .replace(/\s+/g, "_") as RoleKey;
@@ -267,6 +272,7 @@ export default function AdminShell({
     operations: activeGroupId === "operations",
     reports: activeGroupId === "reports",
   }));
+  const isProfileMenuOpen = Boolean(profileAnchorEl);
 
   const handleGroupFocus = (groupId: string | null) => {
     setGroupOpen((prev) => {
@@ -392,8 +398,7 @@ export default function AdminShell({
               transition: "all 0.2s ease",
             },
             ".Mui-selected & .nav-icon": {
-              background:
-                "linear-gradient(135deg, rgba(109,93,252,1) 0%, rgba(99,84,247,1) 100%)",
+              background: "var(--primary-color)",
               borderColor: "transparent",
               boxShadow: "0 6px 12px rgba(109,93,252,0.35)",
               color: "#fff",
@@ -431,6 +436,8 @@ export default function AdminShell({
         zIndex: 1202,
         borderRight: "1px solid rgba(255,255,255,0.08)",
         overflow: "visible",
+        display: "flex",
+        flexDirection: "column",
       },
     }),
     [open],
@@ -438,6 +445,7 @@ export default function AdminShell({
 
   return (
     <Box
+      data-role={roleKey}
       sx={{ display: "flex", minHeight: "100vh", bgcolor: "var(--bg-color)" }}
     >
       <AppBar
@@ -466,7 +474,7 @@ export default function AdminShell({
             <MenuToggleIcon open={open} />
           </IconButton>
           <Box sx={{ flex: 1 }} />
-          <Box sx={{ textAlign: "right" }}>
+          <Box sx={{ textAlign: "right", mr: 1 }}>
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
               {userName ?? "Admin"}
             </Typography>
@@ -474,108 +482,233 @@ export default function AdminShell({
               {userRole ?? "ADMIN"}
             </Typography>
           </Box>
+          <IconButton
+            onClick={(event) => setProfileAnchorEl(event.currentTarget)}
+            sx={{ p: 0 }}
+          >
+            <Avatar
+              sx={{
+                width: 38,
+                height: 38,
+                bgcolor: "var(--primary-color)",
+                fontSize: 14,
+              }}
+            >
+              {(userName ?? "A").charAt(0).toUpperCase()}
+            </Avatar>
+          </IconButton>
+          <Menu
+            anchorEl={profileAnchorEl}
+            open={isProfileMenuOpen}
+            onClose={() => setProfileAnchorEl(null)}
+            PaperProps={{
+              sx: {
+                mt: 1.5,
+                borderRadius: "0.688rem",
+                minWidth: 220,
+                boxShadow: "0 12px 24px rgba(0,0,0,0.12)",
+              },
+            }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Box sx={{ px: 2, py: 1.5 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+                {userName ?? "Admin"}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {userRole ?? "ADMIN"}
+              </Typography>
+            </Box>
+            <MenuItem onClick={() => setProfileAnchorEl(null)}>
+              <ListItemIcon>
+                <PersonOutlineRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => setProfileAnchorEl(null)}>
+              <ListItemIcon>
+                <MailOutlineRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              Inbox
+              <Box
+                component="span"
+                sx={{
+                  ml: "auto",
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: 999,
+                  bgcolor: "var(--primary-color)",
+                  color: "#fff",
+                  fontSize: 10,
+                  fontWeight: 700,
+                }}
+              >
+                25
+              </Box>
+            </MenuItem>
+            <MenuItem onClick={() => setProfileAnchorEl(null)}>
+              <ListItemIcon>
+                <TimelineRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              Activity
+            </MenuItem>
+            <MenuItem onClick={() => setProfileAnchorEl(null)}>
+              <ListItemIcon>
+                <SettingsOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              Settings
+            </MenuItem>
+            <MenuItem onClick={() => setProfileAnchorEl(null)}>
+              <ListItemIcon>
+                <HelpOutlineRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              Support
+            </MenuItem>
+            <MenuItem onClick={() => setProfileAnchorEl(null)}>
+              <ListItemIcon>
+                <LogoutRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              Log Out
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
 
       <Drawer variant="permanent" sx={drawerSx}>
-        <Toolbar
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: open ? "flex-start" : "center",
-            px: open ? 2 : 1.5,
-          }}
-        >
-          <Image
-            src="/logo-white.svg"
-            alt="Moxman"
-            width={140}
-            height={30}
-            style={{ width: open ? "140px" : "32px", height: "auto" }}
-            priority
-          />
-        </Toolbar>
-        <List>
-          {renderNavItem(
-            {
-              label: "Dashboard",
-              href: "/admin/dashboard",
-              icon: <DashboardRoundedIcon />,
-              roles: ["ADMIN", "SUBADMIN"],
-            },
-            null,
-          )}
-          {visibleGroups.map((group) => {
-            const isExpanded = open ? groupOpen[group.id] : true;
-            return (
-              <Box key={group.id}>
-                {open && (
-                  <ListItemButton
-                    disableGutters
-                    onClick={() =>
-                      setGroupOpen((prev) => {
-                        const isCurrentlyOpen = !!prev[group.id];
-                        const nextState: Record<string, boolean> = {};
-                        Object.keys(prev).forEach((key) => {
-                          nextState[key] = false;
-                        });
-                        if (!isCurrentlyOpen) {
-                          nextState[group.id] = true;
-                        }
-                        return nextState;
-                      })
-                    }
-                    sx={{
-                      zIndex: 10,
-                      mt: 1,
-                      mb: 0.5,
-                      ml: 1,
-                      mr: 0,
-                      px: "5px",
-                      borderRadius: 2,
-                      color: "rgba(255,255,255,0.8)",
-                      "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
-                    }}
-                  >
-                    <ListItemIcon
+        <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: open ? "flex-start" : "center",
+              px: open ? 2 : 1.5,
+            }}
+          >
+            <Image
+              src="/logo-white.svg"
+              alt="Moxman"
+              width={140}
+              height={30}
+              style={{ width: open ? "140px" : "32px", height: "auto" }}
+              priority
+            />
+          </Toolbar>
+          <List sx={{ flex: 1, overflowY: "auto", pb: 2 }}>
+            {renderNavItem(
+              {
+                label: "Dashboard",
+                href: "/admin/dashboard",
+                icon: <DashboardRoundedIcon />,
+                roles: ["ADMIN", "SUBADMIN"],
+              },
+              null,
+            )}
+            {visibleGroups.map((group) => {
+              const isExpanded = open ? groupOpen[group.id] : true;
+              return (
+                <Box key={group.id}>
+                  {open && (
+                    <ListItemButton
+                      disableGutters
+                      onClick={() =>
+                        setGroupOpen((prev) => {
+                          const isCurrentlyOpen = !!prev[group.id];
+                          const nextState: Record<string, boolean> = {};
+                          Object.keys(prev).forEach((key) => {
+                            nextState[key] = false;
+                          });
+                          if (!isCurrentlyOpen) {
+                            nextState[group.id] = true;
+                          }
+                          return nextState;
+                        })
+                      }
                       sx={{
-                        minWidth: open ? 34 : 28,
-                        color: "inherit",
-                        "& .nav-icon": {
-                          display: "grid",
-                          placeItems: "center",
-                          width: 26,
-                          height: 26,
-                          borderRadius: "50%",
-                          border: "1px solid rgba(255,255,255,0.16)",
-                        },
+                        zIndex: 10,
+                        mt: 1,
+                        mb: 0.5,
+                        ml: 1,
+                        mr: 0,
+                        px: "5px",
+                        borderRadius: 2,
+                        color: "rgba(255,255,255,0.8)",
+                        "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
                       }}
                     >
-                      <Box className="nav-icon">{group.icon}</Box>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={group.label}
-                      sx={{
-                        "& .MuiListItemText-primary": {
-                          fontSize: 14,
-                          fontWeight: 600,
-                          letterSpacing: "0.04em",
-                          textTransform: "uppercase",
-                        },
-                      }}
-                    />
-                    {groupOpen[group.id] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                  </ListItemButton>
-                )}
-                <Collapse in={isExpanded} timeout="auto" unmountOnExit={!open}>
-                  <List disablePadding>
-                    {group.items.map((item) => renderNavItem(item, group.id))}
-                  </List>
-                </Collapse>
-              </Box>
-            );
-          })}
-        </List>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: open ? 34 : 28,
+                          color: "inherit",
+                          "& .nav-icon": {
+                            display: "grid",
+                            placeItems: "center",
+                            width: 26,
+                            height: 26,
+                            borderRadius: "50%",
+                            border: "1px solid rgba(255,255,255,0.16)",
+                          },
+                        }}
+                      >
+                        <Box className="nav-icon">{group.icon}</Box>
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={group.label}
+                        sx={{
+                          "& .MuiListItemText-primary": {
+                            fontSize: 14,
+                            fontWeight: 600,
+                            letterSpacing: "0.04em",
+                            textTransform: "uppercase",
+                          },
+                        }}
+                      />
+                      {groupOpen[group.id] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                    </ListItemButton>
+                  )}
+                  <Collapse in={isExpanded} timeout="auto" unmountOnExit={!open}>
+                    <List disablePadding>
+                      {group.items.map((item) => renderNavItem(item, group.id))}
+                    </List>
+                  </Collapse>
+                </Box>
+              );
+            })}
+          </List>
+          <Box sx={{ px: 2, pb: 2, display: "flex", justifyContent: "center" }}>
+            <ListItemButton
+              onClick={() => router.push("/login")}
+              sx={{
+                width: open ? "100%" : 40,
+                justifyContent: open ? "flex-start" : "center",
+                borderRadius: 999,
+                color: "rgba(255,255,255,0.92)",
+                bgcolor: "rgba(255,255,255,0.08)",
+                "&:hover": { bgcolor: "rgba(255,255,255,0.16)" },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: open ? 34 : 0,
+                  color: "inherit",
+                }}
+              >
+                <LogoutRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              {open && (
+                <ListItemText
+                  primary="Log Out"
+                  sx={{
+                    "& .MuiListItemText-primary": {
+                      fontSize: 13,
+                      fontWeight: 600,
+                    },
+                  }}
+                />
+              )}
+            </ListItemButton>
+          </Box>
+        </Box>
       </Drawer>
 
       <Box
