@@ -1,9 +1,12 @@
 "use client";
 
-import { Button, ButtonProps } from "@mui/material";
+import { Button, ButtonProps, useTheme } from "@mui/material";
 import { ReactNode } from "react";
 
-export type CtaButtonProps = ButtonProps & {
+type ThemeTone = "red" | "green" | "orange" | "blue" | "purple";
+
+export type CtaButtonProps = Omit<ButtonProps, "variant"> & {
+  variant?: ButtonProps["variant"] | ThemeTone;
   href?: string;
   fontSize?: number | string;
   iconSize?: number | string;
@@ -13,6 +16,7 @@ export type CtaButtonProps = ButtonProps & {
 
 export default function CtaButton({
   href,
+  variant = "contained",
   fontSize,
   iconSize,
   startIcon,
@@ -20,6 +24,22 @@ export default function CtaButton({
   sx,
   ...rest
 }: CtaButtonProps) {
+  const theme = useTheme();
+  const isToneVariant =
+    variant === "red" ||
+    variant === "green" ||
+    variant === "orange" ||
+    variant === "blue" ||
+    variant === "purple";
+  const toneToPalette = {
+    red: "error",
+    green: "success",
+    orange: "warning",
+    blue: "primary",
+    purple: "secondary",
+  } as const;
+  const paletteKey = isToneVariant ? toneToPalette[variant] : null;
+
   const iconSizing = iconSize
     ? {
         "& .MuiButton-startIcon svg": { fontSize: iconSize },
@@ -29,9 +49,21 @@ export default function CtaButton({
       }
     : {};
 
+  const toneStyles =
+    isToneVariant && paletteKey
+      ? {
+          bgcolor: theme.palette[paletteKey].main,
+          color: theme.palette[paletteKey].contrastText,
+          "&:hover": {
+            bgcolor: theme.palette[paletteKey].dark,
+          },
+        }
+      : {};
+
   return (
     <Button
       {...rest}
+      variant={isToneVariant ? "contained" : variant}
       {...(href ? { component: "a" as const, href } : {})}
       startIcon={startIcon}
       endIcon={endIcon}
@@ -41,6 +73,7 @@ export default function CtaButton({
         fontSize: fontSize ?? 14,
         borderRadius: "0.688rem",
         ...iconSizing,
+        ...toneStyles,
         ...sx,
       }}
     />
