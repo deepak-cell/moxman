@@ -27,6 +27,11 @@ import PaymentsRoundedIcon from "@mui/icons-material/PaymentsRounded";
 import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AdminPanelSettingsRoundedIcon from "@mui/icons-material/AdminPanelSettingsRounded";
+import AccountTreeRoundedIcon from "@mui/icons-material/AccountTreeRounded";
+import SupervisorAccountRoundedIcon from "@mui/icons-material/SupervisorAccountRounded";
+import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
+import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
 
 const drawerWidth = 240;
 
@@ -53,6 +58,7 @@ type NavItem = {
 type NavGroup = {
   id: string;
   label: string;
+  icon: React.ReactNode;
   items: NavItem[];
 };
 
@@ -60,29 +66,30 @@ const navGroups: NavGroup[] = [
   {
     id: "user_mgmt",
     label: "User Management",
+    icon: <ManageAccountsRoundedIcon />,
     items: [
       {
         label: "Partners",
         href: "/admin/users?role=partner",
-        icon: <PeopleAltRoundedIcon />,
+        icon: <PersonAddAltRoundedIcon />,
         roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
       },
       {
         label: "Relationship Managers",
         href: "/admin/users?role=relationship_manager",
-        icon: <PeopleAltRoundedIcon />,
+        icon: <SupervisorAccountRoundedIcon />,
         roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER"],
       },
       {
         label: "Branch Managers",
         href: "/admin/users?role=branch_manager",
-        icon: <PeopleAltRoundedIcon />,
+        icon: <AccountTreeRoundedIcon />,
         roles: ["ADMIN", "SUBADMIN"],
       },
       {
         label: "Sub Admins",
         href: "/admin/users?role=sub_admin",
-        icon: <PeopleAltRoundedIcon />,
+        icon: <AdminPanelSettingsRoundedIcon />,
         roles: ["ADMIN"],
       },
       {
@@ -96,6 +103,7 @@ const navGroups: NavGroup[] = [
   {
     id: "operations",
     label: "Operations",
+    icon: <Inventory2RoundedIcon />,
     items: [
       {
         label: "Clients",
@@ -138,6 +146,7 @@ const navGroups: NavGroup[] = [
   {
     id: "reports",
     label: "Reports",
+    icon: <AssessmentRoundedIcon />,
     items: [
       {
         label: "Reports",
@@ -294,8 +303,9 @@ export default function AdminShell({
         selected={isActive}
         onClick={() => handleGroupFocus(groupId)}
         sx={{
+          zIndex: 10,
           mr: 0,
-          ml: open ? 2 : 1,
+          ml: open ? 1 : 1,
           px: open ? 0.5 : 1.5,
           my: isActive ? 1.5 : 0.625,
           py: 0.5,
@@ -513,6 +523,7 @@ export default function AdminShell({
                       })
                     }
                     sx={{
+                      zIndex: 10,
                       mt: 1,
                       mb: 0.5,
                       mx: 1,
@@ -521,6 +532,22 @@ export default function AdminShell({
                       "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
                     }}
                   >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: open ? 34 : 28,
+                        color: "inherit",
+                        "& .nav-icon": {
+                          display: "grid",
+                          placeItems: "center",
+                          width: 26,
+                          height: 26,
+                          borderRadius: "50%",
+                          border: "1px solid rgba(255,255,255,0.16)",
+                        },
+                      }}
+                    >
+                      <Box className="nav-icon">{group.icon}</Box>
+                    </ListItemIcon>
                     <ListItemText
                       primary={group.label}
                       sx={{
