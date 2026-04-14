@@ -59,6 +59,30 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: "Montserrat", "Helvetica", "Arial", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(12, 24, 64, 0.25) transparent;
+}
+
+body::-webkit-scrollbar,
+main::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+body::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb,
+main::-webkit-scrollbar-thumb {
+  background: rgba(12, 24, 64, 0.25);
+  border-radius: 999px;
+}
+
+body::-webkit-scrollbar-thumb:hover,
+main::-webkit-scrollbar-thumb:hover {
+  background: rgba(12, 24, 64, 0.4);
 }
 
 a {
