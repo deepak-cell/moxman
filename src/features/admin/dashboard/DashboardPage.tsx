@@ -3,6 +3,16 @@ import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import UploadOutlinedIcon from "@mui/icons-material/UploadOutlined";
 import { getSessionUser } from "@/lib/session";
+import {
+  customerGrowthSeries,
+  paymentStatusBreakdown,
+  requestsApprovalsSeries,
+} from "./data/mockDashboardData";
+import {
+  CustomerGrowthChart,
+  PaymentStatusDonut,
+  RequestsApprovalsChart,
+} from "./components/DashboardCharts";
 
 type ActivityItem = {
   name: string;
@@ -73,7 +83,7 @@ export default async function DashboardPage() {
             gap: 2,
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Paper
               sx={{
                 p: 2.5,
@@ -128,21 +138,90 @@ export default async function DashboardPage() {
                   Last 12 months
                 </Typography>
               </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#6d5dfc" }} />
+                  <Typography variant="caption" color="text.secondary">
+                    Requests
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#2ecc71" }} />
+                  <Typography variant="caption" color="text.secondary">
+                    Approvals
+                  </Typography>
+                </Box>
+              </Box>
               <Box
                 sx={{
                   mt: 2,
-                  height: 200,
-                  borderRadius: "0.688rem",
-                  border: "1px dashed rgba(0,0,0,0.15)",
+                  height: 260,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   color: "text.secondary",
+                  px: 0,
                 }}
               >
-                Chart placeholder
+                <RequestsApprovalsChart data={requestsApprovalsSeries} />
               </Box>
             </Paper>
+
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "repeat(2, 1fr)" },
+                gap: 2,
+              }}
+            >
+              <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  Payment Status
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Approved customers by payment state
+                </Typography>
+                <PaymentStatusDonut
+                  paid={paymentStatusBreakdown.paid}
+                  pending={paymentStatusBreakdown.pending}
+                />
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1, flexWrap: "wrap" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#2ecc71" }} />
+                    <Typography variant="caption" color="text.secondary">
+                      Paid ({paymentStatusBreakdown.paid})
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#f39c12" }} />
+                    <Typography variant="caption" color="text.secondary">
+                      Pending ({paymentStatusBreakdown.pending})
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+
+              <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  Customer Growth
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  New customers added per month
+                </Typography>
+                <Box
+                  sx={{
+                    height: 200,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "text.secondary",
+                    px: 0,
+                  }}
+                >
+                  <CustomerGrowthChart data={customerGrowthSeries} />
+                </Box>
+              </Paper>
+            </Box>
           </Box>
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
