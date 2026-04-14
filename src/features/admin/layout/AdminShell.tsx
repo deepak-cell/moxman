@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -17,15 +17,15 @@ import {
   Menu,
   MenuItem,
   Toolbar,
+  useMediaQuery,
   Typography,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
-import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import PolicyRoundedIcon from "@mui/icons-material/PolicyRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import LayersRoundedIcon from "@mui/icons-material/LayersRounded";
-import PercentRoundedIcon from "@mui/icons-material/PercentRounded";
 import PaymentsRoundedIcon from "@mui/icons-material/PaymentsRounded";
 import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -223,7 +223,10 @@ export default function AdminShell({
   userRole,
   children,
 }: AdminShellProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [open, setOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -252,33 +255,21 @@ export default function AdminShell({
     return null;
   }, [pathname]);
 
-  const [groupOpen, setGroupOpen] = useState<Record<string, boolean>>(() => ({
-    user_mgmt: activeGroupId === "user_mgmt",
-    operations: activeGroupId === "operations",
-    reports: activeGroupId === "reports",
-  }));
+  const [focusedGroupId, setFocusedGroupId] = useState<string | null>(null);
   const isProfileMenuOpen = Boolean(profileAnchorEl);
 
   const handleGroupFocus = (groupId: string | null) => {
-    setGroupOpen((prev) => {
-      const nextState: Record<string, boolean> = {};
-      Object.keys(prev).forEach((key) => {
-        nextState[key] = groupId ? key === groupId : false;
-      });
-      return nextState;
-    });
+    setFocusedGroupId(groupId);
   };
 
-  useEffect(() => {
-    if (!activeGroupId) return;
-    setGroupOpen((prev) => {
-      const nextState: Record<string, boolean> = {};
-      Object.keys(prev).forEach((key) => {
-        nextState[key] = key === activeGroupId;
-      });
-      return nextState;
-    });
-  }, [activeGroupId]);
+  const effectiveGroupId = useMemo(() => {
+    if (!focusedGroupId) return activeGroupId;
+    if (activeGroupId && focusedGroupId !== activeGroupId) return activeGroupId;
+    return focusedGroupId;
+  }, [activeGroupId, focusedGroupId]);
+
+  const drawerExpanded = isMobile ? true : open;
+  const drawerPaperWidth = isMobile ? drawerWidth : open ? drawerWidth : 72;
 
   const renderNavItem = (item: NavItem, groupId: string | null) => {
     const isActive =
@@ -294,12 +285,15 @@ export default function AdminShell({
         component="a"
         href={item.href}
         selected={isActive}
-        onClick={() => handleGroupFocus(groupId)}
+        onClick={() => {
+          handleGroupFocus(groupId);
+          if (isMobile) setMobileOpen(false);
+        }}
         sx={{
           zIndex: 10,
-          ml: open ? (isSubItem ? 3 : 1) : 1,
-          pl: isSubItem ? (open ? 6 : 2) : undefined,
-          px: open ? 0.75 : 1.5,
+          ml: drawerExpanded ? (isSubItem ? 3 : 1) : 1,
+          pl: isSubItem ? (drawerExpanded ? 6 : 2) : undefined,
+          px: drawerExpanded ? 0.75 : 1.5,
           my: isActive ? 1.5 : 0.625,
           py: 0.5,
           color: "rgba(255,255,255,0.78)",
@@ -371,7 +365,7 @@ export default function AdminShell({
         )}
         <ListItemIcon
           sx={{
-            minWidth: open ? (isSubItem ? 34 : 40) : 32,
+            minWidth: drawerExpanded ? (isSubItem ? 34 : 40) : 32,
             color: "inherit",
             "& .nav-icon": {
               display: "grid",
@@ -395,7 +389,7 @@ export default function AdminShell({
         <ListItemText
           primary={item.label}
           sx={{
-            opacity: open ? 1 : 0,
+            opacity: drawerExpanded ? 1 : 0,
             transition: "opacity 0.2s",
             "& .MuiListItemText-primary": {
               fontSize: isSubItem ? 12.5 : 14,
@@ -413,10 +407,10 @@ export default function AdminShell({
 
   const drawerSx = useMemo(
     () => ({
-      width: open ? drawerWidth : 72,
+      width: drawerPaperWidth,
       flexShrink: 0,
       "& .MuiDrawer-paper": {
-        width: open ? drawerWidth : 72,
+        width: drawerPaperWidth,
         boxSizing: "border-box",
         bgcolor: "var(--sidebar-color)",
         color: "white",
@@ -430,13 +424,13 @@ export default function AdminShell({
         flexDirection: "column",
       },
     }),
-    [open],
+    [drawerPaperWidth],
   );
 
   return (
     <Box
       data-role={roleKey}
-      sx={{ display: "flex", minHeight: "100vh", bgcolor: "var(--bg-color)" }}
+      sx={{ display: "flex", width: "100%", minHeight: "100dvh", bgcolor: "var(--bg-color)" }}
     >
       <AppBar
         position="fixed"
@@ -446,22 +440,29 @@ export default function AdminShell({
           color: "white",
           boxShadow: "-7.829px 11.607px 20px 0 rgba(144, 143, 160, .09)",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
-          ml: open ? `${drawerWidth}px` : "72px",
-          width: open ? `calc(100% - ${drawerWidth}px)` : "calc(100% - 72px)",
-          transition: "margin 0.2s ease, width 0.2s ease",
+          left: isMobile ? 0 : `${drawerPaperWidth}px`,
+          right: 0,
+          width: "auto",
+          transition: "left 0.2s ease",
         }}
       >
         <Toolbar sx={{ gap: 2 }}>
           <IconButton
             edge="start"
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={() => {
+              if (isMobile) {
+                setMobileOpen((prev) => !prev);
+              } else {
+                setOpen((prev) => !prev);
+              }
+            }}
             disableRipple
             sx={{
               p: "6px",
               "&:hover": { bgcolor: "transparent" },
             }}
           >
-            <MenuToggleIcon open={open} />
+            <MenuToggleIcon open={isMobile ? !mobileOpen : open} />
           </IconButton>
           <Box sx={{ flex: 1 }} />
           <Box sx={{ textAlign: "right", mr: 1 }}>
@@ -527,17 +528,23 @@ export default function AdminShell({
         </Toolbar>
       </AppBar>
 
-      <Drawer variant="permanent" sx={drawerSx}>
+      <Drawer
+        variant={isMobile ? "temporary" : "permanent"}
+        open={isMobile ? mobileOpen : true}
+        onClose={() => setMobileOpen(false)}
+        ModalProps={{ keepMounted: true }}
+        sx={drawerSx}
+      >
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
           <Toolbar
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              px: open ? 2 : 1.5,
+              px: drawerExpanded ? 2 : 1.5,
             }}
           >
-          {open ? (
+          {drawerExpanded ? (
             <Image
               src="/logo-white.svg"
               alt="Moxman"
@@ -587,24 +594,14 @@ export default function AdminShell({
                 null,
               )}
             {visibleGroups.map((group) => {
-              const isExpanded = open ? groupOpen[group.id] : true;
+              const isExpanded = drawerExpanded ? effectiveGroupId === group.id : true;
               return (
                 <Box key={group.id}>
-                  {open && (
+                  {drawerExpanded && (
                     <ListItemButton
                       disableGutters
                       onClick={() =>
-                        setGroupOpen((prev) => {
-                          const isCurrentlyOpen = !!prev[group.id];
-                          const nextState: Record<string, boolean> = {};
-                          Object.keys(prev).forEach((key) => {
-                            nextState[key] = false;
-                          });
-                          if (!isCurrentlyOpen) {
-                            nextState[group.id] = true;
-                          }
-                          return nextState;
-                        })
+                        setFocusedGroupId((prev) => (prev === group.id ? null : group.id))
                       }
                       sx={{
                         zIndex: 10,
@@ -620,7 +617,7 @@ export default function AdminShell({
                     >
                       <ListItemIcon
                         sx={{
-                          minWidth: open ? 34 : 28,
+                          minWidth: drawerExpanded ? 34 : 28,
                           color: "inherit",
                           "& .nav-icon": {
                             display: "grid",
@@ -645,10 +642,10 @@ export default function AdminShell({
                           },
                         }}
                       />
-                      {groupOpen[group.id] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                      {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </ListItemButton>
                   )}
-                  <Collapse in={isExpanded} timeout="auto" unmountOnExit={!open}>
+                  <Collapse in={isExpanded} timeout="auto" unmountOnExit={!drawerExpanded}>
                     <List disablePadding>
                       {group.items.map((item) => renderNavItem(item, group.id))}
                     </List>
@@ -661,8 +658,8 @@ export default function AdminShell({
             <ListItemButton
               onClick={() => router.push("/login")}
               sx={{
-                width: open ? "100%" : 40,
-                justifyContent: open ? "flex-start" : "center",
+                width: drawerExpanded ? "100%" : 40,
+                justifyContent: drawerExpanded ? "flex-start" : "center",
                 borderRadius: 999,
                 color: "rgba(255,255,255,0.92)",
                 bgcolor: "rgba(255,255,255,0.08)",
@@ -671,13 +668,13 @@ export default function AdminShell({
             >
               <ListItemIcon
                 sx={{
-                  minWidth: open ? 34 : 0,
+                  minWidth: drawerExpanded ? 34 : 0,
                   color: "inherit",
                 }}
               >
                 <LogoutRoundedIcon fontSize="small" />
               </ListItemIcon>
-              {open && (
+              {drawerExpanded && (
                 <ListItemText
                   primary="Log Out"
                   sx={{
@@ -700,6 +697,7 @@ export default function AdminShell({
           pt: 3,
           px: 3,
           pb: 3,
+          bgcolor: "var(--bg-color)",
           transition: "margin 0.2s ease",
         }}
       >
