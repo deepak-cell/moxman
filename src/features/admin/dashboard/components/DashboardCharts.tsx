@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -27,6 +28,15 @@ type TooltipProps = {
   payload?: Array<{ value: number; dataKey: string; payload: { month: string } }>;
   label?: string;
 };
+
+function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  return mounted;
+}
+
 
 function RequestsApprovalsTooltip({ active, payload, label }: TooltipProps) {
   if (!active || !payload || payload.length === 0) return null;
@@ -59,46 +69,49 @@ function RequestsApprovalsTooltip({ active, payload, label }: TooltipProps) {
 }
 
 export function RequestsApprovalsChart({ data }: LineChartProps) {
+  const mounted = useMounted();
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={data}
-          margin={{ top: 12, right: 16, left: 8, bottom: 12 }}
-        >
-          <CartesianGrid stroke="rgba(109, 93, 252, 0.12)" vertical={false} />
-          <XAxis
-            dataKey="month"
-            tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
-            tickLine={false}
-            width={32}
-          />
-          <Tooltip content={<RequestsApprovalsTooltip />} cursor={{ strokeDasharray: "4 4" }} />
-          <Line
-            type="monotone"
-            dataKey="approvals"
-            stroke="#2ecc71"
-            strokeWidth={3}
-            dot={false}
-            activeDot={false}
-            strokeDasharray="6 6"
-          />
-          <Line
-            type="monotone"
-            dataKey="requests"
-            stroke="var(--primary-color)"
-            strokeWidth={3.5}
-            dot={false}
-            activeDot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+    <Box sx={{ width: "100%", minWidth: 1 }}>
+      {mounted && (
+        <ResponsiveContainer width="100%" height={260}>
+          <LineChart
+            data={data}
+            margin={{ top: 12, right: 16, left: 8, bottom: 12 }}
+          >
+            <CartesianGrid stroke="rgba(109, 93, 252, 0.12)" vertical={false} />
+            <XAxis
+              dataKey="month"
+              tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
+              axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
+              tickLine={false}
+            />
+            <YAxis
+              tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
+              axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
+              tickLine={false}
+              width={32}
+            />
+            <Tooltip content={<RequestsApprovalsTooltip />} cursor={{ strokeDasharray: "4 4" }} />
+            <Line
+              type="monotone"
+              dataKey="approvals"
+              stroke="#2ecc71"
+              strokeWidth={3}
+              dot={false}
+              activeDot={false}
+              strokeDasharray="6 6"
+            />
+            <Line
+              type="monotone"
+              dataKey="requests"
+              stroke="var(--primary-color)"
+              strokeWidth={3.5}
+              dot={false}
+              activeDot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      )}
     </Box>
   );
 }
@@ -111,6 +124,7 @@ type DonutChartProps = {
 const paymentColors = ["#2ecc71", "#f39c12"];
 
 export function PaymentStatusDonut({ paid, pending }: DonutChartProps) {
+  const mounted = useMounted();
   const total = paid + pending;
   const paidPct = total === 0 ? 0 : Math.round((paid / total) * 100);
   const data = [
@@ -119,59 +133,61 @@ export function PaymentStatusDonut({ paid, pending }: DonutChartProps) {
   ];
 
   return (
-    <Box sx={{ width: "100%", height: 160 }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="value"
-            innerRadius={50}
-            outerRadius={68}
-            stroke="none"
-          >
-            {data.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={paymentColors[index]} />
-            ))}
-          </Pie>
-          <Tooltip
-            content={({ active, payload }) => {
-              if (!active || !payload || payload.length === 0) return null;
-              const item = payload[0];
-              return (
-                <Box
-                  sx={{
-                    bgcolor: "#fff",
-                    border: "1px solid rgba(0,0,0,0.1)",
-                    borderRadius: "0.6rem",
-                    boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
-                    px: 1.2,
-                    py: 0.9,
-                    minWidth: 120,
-                  }}
-                >
-                  <Typography variant="caption" sx={{ fontWeight: 700, display: "block" }}>
-                    {item.name}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
-                    {item.value}
-                  </Typography>
-                </Box>
-              );
-            }}
-          />
-          <text
-            x="50%"
-            y="50%"
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fontSize="14"
-            fill="#4a4a4a"
-            fontWeight="600"
-          >
-            {paidPct}%
-          </text>
-        </PieChart>
-      </ResponsiveContainer>
+    <Box sx={{ width: "100%", minWidth: 1 }}>
+      {mounted && (
+        <ResponsiveContainer width="100%" height={160}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="value"
+              innerRadius={50}
+              outerRadius={68}
+              stroke="none"
+            >
+              {data.map((_, index) => (
+                <Cell key={`cell-${index}`} fill={paymentColors[index]} />
+              ))}
+            </Pie>
+            <Tooltip
+              content={({ active, payload }) => {
+                if (!active || !payload || payload.length === 0) return null;
+                const item = payload[0];
+                return (
+                  <Box
+                    sx={{
+                      bgcolor: "#fff",
+                      border: "1px solid rgba(0,0,0,0.1)",
+                      borderRadius: "0.6rem",
+                      boxShadow: "0 10px 24px rgba(0,0,0,0.08)",
+                      px: 1.2,
+                      py: 0.9,
+                      minWidth: 120,
+                    }}
+                  >
+                    <Typography variant="caption" sx={{ fontWeight: 700, display: "block" }}>
+                      {item.name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
+                      {item.value}
+                    </Typography>
+                  </Box>
+                );
+              }}
+            />
+            <text
+              x="50%"
+              y="50%"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize="14"
+              fill="#4a4a4a"
+              fontWeight="600"
+            >
+              {paidPct}%
+            </text>
+          </PieChart>
+        </ResponsiveContainer>
+      )}
     </Box>
   );
 }
@@ -207,27 +223,30 @@ function CustomerGrowthTooltip({ active, payload, label }: TooltipProps) {
 }
 
 export function CustomerGrowthChart({ data }: MiniBarChartProps) {
+  const mounted = useMounted();
   return (
-    <Box sx={{ width: "100%", height: "100%" }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 12, right: 16, left: 8, bottom: 12 }}>
-          <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
-          <XAxis
-            dataKey="month"
-            tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
-            axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
-            tickLine={false}
-            width={32}
-          />
-          <Tooltip content={<CustomerGrowthTooltip />} cursor={{ fill: "rgba(0,0,0,0.05)" }} />
-          <Bar dataKey="value" fill="var(--primary-color)" radius={[8, 8, 8, 8]} barSize={18} />
-        </BarChart>
-      </ResponsiveContainer>
+    <Box sx={{ width: "100%", minWidth: 1 }}>
+      {mounted && (
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={data} margin={{ top: 12, right: 16, left: 8, bottom: 12 }}>
+            <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
+            <XAxis
+              dataKey="month"
+              tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
+              axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
+              tickLine={false}
+            />
+            <YAxis
+              tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
+              axisLine={{ stroke: "rgba(0,0,0,0.15)" }}
+              tickLine={false}
+              width={32}
+            />
+            <Tooltip content={<CustomerGrowthTooltip />} cursor={{ fill: "rgba(0,0,0,0.05)" }} />
+            <Bar dataKey="value" fill="var(--primary-color)" radius={[8, 8, 8, 8]} barSize={18} />
+          </BarChart>
+        </ResponsiveContainer>
+      )}
     </Box>
   );
 }

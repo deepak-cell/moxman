@@ -540,7 +540,6 @@ export default function AdminShell({
               alt="Moxman"
               width={170}
               height={34}
-              style={{ width: "170px", height: "auto" }}
               priority
             />
           ) : (

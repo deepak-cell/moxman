@@ -168,6 +168,7 @@ export default async function DashboardPage() {
                 sx={{
                   mt: 2,
                   height: 260,
+                  minWidth: 300,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -193,10 +194,12 @@ export default async function DashboardPage() {
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                   Approved customers by payment state
                 </Typography>
-                <PaymentStatusDonut
-                  paid={paymentStatusBreakdown.paid}
-                  pending={paymentStatusBreakdown.pending}
-                />
+                <Box sx={{ width: "100%", minWidth: 240 }}>
+                  <PaymentStatusDonut
+                    paid={paymentStatusBreakdown.paid}
+                    pending={paymentStatusBreakdown.pending}
+                  />
+                </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1, flexWrap: "wrap" }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#2ecc71" }} />
@@ -223,6 +226,7 @@ export default async function DashboardPage() {
                 <Box
                   sx={{
                     height: 200,
+                    minWidth: 240,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
