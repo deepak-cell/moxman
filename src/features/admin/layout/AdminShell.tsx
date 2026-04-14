@@ -510,6 +510,7 @@ export default function AdminShell({
               <Box key={group.id}>
                 {open && (
                   <ListItemButton
+                    disableGutters
                     onClick={() =>
                       setGroupOpen((prev) => {
                         const isCurrentlyOpen = !!prev[group.id];
@@ -527,7 +528,8 @@ export default function AdminShell({
                       zIndex: 10,
                       mt: 1,
                       mb: 0.5,
-                      mx: 1,
+                      ml: 1,
+                      mr: 0,
                       px: "5px",
                       borderRadius: 2,
                       color: "rgba(255,255,255,0.8)",
