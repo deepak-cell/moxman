@@ -1,8 +1,9 @@
-import { Box, Button, Container, Paper, Typography } from "@mui/material";
+import { Box, Container, Paper, Typography } from "@mui/material";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import UploadOutlinedIcon from "@mui/icons-material/UploadOutlined";
 import { getSessionUser } from "@/lib/session";
+import CtaButton from "@/components/ui/CtaButton";
 import {
   customerGrowthSeries,
   paymentStatusBreakdown,
@@ -69,9 +70,15 @@ export default async function DashboardPage() {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-            <Button variant="outlined" startIcon={<UploadOutlinedIcon />}>Add Customer</Button>
-            <Button variant="outlined" startIcon={<FilterAltOutlinedIcon />}>Filter Requests</Button>
-            <Button variant="contained" startIcon={<CloudDownloadOutlinedIcon />}>Download Report</Button>
+            <CtaButton variant="outlined" startIcon={<UploadOutlinedIcon />}>
+              Add Customer
+            </CtaButton>
+            <CtaButton variant="outlined" startIcon={<FilterAltOutlinedIcon />}>
+              Filter Requests
+            </CtaButton>
+            <CtaButton variant="contained" startIcon={<CloudDownloadOutlinedIcon />}>
+              Download Report
+            </CtaButton>
           </Box>
         </Box>
 
