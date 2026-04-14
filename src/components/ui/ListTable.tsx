@@ -188,7 +188,7 @@ export default function ListTable<T extends { id: string }>({
             </CtaButton>
           )}
           {onAdd && (
-            <CtaButton variant="blue" onClick={onAdd}>
+            <CtaButton variant="role" onClick={onAdd}>
               {addLabel}
             </CtaButton>
           )}

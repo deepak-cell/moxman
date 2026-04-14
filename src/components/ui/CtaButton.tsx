@@ -3,7 +3,7 @@
 import { Button, ButtonProps, useTheme } from "@mui/material";
 import { ReactNode } from "react";
 
-type ThemeTone = "red" | "green" | "orange" | "blue" | "purple";
+type ThemeTone = "red" | "green" | "orange" | "blue" | "purple" | "role";
 
 export type CtaButtonProps = Omit<ButtonProps, "variant"> & {
   variant?: ButtonProps["variant"] | ThemeTone;
@@ -30,7 +30,8 @@ export default function CtaButton({
     variant === "green" ||
     variant === "orange" ||
     variant === "blue" ||
-    variant === "purple";
+    variant === "purple" ||
+    variant === "role";
   const toneToPalette = {
     red: "error",
     green: "success",
@@ -38,7 +39,8 @@ export default function CtaButton({
     blue: "primary",
     purple: "secondary",
   } as const;
-  const paletteKey = isToneVariant ? toneToPalette[variant] : null;
+  const paletteKey =
+    isToneVariant && variant !== "role" ? toneToPalette[variant] : null;
 
   const iconSizing = iconSize
     ? {
@@ -50,15 +52,23 @@ export default function CtaButton({
     : {};
 
   const toneStyles =
-    isToneVariant && paletteKey
+    isToneVariant && variant === "role"
       ? {
-          bgcolor: theme.palette[paletteKey].main,
-          color: theme.palette[paletteKey].contrastText,
+          bgcolor: "var(--primary-color)",
+          color: "#fff",
           "&:hover": {
-            bgcolor: theme.palette[paletteKey].dark,
+            filter: "brightness(0.9)",
           },
         }
-      : {};
+      : isToneVariant && paletteKey
+        ? {
+            bgcolor: theme.palette[paletteKey].main,
+            color: theme.palette[paletteKey].contrastText,
+            "&:hover": {
+              bgcolor: theme.palette[paletteKey].dark,
+            },
+          }
+        : {};
 
   return (
     <Button
