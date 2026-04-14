@@ -339,13 +339,13 @@ export default function AdminShell({
         component="main"
         sx={{
           flex: 1,
-          pt: 8,
+          pt: 3,
           px: 3,
           pb: 3,
-          ml: open ? `${drawerWidth}px` : "72px",
           transition: "margin 0.2s ease",
         }}
       >
+        <Toolbar />
         {children}
       </Box>
     </Box>

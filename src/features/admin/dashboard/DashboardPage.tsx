@@ -12,8 +12,8 @@ export default async function DashboardPage() {
   const user = await getSessionUser();
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
-      <Container maxWidth="xl" sx={{ py: 4 }}>
+    <Box sx={{ minHeight: "100vh" }}>
+      <Container maxWidth={false} sx={{ p:"0 !important" }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
             <Typography variant="subtitle2" color="text.secondary">
