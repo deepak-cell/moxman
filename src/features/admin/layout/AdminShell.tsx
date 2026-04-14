@@ -106,7 +106,7 @@ const navGroups: NavGroup[] = [
     icon: <Inventory2RoundedIcon />,
     items: [
       {
-        label: "Clients",
+        label: "Customers",
         href: "/admin/clients",
         icon: <BusinessRoundedIcon />,
         roles: ["ADMIN"],
@@ -116,12 +116,6 @@ const navGroups: NavGroup[] = [
         href: "/admin/policies",
         icon: <PolicyRoundedIcon />,
         roles: ["ADMIN", "PARTNER"],
-      },
-      {
-        label: "Products",
-        href: "/admin/products",
-        icon: <Inventory2RoundedIcon />,
-        roles: ["ADMIN"],
       },
       {
         label: "Slabs",
