@@ -155,6 +155,13 @@ export default function ListTable<T extends { id: string }>({
             placeholder={searchPlaceholder}
             value={search}
             onChange={(event) => setSearch(event.target.value)}
+            sx={{
+              width: { xs: "100%", sm: 320, md: 420 },
+              "& .MuiOutlinedInput-root": {
+                height: 40,
+                borderRadius: "12px",
+              },
+            }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
