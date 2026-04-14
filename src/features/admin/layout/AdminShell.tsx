@@ -154,11 +154,15 @@ export default function AdminShell({
                   mr: 0,
                   ml: open ? 2 : 1,
                   px: open ? 0.5 : 1.5,
+                  my: isActive ? 1.5 : 0.625,
                   py: 0.5,
                   color: "rgba(255,255,255,0.78)",
                   borderRadius: "999px 0 0 999px",
                   position: "relative",
                   "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
+                  "&:hover .MuiListItemText-primary": {
+                    transform: "translateX(6px)",
+                  },
                   "&.Mui-selected": {
                     bgcolor: "var(--bg-color)",
                     color: "#6d5dfc",
@@ -251,6 +255,8 @@ export default function AdminShell({
                     "& .MuiListItemText-primary": {
                       fontSize: 14,
                       fontWeight: 500,
+                      transform: "translateX(0)",
+                      transition: "transform 0.2s ease",
                     },
                   }}
                 />
