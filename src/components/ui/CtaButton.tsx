@@ -25,6 +25,14 @@ export default function CtaButton({
   ...rest
 }: CtaButtonProps) {
   const theme = useTheme();
+  const responsiveSizing =
+    rest.size != null
+      ? {}
+      : {
+          minHeight: { xs: 36, sm: 40 },
+          px: { xs: 1.5, sm: 2 },
+          borderRadius: { xs: 10, sm: "0.688rem" },
+        };
   const isToneVariant =
     variant === "red" ||
     variant === "green" ||
@@ -80,8 +88,8 @@ export default function CtaButton({
       sx={{
         textTransform: "none",
         fontWeight: 600,
-        fontSize: fontSize ?? 14,
-        borderRadius: "0.688rem",
+        fontSize: fontSize ?? { xs: 13, sm: 14 },
+        ...responsiveSizing,
         ...iconSizing,
         ...toneStyles,
         ...sx,

@@ -60,7 +60,16 @@ export default async function DashboardPage() {
   return (
     <Box sx={{ minHeight: "100vh" }}>
       <Container maxWidth={false} sx={{ p: "0 !important" }}>
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1.5, mb: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: { xs: "flex-start", sm: "center" },
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            gap: 1.5,
+            mb: 2,
+          }}
+        >
           <Box>
             <Typography variant="h5" sx={{ fontWeight: 700 }}>
               Welcome To Dashboard
@@ -69,7 +78,22 @@ export default async function DashboardPage() {
               Home / Super Admin Dashboard
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+          <Box
+            sx={{
+              width: { xs: "100%", sm: "auto" },
+              display: { xs: "grid", sm: "flex" },
+              gridTemplateColumns: { xs: "repeat(2, minmax(0, 1fr))" },
+              gap: 1,
+              flexWrap: "wrap",
+              justifyContent: { sm: "flex-end" },
+              "& > *": {
+                width: { xs: "100%", sm: "auto" },
+              },
+              "& > :nth-of-type(3)": {
+                gridColumn: { xs: "1 / -1" },
+              },
+            }}
+          >
             <CtaButton
               variant="outlined"
               startIcon={<UploadOutlinedIcon />}

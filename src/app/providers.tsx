@@ -25,6 +25,18 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         shape: { borderRadius: 12 },
         typography: {
           fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
+          h4: {
+            fontSize: "2rem", // 32px
+            "@media (max-width:600px)": {
+              fontSize: "1.625rem", // 26px
+            },
+          },
+          h5: {
+            fontSize: "1.5rem", // 24px
+            "@media (max-width:600px)": {
+              fontSize: "1.25rem", // 20px
+            },
+          },
         },
       }),
     []
