@@ -36,10 +36,7 @@ import SupervisorAccountRoundedIcon from "@mui/icons-material/SupervisorAccountR
 import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import ManageAccountsRoundedIcon from "@mui/icons-material/ManageAccountsRounded";
 import PersonOutlineRoundedIcon from "@mui/icons-material/PersonOutlineRounded";
-import MailOutlineRoundedIcon from "@mui/icons-material/MailOutlineRounded";
 import TimelineRoundedIcon from "@mui/icons-material/TimelineRounded";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 
 const drawerWidth = 240;
@@ -326,7 +323,7 @@ export default function AdminShell({
           },
           "&.Mui-selected": {
             bgcolor: "var(--bg-color)",
-            color: "#6d5dfc",
+            color: "var(--primary-color)",
           },
           "&.Mui-selected .MuiListItemText-primary": {
             color: "var(--primary-color)",
@@ -400,7 +397,7 @@ export default function AdminShell({
             ".Mui-selected & .nav-icon": {
               background: "var(--primary-color)",
               borderColor: "transparent",
-              boxShadow: "0 6px 12px rgba(109,93,252,0.35)",
+              boxShadow: "0 6px 12px rgba(0,0,0,0.18)",
               color: "#fff",
             },
           }}
@@ -505,7 +502,8 @@ export default function AdminShell({
               sx: {
                 mt: 1.5,
                 borderRadius: "0.688rem",
-                minWidth: 220,
+                minWidth: 360,
+                width: 360,
                 boxShadow: "0 12px 24px rgba(0,0,0,0.12)",
               },
             }}
@@ -528,48 +526,9 @@ export default function AdminShell({
             </MenuItem>
             <MenuItem onClick={() => setProfileAnchorEl(null)}>
               <ListItemIcon>
-                <MailOutlineRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              Inbox
-              <Box
-                component="span"
-                sx={{
-                  ml: "auto",
-                  px: 1,
-                  py: 0.25,
-                  borderRadius: 999,
-                  bgcolor: "var(--primary-color)",
-                  color: "#fff",
-                  fontSize: 10,
-                  fontWeight: 700,
-                }}
-              >
-                25
-              </Box>
-            </MenuItem>
-            <MenuItem onClick={() => setProfileAnchorEl(null)}>
-              <ListItemIcon>
                 <TimelineRoundedIcon fontSize="small" />
               </ListItemIcon>
               Activity
-            </MenuItem>
-            <MenuItem onClick={() => setProfileAnchorEl(null)}>
-              <ListItemIcon>
-                <SettingsOutlinedIcon fontSize="small" />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
-            <MenuItem onClick={() => setProfileAnchorEl(null)}>
-              <ListItemIcon>
-                <HelpOutlineRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              Support
-            </MenuItem>
-            <MenuItem onClick={() => setProfileAnchorEl(null)}>
-              <ListItemIcon>
-                <LogoutRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              Log Out
             </MenuItem>
           </Menu>
         </Toolbar>
@@ -577,23 +536,45 @@ export default function AdminShell({
 
       <Drawer variant="permanent" sx={drawerSx}>
         <Box sx={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: open ? "flex-start" : "center",
-              px: open ? 2 : 1.5,
-            }}
-          >
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: open ? "flex-start" : "center",
+            px: open ? 2 : 1.5,
+          }}
+        >
+          {open ? (
             <Image
               src="/logo-white.svg"
               alt="Moxman"
-              width={140}
-              height={30}
-              style={{ width: open ? "140px" : "32px", height: "auto" }}
+              width={170}
+              height={34}
+              style={{ width: "170px", height: "auto" }}
               priority
             />
-          </Toolbar>
+          ) : (
+            <Box
+              sx={{
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                bgcolor: "rgba(255,255,255,0.16)",
+                display: "grid",
+                placeItems: "center",
+                border: "1px solid rgba(255,255,255,0.24)",
+              }}
+            >
+              <Image
+                src="/logo-mark-white.svg"
+                alt="Moxman"
+                width={24}
+                height={24}
+                style={{ width: "24px", height: "24px" }}
+              />
+            </Box>
+          )}
+        </Toolbar>
           <List sx={{ flex: 1, overflowY: "auto", pb: 2 }}>
             {renderNavItem(
               {

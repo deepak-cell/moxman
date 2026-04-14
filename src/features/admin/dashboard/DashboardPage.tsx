@@ -70,13 +70,21 @@ export default async function DashboardPage() {
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-            <CtaButton variant="outlined" startIcon={<UploadOutlinedIcon />}>
+            <CtaButton
+              variant="outlined"
+              startIcon={<UploadOutlinedIcon />}
+              sx={{ color: "var(--primary-color)", borderColor: "rgba(0,0,0,0.2)" }}
+            >
               Add Customer
             </CtaButton>
-            <CtaButton variant="outlined" startIcon={<FilterAltOutlinedIcon />}>
+            <CtaButton
+              variant="outlined"
+              startIcon={<FilterAltOutlinedIcon />}
+              sx={{ color: "var(--primary-color)", borderColor: "rgba(0,0,0,0.2)" }}
+            >
               Filter Requests
             </CtaButton>
-            <CtaButton variant="contained" startIcon={<CloudDownloadOutlinedIcon />}>
+            <CtaButton variant="role" startIcon={<CloudDownloadOutlinedIcon />}>
               Download Report
             </CtaButton>
           </Box>
@@ -146,7 +154,7 @@ export default async function DashboardPage() {
               </Box>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2, mt: 1 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "#6d5dfc" }} />
+                  <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: "var(--primary-color)" }} />
                   <Typography variant="caption" color="text.secondary">
                     Requests
                   </Typography>

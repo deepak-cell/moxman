@@ -230,7 +230,7 @@ export default function PartnerDialog({
         <CtaButton variant="outlined" onClick={onClose}>
           Cancel
         </CtaButton>
-        <CtaButton variant="blue" onClick={() => onSave(form)}>
+        <CtaButton variant="role" onClick={() => onSave(form)}>
           {mode === "add" ? "Save Partner" : "Update Partner"}
         </CtaButton>
       </DialogActions>

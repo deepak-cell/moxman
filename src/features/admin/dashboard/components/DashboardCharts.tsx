@@ -92,7 +92,7 @@ export function RequestsApprovalsChart({ data }: LineChartProps) {
           <Line
             type="monotone"
             dataKey="requests"
-            stroke="#6d5dfc"
+            stroke="var(--primary-color)"
             strokeWidth={3.5}
             dot={false}
             activeDot={false}
@@ -211,7 +211,7 @@ export function CustomerGrowthChart({ data }: MiniBarChartProps) {
     <Box sx={{ width: "100%", height: "100%" }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 12, right: 16, left: 8, bottom: 12 }}>
-          <CartesianGrid stroke="rgba(109, 93, 252, 0.12)" vertical={false} />
+          <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
           <XAxis
             dataKey="month"
             tick={{ fill: "rgba(90, 90, 115, 0.8)", fontSize: 12 }}
@@ -224,8 +224,8 @@ export function CustomerGrowthChart({ data }: MiniBarChartProps) {
             tickLine={false}
             width={32}
           />
-          <Tooltip content={<CustomerGrowthTooltip />} cursor={{ fill: "rgba(109, 93, 252, 0.08)" }} />
-          <Bar dataKey="value" fill="#6d5dfc" radius={[8, 8, 8, 8]} barSize={18} />
+          <Tooltip content={<CustomerGrowthTooltip />} cursor={{ fill: "rgba(0,0,0,0.05)" }} />
+          <Bar dataKey="value" fill="var(--primary-color)" radius={[8, 8, 8, 8]} barSize={18} />
         </BarChart>
       </ResponsiveContainer>
     </Box>
