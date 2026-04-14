@@ -1,5 +1,5 @@
-import PublicHome from "@/features/public/home/PublicHome";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <PublicHome />;
+  redirect("/login");
 }
