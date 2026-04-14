@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   AppBar,
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -36,18 +35,34 @@ export type AdminShellProps = {
 };
 
 const navItems = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardRoundedIcon /> },
+  {
+    label: "Dashboard",
+    href: "/admin/dashboard",
+    icon: <DashboardRoundedIcon />,
+  },
   { label: "Users", href: "/admin/users", icon: <PeopleAltRoundedIcon /> },
   { label: "Clients", href: "/admin/clients", icon: <BusinessRoundedIcon /> },
   { label: "Policies", href: "/admin/policies", icon: <PolicyRoundedIcon /> },
-  { label: "Products", href: "/admin/products", icon: <Inventory2RoundedIcon /> },
+  {
+    label: "Products",
+    href: "/admin/products",
+    icon: <Inventory2RoundedIcon />,
+  },
   { label: "Slabs", href: "/admin/slabs", icon: <LayersRoundedIcon /> },
-  { label: "Commissions", href: "/admin/commissions", icon: <PercentRoundedIcon /> },
+  {
+    label: "Commissions",
+    href: "/admin/commissions",
+    icon: <PercentRoundedIcon />,
+  },
   { label: "Payments", href: "/admin/payments", icon: <PaymentsRoundedIcon /> },
   { label: "Reports", href: "/admin/reports", icon: <AssessmentRoundedIcon /> },
 ];
 
-export default function AdminShell({ userName, userRole, children }: AdminShellProps) {
+export default function AdminShell({
+  userName,
+  userRole,
+  children,
+}: AdminShellProps) {
   const [open, setOpen] = useState(true);
   const pathname = usePathname();
 
@@ -65,11 +80,13 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
         overflow: "visible",
       },
     }),
-    [open]
+    [open],
   );
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", bgcolor: "var(--bg-color)" }}>
+    <Box
+      sx={{ display: "flex", minHeight: "100vh", bgcolor: "var(--bg-color)" }}
+    >
       <AppBar
         position="fixed"
         sx={{
@@ -136,8 +153,8 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
                 sx={{
                   mr: 0,
                   ml: open ? 2 : 1,
-                  px: open ? .5 : 1.5,
-                  py: .5,
+                  px: open ? 0.5 : 1.5,
+                  py: 0.5,
                   color: "rgba(255,255,255,0.78)",
                   borderRadius: "999px 0 0 999px",
                   position: "relative",
@@ -147,47 +164,58 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
                     color: "#6d5dfc",
                     boxShadow: "16px 0 0 var(--bg-color)",
                   },
-                  "&.Mui-selected .MuiListItemText-primary":{
-                    color:"var(--primary-color)"
+                  "&.Mui-selected .MuiListItemText-primary": {
+                    color: "var(--primary-color)",
                   },
                   "&.Mui-selected:hover": { bgcolor: "var(--bg-color)" },
                   "&.Mui-selected::before": {
                     content: '""',
                     position: "absolute",
                     top: -30,
-                    insetInlineEnd: 0,
-                    bottom: 0,
-                    height: 30,
+                    right: 0,
                     width: 30,
-                    borderTopColor: "transparent",
-                    borderLeftColor: "transparent",
-                    borderBottom: "transparent",
-                    borderStartStartRadius: 0,
-                    borderStartEndRadius: 0,
-                    borderEndEndRadius: 48,
-                    borderEndStartRadius: 0,
-                    borderInlineEnd: "20px solid var(--sidebar-color)",
+                    height: 30,
+                    background: "var(--sidebar-color)",
+                    borderBottomRightRadius: 30,
                     zIndex: 9,
                   },
                   "&.Mui-selected::after": {
                     content: '""',
                     position: "absolute",
-                    insetInlineEnd: 0,
                     bottom: -30,
+                    right: 0,
                     width: 30,
                     height: 30,
-                    borderBottomColor: "transparent",
-                    borderLeftColor: "transparent",
-                    borderTop: "transparent",
-                    borderStartStartRadius: 0,
-                    borderStartEndRadius: 48,
-                    borderEndEndRadius: 0,
-                    borderEndStartRadius: 0,
-                    borderInlineEnd: "20px solid var(--sidebar-color)",
+                    background: "var(--sidebar-color)",
+                    borderTopRightRadius: 30,
                     zIndex: 9,
                   },
                 }}
               >
+                <Box
+                  component="span"
+                  className="for-top-curve"
+                  sx={{
+                    position: "absolute",
+                    top: "-30px",
+                    right: "-1px",
+                    width: "30px",
+                    height: "30px",
+                    background: "var(--bg-color)",
+                  }}
+                />
+                <Box
+                  component="span"
+                  className="for-bottom-curve"
+                  sx={{
+                    position: "absolute",
+                    bottom: "-30px",
+                    right: "-1px",
+                    width: "30px",
+                    height: "30px",
+                    background: "var(--bg-color)",
+                  }}
+                />
                 <ListItemIcon
                   sx={{
                     minWidth: open ? 40 : 32,
