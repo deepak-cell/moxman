@@ -50,7 +50,6 @@ const recentRequests: ActivityItem[] = [
 const actionQueue = [
   "Approve 6 customer requests",
   "Mark 3 payments as paid",
-  "Review 4 KYC submissions",
 ];
 
 export default async function DashboardPage() {
