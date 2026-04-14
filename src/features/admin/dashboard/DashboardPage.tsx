@@ -1,9 +1,9 @@
 import { Box, Container, Paper, Typography } from "@mui/material";
-import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import UploadOutlinedIcon from "@mui/icons-material/UploadOutlined";
 import { getSessionUser } from "@/lib/session";
 import CtaButton from "@/components/ui/CtaButton";
+import DownloadReportButton from "@/features/admin/dashboard/components/DownloadReportButton";
 import {
   customerGrowthSeries,
   paymentStatusBreakdown,
@@ -84,9 +84,7 @@ export default async function DashboardPage() {
             >
               Filter Requests
             </CtaButton>
-            <CtaButton variant="role" startIcon={<CloudDownloadOutlinedIcon />}>
-              Download Report
-            </CtaButton>
+            <DownloadReportButton role={user?.role} />
           </Box>
         </Box>
 

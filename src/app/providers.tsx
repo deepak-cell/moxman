@@ -6,6 +6,7 @@ import type { AppStore } from "@/lib/store";
 import { makeStore } from "@/lib/store";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import ToastProvider from "@/components/ui/ToastProvider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [store] = useState<AppStore>(() => makeStore());
@@ -34,7 +35,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {children}
+          <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>
       </Provider>
     </AppRouterCacheProvider>
