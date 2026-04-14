@@ -136,8 +136,8 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
                 sx={{
                   mr: 0,
                   ml: open ? 2 : 1,
-                  px: open ? 2 : 1.5,
-                  py: 1.2,
+                  px: open ? .5 : 1.5,
+                  py: .5,
                   color: "rgba(255,255,255,0.78)",
                   borderRadius: "999px 0 0 999px",
                   position: "relative",
@@ -146,6 +146,9 @@ export default function AdminShell({ userName, userRole, children }: AdminShellP
                     bgcolor: "var(--bg-color)",
                     color: "#6d5dfc",
                     boxShadow: "16px 0 0 var(--bg-color)",
+                  },
+                  "&.Mui-selected .MuiListItemText-primary":{
+                    color:"var(--primary-color)"
                   },
                   "&.Mui-selected:hover": { bgcolor: "var(--bg-color)" },
                   "&.Mui-selected::before": {
