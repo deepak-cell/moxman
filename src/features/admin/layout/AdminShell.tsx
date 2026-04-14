@@ -70,25 +70,25 @@ const navGroups: NavGroup[] = [
     items: [
       {
         label: "Partners",
-        href: "/admin/users?role=partner",
+        href: "/admin/users/partners",
         icon: <PersonAddAltRoundedIcon />,
         roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
       },
       {
         label: "Relationship Managers",
-        href: "/admin/users?role=relationship_manager",
+        href: "/admin/users/relationship-managers",
         icon: <SupervisorAccountRoundedIcon />,
         roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER"],
       },
       {
         label: "Branch Managers",
-        href: "/admin/users?role=branch_manager",
+        href: "/admin/users/branch-managers",
         icon: <AccountTreeRoundedIcon />,
         roles: ["ADMIN", "SUBADMIN"],
       },
       {
         label: "Sub Admins",
-        href: "/admin/users?role=sub_admin",
+        href: "/admin/users/sub-admins",
         icon: <AdminPanelSettingsRoundedIcon />,
         roles: ["ADMIN"],
       },
@@ -110,6 +110,12 @@ const navGroups: NavGroup[] = [
         href: "/admin/clients",
         icon: <BusinessRoundedIcon />,
         roles: ["ADMIN"],
+      },
+      {
+        label: "Branches",
+        href: "/admin/branches",
+        icon: <AccountTreeRoundedIcon />,
+        roles: ["ADMIN", "SUBADMIN"],
       },
       {
         label: "Policies",
@@ -285,8 +291,9 @@ export default function AdminShell({
 
   const renderNavItem = (item: NavItem, groupId: string | null) => {
     const isActive =
-      pathname === item.href ||
-      pathname?.startsWith(`${item.href}/`) ||
+      (item.href === "/admin/users"
+        ? pathname === "/admin/users"
+        : pathname === item.href || pathname?.startsWith(`${item.href}/`)) ||
       (item.href === "/admin/dashboard" && pathname === "/admin");
     const isSubItem = groupId !== null;
 
@@ -300,8 +307,8 @@ export default function AdminShell({
         sx={{
           zIndex: 10,
           ml: open ? (isSubItem ? 3 : 1) : 1,
-          pl: isSubItem ? (open ? 5 : 1.5) : undefined,
-          px: open ? (isSubItem ? 0 : 0.5) : 1.5,
+          pl: isSubItem ? (open ? 6 : 2) : undefined,
+          px: open ? 0.75 : 1.5,
           my: isActive ? 1.5 : 0.625,
           py: 0.5,
           color: "rgba(255,255,255,0.78)",
