@@ -98,12 +98,6 @@ const navGroups: NavGroup[] = [
         icon: <AdminPanelSettingsRoundedIcon />,
         roles: ["ADMIN"],
       },
-      {
-        label: "All Users",
-        href: "/admin/users",
-        icon: <PeopleAltRoundedIcon />,
-        roles: ["ADMIN"],
-      },
     ],
   },
   {
@@ -133,12 +127,6 @@ const navGroups: NavGroup[] = [
         label: "Slabs",
         href: "/admin/slabs",
         icon: <LayersRoundedIcon />,
-        roles: ["ADMIN"],
-      },
-      {
-        label: "Payments",
-        href: "/admin/payments",
-        icon: <PaymentsRoundedIcon />,
         roles: ["ADMIN"],
       },
     ],
@@ -421,6 +409,8 @@ export default function AdminShell({
     );
   };
 
+  const canView = (roles: RoleKey[]) => roles.includes(roleKey);
+
   const drawerSx = useMemo(
     () => ({
       width: open ? drawerWidth : 72,
@@ -574,15 +564,26 @@ export default function AdminShell({
           )}
         </Toolbar>
           <List sx={{ flex: 1, overflowY: "auto", pb: 2 }}>
-            {renderNavItem(
-              {
-                label: "Dashboard",
-                href: "/admin/dashboard",
-                icon: <DashboardRoundedIcon />,
-                roles: ["ADMIN", "SUBADMIN"],
-              },
-              null,
-            )}
+            {canView(["ADMIN", "SUBADMIN"]) &&
+              renderNavItem(
+                {
+                  label: "Dashboard",
+                  href: "/admin/dashboard",
+                  icon: <DashboardRoundedIcon />,
+                  roles: ["ADMIN", "SUBADMIN"],
+                },
+                null,
+              )}
+            {canView(["ADMIN"]) &&
+              renderNavItem(
+                {
+                  label: "Payments",
+                  href: "/admin/payments",
+                  icon: <PaymentsRoundedIcon />,
+                  roles: ["ADMIN"],
+                },
+                null,
+              )}
             {visibleGroups.map((group) => {
               const isExpanded = open ? groupOpen[group.id] : true;
               return (
