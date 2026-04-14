@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   AppBar,
   Box,
+  Collapse,
   Drawer,
   IconButton,
   List,
@@ -24,6 +25,8 @@ import LayersRoundedIcon from "@mui/icons-material/LayersRounded";
 import PercentRoundedIcon from "@mui/icons-material/PercentRounded";
 import PaymentsRoundedIcon from "@mui/icons-material/PaymentsRounded";
 import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const drawerWidth = 240;
 
@@ -33,28 +36,135 @@ export type AdminShellProps = {
   children: React.ReactNode;
 };
 
-const navItems = [
+type RoleKey =
+  | "ADMIN"
+  | "SUBADMIN"
+  | "BRANCH_MANAGER"
+  | "RELATIONSHIP_MANAGER"
+  | "PARTNER";
+
+type NavItem = {
+  label: string;
+  href: string;
+  icon: React.ReactNode;
+  roles: RoleKey[];
+};
+
+type NavGroup = {
+  id: string;
+  label: string;
+  items: NavItem[];
+};
+
+const navGroups: NavGroup[] = [
   {
-    label: "Dashboard",
-    href: "/admin/dashboard",
-    icon: <DashboardRoundedIcon />,
+    id: "main",
+    label: "Main",
+    items: [
+      {
+        label: "Dashboard",
+        href: "/admin/dashboard",
+        icon: <DashboardRoundedIcon />,
+        roles: ["ADMIN", "SUBADMIN"],
+      },
+    ],
   },
-  { label: "Users", href: "/admin/users", icon: <PeopleAltRoundedIcon /> },
-  { label: "Clients", href: "/admin/clients", icon: <BusinessRoundedIcon /> },
-  { label: "Policies", href: "/admin/policies", icon: <PolicyRoundedIcon /> },
   {
-    label: "Products",
-    href: "/admin/products",
-    icon: <Inventory2RoundedIcon />,
+    id: "user_mgmt",
+    label: "User Management",
+    items: [
+      {
+        label: "Partners",
+        href: "/admin/users?role=partner",
+        icon: <PeopleAltRoundedIcon />,
+        roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
+      },
+      {
+        label: "Relationship Managers",
+        href: "/admin/users?role=relationship_manager",
+        icon: <PeopleAltRoundedIcon />,
+        roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER"],
+      },
+      {
+        label: "Branch Managers",
+        href: "/admin/users?role=branch_manager",
+        icon: <PeopleAltRoundedIcon />,
+        roles: ["ADMIN", "SUBADMIN"],
+      },
+      {
+        label: "Sub Admins",
+        href: "/admin/users?role=sub_admin",
+        icon: <PeopleAltRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+      {
+        label: "All Users",
+        href: "/admin/users",
+        icon: <PeopleAltRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+    ],
   },
-  { label: "Slabs", href: "/admin/slabs", icon: <LayersRoundedIcon /> },
   {
-    label: "Commissions",
-    href: "/admin/commissions",
-    icon: <PercentRoundedIcon />,
+    id: "operations",
+    label: "Operations",
+    items: [
+      {
+        label: "Clients",
+        href: "/admin/clients",
+        icon: <BusinessRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+      {
+        label: "Policies",
+        href: "/admin/policies",
+        icon: <PolicyRoundedIcon />,
+        roles: ["ADMIN", "PARTNER"],
+      },
+      {
+        label: "Products",
+        href: "/admin/products",
+        icon: <Inventory2RoundedIcon />,
+        roles: ["ADMIN"],
+      },
+      {
+        label: "Slabs",
+        href: "/admin/slabs",
+        icon: <LayersRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+      {
+        label: "Commissions",
+        href: "/admin/commissions",
+        icon: <PercentRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+      {
+        label: "Payments",
+        href: "/admin/payments",
+        icon: <PaymentsRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+    ],
   },
-  { label: "Payments", href: "/admin/payments", icon: <PaymentsRoundedIcon /> },
-  { label: "Reports", href: "/admin/reports", icon: <AssessmentRoundedIcon /> },
+  {
+    id: "reports",
+    label: "Reports",
+    items: [
+      {
+        label: "Reports",
+        href: "/admin/reports",
+        icon: <AssessmentRoundedIcon />,
+        roles: [
+          "ADMIN",
+          "SUBADMIN",
+          "BRANCH_MANAGER",
+          "RELATIONSHIP_MANAGER",
+          "PARTNER",
+        ],
+      },
+    ],
+  },
 ];
 
 // Custom hamburger / close toggle icon
@@ -129,7 +239,153 @@ export default function AdminShell({
   children,
 }: AdminShellProps) {
   const [open, setOpen] = useState(true);
+  const [groupOpen, setGroupOpen] = useState<Record<string, boolean>>({
+    main: true,
+    user_mgmt: true,
+    operations: true,
+    reports: true,
+  });
   const pathname = usePathname();
+  const roleKey = (userRole ?? "ADMIN")
+    .toUpperCase()
+    .replace(/\s+/g, "_") as RoleKey;
+
+  const visibleGroups = useMemo(
+    () =>
+      navGroups
+        .map((group) => ({
+          ...group,
+          items: group.items.filter((item) => item.roles.includes(roleKey)),
+        }))
+        .filter((group) => group.items.length > 0),
+    [roleKey],
+  );
+
+  const renderNavItem = (item: NavItem) => {
+    const isActive =
+      pathname === item.href ||
+      pathname?.startsWith(`${item.href}/`) ||
+      (item.href === "/admin/dashboard" && pathname === "/admin");
+
+    return (
+      <ListItemButton
+        key={item.label}
+        component="a"
+        href={item.href}
+        selected={isActive}
+        sx={{
+          mr: 0,
+          ml: open ? 2 : 1,
+          px: open ? 0.5 : 1.5,
+          my: isActive ? 1.5 : 0.625,
+          py: 0.5,
+          color: "rgba(255,255,255,0.78)",
+          borderRadius: "999px 0 0 999px",
+          position: "relative",
+          "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
+          "&:hover .MuiListItemText-primary": {
+            transform: "translateX(6px)",
+          },
+          "&.Mui-selected": {
+            bgcolor: "var(--bg-color)",
+            color: "#6d5dfc",
+          },
+          "&.Mui-selected .MuiListItemText-primary": {
+            color: "var(--primary-color)",
+          },
+          "&.Mui-selected:hover": { bgcolor: "var(--bg-color)" },
+          "&.Mui-selected::before": {
+            content: '""',
+            position: "absolute",
+            top: -20,
+            right: 0,
+            width: 20,
+            height: 20,
+            background: "var(--sidebar-color)",
+            borderBottomRightRadius: 20,
+            zIndex: 9,
+          },
+          "&.Mui-selected::after": {
+            content: '""',
+            position: "absolute",
+            bottom: -20,
+            right: 0,
+            width: 20,
+            height: 20,
+            background: "var(--sidebar-color)",
+            borderTopRightRadius: 20,
+            zIndex: 9,
+          },
+        }}
+      >
+        {isActive && (
+          <>
+            <Box
+              component="span"
+              className="for-top-curve"
+              sx={{
+                position: "absolute",
+                top: "-20px",
+                right: 0,
+                width: "20px",
+                height: "20px",
+                background: "var(--bg-color)",
+              }}
+            />
+            <Box
+              component="span"
+              className="for-bottom-curve"
+              sx={{
+                position: "absolute",
+                bottom: "-20px",
+                right: 0,
+                width: "20px",
+                height: "20px",
+                background: "var(--bg-color)",
+              }}
+            />
+          </>
+        )}
+        <ListItemIcon
+          sx={{
+            minWidth: open ? 40 : 32,
+            color: "inherit",
+            "& .nav-icon": {
+              display: "grid",
+              placeItems: "center",
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              border: "1px solid rgba(255,255,255,0.16)",
+              transition: "all 0.2s ease",
+            },
+            ".Mui-selected & .nav-icon": {
+              background:
+                "linear-gradient(135deg, rgba(109,93,252,1) 0%, rgba(99,84,247,1) 100%)",
+              borderColor: "transparent",
+              boxShadow: "0 6px 12px rgba(109,93,252,0.35)",
+              color: "#fff",
+            },
+          }}
+        >
+          <Box className="nav-icon">{item.icon}</Box>
+        </ListItemIcon>
+        <ListItemText
+          primary={item.label}
+          sx={{
+            opacity: open ? 1 : 0,
+            transition: "opacity 0.2s",
+            "& .MuiListItemText-primary": {
+              fontSize: 14,
+              fontWeight: 500,
+              transform: "translateX(0)",
+              transition: "transform 0.2s ease",
+            },
+          }}
+        />
+      </ListItemButton>
+    );
+  };
 
   const drawerSx = useMemo(
     () => ({
@@ -208,128 +464,45 @@ export default function AdminShell({
           />
         </Toolbar>
         <List>
-          {navItems.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              pathname?.startsWith(`${item.href}/`) ||
-              (item.href === "/admin/dashboard" && pathname === "/admin");
+          {visibleGroups.map((group) => {
+            const isExpanded = open ? groupOpen[group.id] : true;
             return (
-              <ListItemButton
-                key={item.label}
-                component="a"
-                href={item.href}
-                selected={isActive}
-                sx={{
-                  mr: 0,
-                  ml: open ? 2 : 1,
-                  px: open ? 0.5 : 1.5,
-                  my: isActive ? 1.5 : 0.625,
-                  py: 0.5,
-                  color: "rgba(255,255,255,0.78)",
-                  borderRadius: "999px 0 0 999px",
-                  position: "relative",
-                  "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
-                  "&:hover .MuiListItemText-primary": {
-                    transform: "translateX(6px)",
-                  },
-                  "&.Mui-selected": {
-                    bgcolor: "var(--bg-color)",
-                    color: "#6d5dfc",
-                  },
-                  "&.Mui-selected .MuiListItemText-primary": {
-                    color: "var(--primary-color)",
-                  },
-                  "&.Mui-selected:hover": { bgcolor: "var(--bg-color)" },
-                  "&.Mui-selected::before": {
-                    content: '""',
-                    position: "absolute",
-                    top: -20,
-                    right: 0,
-                    width: 20,
-                    height: 20,
-                    background: "var(--sidebar-color)",
-                    borderBottomRightRadius: 20,
-                    zIndex: 9,
-                  },
-                  "&.Mui-selected::after": {
-                    content: '""',
-                    position: "absolute",
-                    bottom: -20,
-                    right: 0,
-                    width: 20,
-                    height: 20,
-                    background: "var(--sidebar-color)",
-                    borderTopRightRadius: 20,
-                    zIndex: 9,
-                  },
-                }}
-              >
-                {isActive && (
-                  <>
-                    <Box
-                      component="span"
-                      className="for-top-curve"
+              <Box key={group.id}>
+                {open && (
+                  <ListItemButton
+                    onClick={() =>
+                      setGroupOpen((prev) => ({
+                        ...prev,
+                        [group.id]: !prev[group.id],
+                      }))
+                    }
+                    sx={{
+                      mt: 1,
+                      mb: 0.5,
+                      mx: 1,
+                      borderRadius: 2,
+                      color: "rgba(255,255,255,0.8)",
+                      "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
+                    }}
+                  >
+                    <ListItemText
+                      primary={group.label}
                       sx={{
-                        position: "absolute",
-                        top: "-20px",
-                        right: 0,
-                        width: "20px",
-                        height: "20px",
-                        background: "var(--bg-color)",
+                        "& .MuiListItemText-primary": {
+                          fontSize: 12,
+                          fontWeight: 600,
+                          letterSpacing: "0.08em",
+                          textTransform: "uppercase",
+                        },
                       }}
                     />
-                    <Box
-                      component="span"
-                      className="for-bottom-curve"
-                      sx={{
-                        position: "absolute",
-                        bottom: "-20px",
-                        right: 0,
-                        width: "20px",
-                        height: "20px",
-                        background: "var(--bg-color)",
-                      }}
-                    />
-                  </>
+                    {groupOpen[group.id] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  </ListItemButton>
                 )}
-                <ListItemIcon
-                  sx={{
-                    minWidth: open ? 40 : 32,
-                    color: "inherit",
-                    "& .nav-icon": {
-                      display: "grid",
-                      placeItems: "center",
-                      width: 32,
-                      height: 32,
-                      borderRadius: "50%",
-                      border: "1px solid rgba(255,255,255,0.16)",
-                      transition: "all 0.2s ease",
-                    },
-                    ".Mui-selected & .nav-icon": {
-                      background:
-                        "linear-gradient(135deg, rgba(109,93,252,1) 0%, rgba(99,84,247,1) 100%)",
-                      borderColor: "transparent",
-                      boxShadow: "0 6px 12px rgba(109,93,252,0.35)",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  <Box className="nav-icon">{item.icon}</Box>
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.label}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    transition: "opacity 0.2s",
-                    "& .MuiListItemText-primary": {
-                      fontSize: 14,
-                      fontWeight: 500,
-                      transform: "translateX(0)",
-                      transition: "transform 0.2s ease",
-                    },
-                  }}
-                />
-              </ListItemButton>
+                <Collapse in={isExpanded} timeout="auto" unmountOnExit={!open}>
+                  <List disablePadding>{group.items.map(renderNavItem)}</List>
+                </Collapse>
+              </Box>
             );
           })}
         </List>
