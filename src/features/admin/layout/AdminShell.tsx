@@ -49,7 +49,7 @@ export type AdminShellProps = {
 
 type RoleKey =
   | "ADMIN"
-  | "SUBADMIN"
+  | "SUB_ADMIN"
   | "BRANCH_MANAGER"
   | "RELATIONSHIP_MANAGER"
   | "PARTNER";
@@ -78,19 +78,19 @@ const navGroups: NavGroup[] = [
         label: "Partners",
         href: "/admin/users/partners",
         icon: <PersonAddAltRoundedIcon />,
-        roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
+        roles: ["ADMIN", "SUB_ADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
       },
       {
         label: "Relationship Managers",
         href: "/admin/users/relationship-managers",
         icon: <SupervisorAccountRoundedIcon />,
-        roles: ["ADMIN", "SUBADMIN", "BRANCH_MANAGER"],
+        roles: ["ADMIN", "SUB_ADMIN", "BRANCH_MANAGER"],
       },
       {
         label: "Branch Managers",
         href: "/admin/users/branch-managers",
         icon: <AccountTreeRoundedIcon />,
-        roles: ["ADMIN", "SUBADMIN"],
+        roles: ["ADMIN", "SUB_ADMIN"],
       },
       {
         label: "Sub Admins",
@@ -115,7 +115,7 @@ const navGroups: NavGroup[] = [
         label: "Branches",
         href: "/admin/branches",
         icon: <AccountTreeRoundedIcon />,
-        roles: ["ADMIN", "SUBADMIN"],
+        roles: ["ADMIN", "SUB_ADMIN"],
       },
       {
         label: "Policies",
@@ -142,7 +142,7 @@ const navGroups: NavGroup[] = [
         icon: <AssessmentRoundedIcon />,
         roles: [
           "ADMIN",
-          "SUBADMIN",
+          "SUB_ADMIN",
           "BRANCH_MANAGER",
           "RELATIONSHIP_MANAGER",
           "PARTNER",
@@ -564,13 +564,13 @@ export default function AdminShell({
           )}
         </Toolbar>
           <List sx={{ flex: 1, overflowY: "auto", pb: 2 }}>
-            {canView(["ADMIN", "SUBADMIN"]) &&
+            {canView(["ADMIN", "SUB_ADMIN"]) &&
               renderNavItem(
                 {
                   label: "Dashboard",
                   href: "/admin/dashboard",
                   icon: <DashboardRoundedIcon />,
-                  roles: ["ADMIN", "SUBADMIN"],
+                  roles: ["ADMIN", "SUB_ADMIN"],
                 },
                 null,
               )}
