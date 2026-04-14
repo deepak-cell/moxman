@@ -91,11 +91,11 @@ export default function PartnerDialog({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>
+      <DialogTitle sx={{pb:0}}>
         {mode === "add" ? "Add Partner" : "Edit Partner"}
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 2 }}>
+      <DialogContent sx={{ pt: 3 }}>
         <Box
           sx={{
             display: "grid",
