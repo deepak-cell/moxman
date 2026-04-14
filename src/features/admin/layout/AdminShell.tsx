@@ -294,6 +294,7 @@ export default function AdminShell({
       pathname === item.href ||
       pathname?.startsWith(`${item.href}/`) ||
       (item.href === "/admin/dashboard" && pathname === "/admin");
+    const isSubItem = groupId !== null;
 
     return (
       <ListItemButton
@@ -304,9 +305,9 @@ export default function AdminShell({
         onClick={() => handleGroupFocus(groupId)}
         sx={{
           zIndex: 10,
-          mr: 0,
-          ml: open ? 1 : 1,
-          px: open ? 0.5 : 1.5,
+          ml: open ? (isSubItem ? 3 : 1) : 1,
+          pl: isSubItem ? (open ? 5 : 1.5) : undefined,
+          px: open ? (isSubItem ? 0 : 0.5) : 1.5,
           my: isActive ? 1.5 : 0.625,
           py: 0.5,
           color: "rgba(255,255,255,0.78)",
@@ -378,13 +379,13 @@ export default function AdminShell({
         )}
         <ListItemIcon
           sx={{
-            minWidth: open ? 40 : 32,
+            minWidth: open ? (isSubItem ? 34 : 40) : 32,
             color: "inherit",
             "& .nav-icon": {
               display: "grid",
               placeItems: "center",
-              width: 32,
-              height: 32,
+              width: isSubItem ? 26 : 32,
+              height: isSubItem ? 26 : 32,
               borderRadius: "50%",
               border: "1px solid rgba(255,255,255,0.16)",
               transition: "all 0.2s ease",
@@ -406,7 +407,7 @@ export default function AdminShell({
             opacity: open ? 1 : 0,
             transition: "opacity 0.2s",
             "& .MuiListItemText-primary": {
-              fontSize: 14,
+              fontSize: isSubItem ? 12.5 : 14,
               fontWeight: 500,
               transform: "translateX(0)",
               transition: "transform 0.2s ease",
@@ -527,6 +528,7 @@ export default function AdminShell({
                       mt: 1,
                       mb: 0.5,
                       mx: 1,
+                      px: "5px",
                       borderRadius: 2,
                       color: "rgba(255,255,255,0.8)",
                       "&:hover": { bgcolor: "rgba(255,255,255,0.08)" },
@@ -552,9 +554,9 @@ export default function AdminShell({
                       primary={group.label}
                       sx={{
                         "& .MuiListItemText-primary": {
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: 600,
-                          letterSpacing: "0.08em",
+                          letterSpacing: "0.04em",
                           textTransform: "uppercase",
                         },
                       }}

@@ -17,6 +17,8 @@ const schema = z.object({
 });
 
 export async function POST(request: Request) {
+  const accessTtlSeconds = Number(process.env.ACCESS_TOKEN_TTL ?? 900);
+  const refreshTtlSeconds = Number(process.env.REFRESH_TOKEN_TTL ?? 2592000);
   const ip = request.headers.get("x-forwarded-for") ?? "unknown";
   const limiter = rateLimit(`login:${ip}`, 10, 60_000);
   if (!limiter.ok) {
@@ -62,11 +64,11 @@ export async function POST(request: Request) {
     email: payload.email,
     name: payload.name,
     branchId: payload.branchId,
-    expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 30,
+    expiresAt: Date.now() + 1000 * refreshTtlSeconds,
   });
 
-  await setHttpOnlyCookie("access_token", accessToken, 60 * 15);
-  await setHttpOnlyCookie("refresh_token", refreshToken, 60 * 60 * 24 * 30);
+  await setHttpOnlyCookie("access_token", accessToken, accessTtlSeconds);
+  await setHttpOnlyCookie("refresh_token", refreshToken, refreshTtlSeconds);
 
   return NextResponse.json({
     user: {

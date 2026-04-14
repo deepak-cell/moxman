@@ -10,6 +10,8 @@ import { cookies } from "next/headers";
 import { getRefreshToken, revokeRefreshToken, saveRefreshToken } from "@/lib/token-store";
 
 export async function POST() {
+  const accessTtlSeconds = Number(process.env.ACCESS_TOKEN_TTL ?? 900);
+  const refreshTtlSeconds = Number(process.env.REFRESH_TOKEN_TTL ?? 2592000);
   const token = cookies().get("refresh_token")?.value;
   if (!token) {
     return NextResponse.json({ error: "Missing refresh token" }, { status: 401 });
@@ -48,11 +50,11 @@ export async function POST() {
       email: payload.email,
       name: payload.name,
       branchId: payload.branchId,
-      expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 30,
+      expiresAt: Date.now() + 1000 * refreshTtlSeconds,
     });
 
-    await setHttpOnlyCookie("access_token", accessToken, 60 * 15);
-    await setHttpOnlyCookie("refresh_token", newRefreshToken, 60 * 60 * 24 * 30);
+    await setHttpOnlyCookie("access_token", accessToken, accessTtlSeconds);
+    await setHttpOnlyCookie("refresh_token", newRefreshToken, refreshTtlSeconds);
 
     return NextResponse.json({ ok: true });
   } catch {
