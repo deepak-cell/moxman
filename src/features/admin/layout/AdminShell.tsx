@@ -559,10 +559,8 @@ export default function AdminShell({
                 width: 40,
                 height: 40,
                 borderRadius: "50%",
-                bgcolor: "rgba(255,255,255,0.16)",
                 display: "grid",
                 placeItems: "center",
-                border: "1px solid rgba(255,255,255,0.24)",
               }}
             >
               <Image
