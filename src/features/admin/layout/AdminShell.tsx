@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -57,18 +57,6 @@ type NavGroup = {
 };
 
 const navGroups: NavGroup[] = [
-  {
-    id: "main",
-    label: "Main",
-    items: [
-      {
-        label: "Dashboard",
-        href: "/admin/dashboard",
-        icon: <DashboardRoundedIcon />,
-        roles: ["ADMIN", "SUBADMIN"],
-      },
-    ],
-  },
   {
     id: "user_mgmt",
     label: "User Management",
@@ -239,12 +227,6 @@ export default function AdminShell({
   children,
 }: AdminShellProps) {
   const [open, setOpen] = useState(true);
-  const [groupOpen, setGroupOpen] = useState<Record<string, boolean>>({
-    main: true,
-    user_mgmt: true,
-    operations: true,
-    reports: true,
-  });
   const pathname = usePathname();
   const roleKey = (userRole ?? "ADMIN")
     .toUpperCase()
@@ -261,7 +243,44 @@ export default function AdminShell({
     [roleKey],
   );
 
-  const renderNavItem = (item: NavItem) => {
+  const activeGroupId = useMemo(() => {
+    for (const group of navGroups) {
+      const match = group.items.find(
+        (item) => pathname === item.href || pathname?.startsWith(`${item.href}/`),
+      );
+      if (match) return group.id;
+    }
+    return null;
+  }, [pathname]);
+
+  const [groupOpen, setGroupOpen] = useState<Record<string, boolean>>(() => ({
+    user_mgmt: activeGroupId === "user_mgmt",
+    operations: activeGroupId === "operations",
+    reports: activeGroupId === "reports",
+  }));
+
+  const handleGroupFocus = (groupId: string | null) => {
+    setGroupOpen((prev) => {
+      const nextState: Record<string, boolean> = {};
+      Object.keys(prev).forEach((key) => {
+        nextState[key] = groupId ? key === groupId : false;
+      });
+      return nextState;
+    });
+  };
+
+  useEffect(() => {
+    if (!activeGroupId) return;
+    setGroupOpen((prev) => {
+      const nextState: Record<string, boolean> = {};
+      Object.keys(prev).forEach((key) => {
+        nextState[key] = key === activeGroupId;
+      });
+      return nextState;
+    });
+  }, [activeGroupId]);
+
+  const renderNavItem = (item: NavItem, groupId: string | null) => {
     const isActive =
       pathname === item.href ||
       pathname?.startsWith(`${item.href}/`) ||
@@ -273,6 +292,7 @@ export default function AdminShell({
         component="a"
         href={item.href}
         selected={isActive}
+        onClick={() => handleGroupFocus(groupId)}
         sx={{
           mr: 0,
           ml: open ? 2 : 1,
@@ -464,6 +484,15 @@ export default function AdminShell({
           />
         </Toolbar>
         <List>
+          {renderNavItem(
+            {
+              label: "Dashboard",
+              href: "/admin/dashboard",
+              icon: <DashboardRoundedIcon />,
+              roles: ["ADMIN", "SUBADMIN"],
+            },
+            null,
+          )}
           {visibleGroups.map((group) => {
             const isExpanded = open ? groupOpen[group.id] : true;
             return (
@@ -471,10 +500,17 @@ export default function AdminShell({
                 {open && (
                   <ListItemButton
                     onClick={() =>
-                      setGroupOpen((prev) => ({
-                        ...prev,
-                        [group.id]: !prev[group.id],
-                      }))
+                      setGroupOpen((prev) => {
+                        const isCurrentlyOpen = !!prev[group.id];
+                        const nextState: Record<string, boolean> = {};
+                        Object.keys(prev).forEach((key) => {
+                          nextState[key] = false;
+                        });
+                        if (!isCurrentlyOpen) {
+                          nextState[group.id] = true;
+                        }
+                        return nextState;
+                      })
                     }
                     sx={{
                       mt: 1,
@@ -500,7 +536,9 @@ export default function AdminShell({
                   </ListItemButton>
                 )}
                 <Collapse in={isExpanded} timeout="auto" unmountOnExit={!open}>
-                  <List disablePadding>{group.items.map(renderNavItem)}</List>
+                  <List disablePadding>
+                    {group.items.map((item) => renderNavItem(item, group.id))}
+                  </List>
                 </Collapse>
               </Box>
             );
