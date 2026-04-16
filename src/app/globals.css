@@ -10,6 +10,31 @@
   --sidebar-color: #012269;
   --header-color: #0b1b4d;
   --icon-color: #1c2f7a;
+
+  /* Shared semantic tokens */
+  --color-surface: var(--bg-color);
+
+  /* Palette: Primary (Blues & Neutrals) */
+  --color-deep-blue: #322a78;
+  --color-dark-blue: #16184e;
+  --color-mid-blue: #013fb1;
+  --color-bright-blue: #2aa6dc;
+  --color-light-blue: #ceebf5;
+  --color-ice-blue: #fff4fc;
+  --color-grey: #edf3f7;
+
+  /* Palette: Accent Colors */
+  --color-turquoise: #45b8b8;
+  --color-petrol: #23778d;
+  --color-summer-green: #39b740;
+  --color-spring-green: #c9e00f;
+  --color-autumn-green: #a8750f;
+  --color-lucent-yellow: #ffe100;
+  --color-sundown-orange: #f28011;
+  --color-bright-red: #ea001d;
+  --color-ruby-red: #d42e55;
+  --color-night-violet: #2d2057;
+  --color-light-violet: #9a8ebc;
 }
 
 [data-role="ADMIN"] {
