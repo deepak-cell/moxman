@@ -42,6 +42,7 @@ type ListTableProps<T extends { id: string }> = {
   rows: T[];
   columns: TableColumn<T>[];
   addLabel?: string;
+  addRequiresSelection?: boolean;
   onAdd?: () => void;
   onEdit?: (row: T) => void;
   onDelete?: (row: T) => void;
@@ -67,6 +68,7 @@ export default function ListTable<T extends { id: string }>({
   rows,
   columns,
   addLabel = "Add",
+  addRequiresSelection = false,
   onAdd,
   onEdit,
   onDelete,
@@ -125,6 +127,7 @@ export default function ListTable<T extends { id: string }>({
 
   const isSelected = (rowId: string) => selected.includes(rowId);
   const selectedRows = rows.filter((row) => selected.includes(row.id));
+  const isAddDisabled = addRequiresSelection && selected.length === 0;
 
   return (
     <Box>
@@ -197,7 +200,7 @@ export default function ListTable<T extends { id: string }>({
             </CtaButton>
           )}
           {onAdd && (
-            <CtaButton variant="role" onClick={onAdd}>
+            <CtaButton variant="role" onClick={onAdd} disabled={isAddDisabled}>
               {addLabel}
             </CtaButton>
           )}

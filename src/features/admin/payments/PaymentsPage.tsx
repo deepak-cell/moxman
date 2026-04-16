@@ -48,6 +48,7 @@ export default function PaymentsPage() {
         rows={pendingPayments}
         columns={columns}
         addLabel="Mark as Paid"
+        addRequiresSelection
         onAdd={() => console.log("mark paid")}
         onEdit={(row) => console.log("edit pending", row)}
         onDelete={(row) => console.log("delete pending", row)}
