@@ -255,18 +255,15 @@ export default function AdminShell({
     return null;
   }, [pathname]);
 
-  const [focusedGroupId, setFocusedGroupId] = useState<string | null>(null);
   const isProfileMenuOpen = Boolean(profileAnchorEl);
 
-  const handleGroupFocus = (groupId: string | null) => {
-    setFocusedGroupId(groupId);
-  };
+  // `undefined` means "follow the active route group".
+  // `null` means "no group expanded" (even if the current route is inside a group).
+  const [expandedGroupId, setExpandedGroupId] = useState<string | null | undefined>(
+    undefined,
+  );
 
-  const effectiveGroupId = useMemo(() => {
-    if (!focusedGroupId) return activeGroupId;
-    if (activeGroupId && focusedGroupId !== activeGroupId) return activeGroupId;
-    return focusedGroupId;
-  }, [activeGroupId, focusedGroupId]);
+  const effectiveGroupId = expandedGroupId === undefined ? activeGroupId : expandedGroupId;
 
   const drawerExpanded = isMobile ? true : open;
   const drawerPaperWidth = isMobile ? drawerWidth : open ? drawerWidth : 72;
@@ -286,7 +283,7 @@ export default function AdminShell({
         href={item.href}
         selected={isActive}
         onClick={() => {
-          handleGroupFocus(groupId);
+          setExpandedGroupId(groupId);
           if (isMobile) setMobileOpen(false);
         }}
         sx={{
@@ -603,7 +600,10 @@ export default function AdminShell({
                     <ListItemButton
                       disableGutters
                       onClick={() =>
-                        setFocusedGroupId((prev) => (prev === group.id ? null : group.id))
+                        setExpandedGroupId((prev) => {
+                          const current = prev === undefined ? activeGroupId : prev;
+                          return current === group.id ? null : group.id;
+                        })
                       }
                       sx={{
                         zIndex: 10,
