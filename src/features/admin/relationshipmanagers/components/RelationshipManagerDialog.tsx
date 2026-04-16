@@ -17,7 +17,7 @@ import { useMemo, useState } from "react";
 import CtaButton from "@/components/ui/CtaButton";
 import { branchOptions } from "@/features/admin/partners/data/mockPartnerOptions";
 
-export type SubAdminFormData = {
+export type RelationshipManagerFormData = {
   id?: string;
   fullName: string;
   emailId: string;
@@ -26,15 +26,15 @@ export type SubAdminFormData = {
   status: "Active" | "Inactive";
 };
 
-type SubAdminDialogProps = {
+type RelationshipManagerDialogProps = {
   open: boolean;
   mode: "add" | "edit";
-  initialData?: Partial<SubAdminFormData>;
+  initialData?: Partial<RelationshipManagerFormData>;
   onClose: () => void;
-  onSave: (data: SubAdminFormData) => void;
+  onSave: (data: RelationshipManagerFormData) => void;
 };
 
-const emptyForm: SubAdminFormData = {
+const emptyForm: RelationshipManagerFormData = {
   fullName: "",
   emailId: "",
   phoneNumber: "",
@@ -62,21 +62,23 @@ const sectionTitleSx = {
   color: "text.primary",
 };
 
-export default function SubAdminDialog({
+export default function RelationshipManagerDialog({
   open,
   mode,
   initialData,
   onClose,
   onSave,
-}: SubAdminDialogProps) {
+}: RelationshipManagerDialogProps) {
   const mergedInitial = useMemo(
-    () => ({ ...emptyForm, ...initialData }) as SubAdminFormData,
+    () => ({ ...emptyForm, ...initialData }) as RelationshipManagerFormData,
     [initialData],
   );
-  const [form, setForm] = useState<SubAdminFormData>(mergedInitial);
+  const [form, setForm] = useState<RelationshipManagerFormData>(mergedInitial);
 
-  const setField = <K extends keyof SubAdminFormData>(key: K, value: SubAdminFormData[K]) =>
-    setForm((prev) => ({ ...prev, [key]: value }));
+  const setField = <K extends keyof RelationshipManagerFormData>(
+    key: K,
+    value: RelationshipManagerFormData[K],
+  ) => setForm((prev) => ({ ...prev, [key]: value }));
 
   const canSave =
     form.fullName.trim() !== "" &&
@@ -98,12 +100,12 @@ export default function SubAdminDialog({
       }}
     >
       <DialogTitle sx={{ pb: 0 }}>
-        {mode === "add" ? "Add Sub Admin" : "Edit Sub Admin"}
+        {mode === "add" ? "Add Relationship Manager" : "Edit Relationship Manager"}
       </DialogTitle>
 
       <DialogContent sx={{ pt: 3 }}>
         <Box sx={{ mb: 2 }}>
-          <Typography sx={sectionTitleSx}>Sub Admin Details</Typography>
+          <Typography sx={sectionTitleSx}>Relationship Manager Details</Typography>
         </Box>
 
         <Box
@@ -146,9 +148,9 @@ export default function SubAdminDialog({
           />
 
           <FormControl fullWidth sx={fieldSx} required>
-            <InputLabel id="subadmin-branch-label">Branch</InputLabel>
+            <InputLabel id="rm-branch-label">Branch</InputLabel>
             <Select
-              labelId="subadmin-branch-label"
+              labelId="rm-branch-label"
               label="Branch"
               value={form.branchId}
               onChange={(e) => setField("branchId", String(e.target.value))}
@@ -162,12 +164,14 @@ export default function SubAdminDialog({
           </FormControl>
 
           <FormControl fullWidth sx={fieldSx} required>
-            <InputLabel id="subadmin-status-label">Status</InputLabel>
+            <InputLabel id="rm-status-label">Status</InputLabel>
             <Select
-              labelId="subadmin-status-label"
+              labelId="rm-status-label"
               label="Status"
               value={form.status}
-              onChange={(e) => setField("status", e.target.value as SubAdminFormData["status"])}
+              onChange={(e) =>
+                setField("status", e.target.value as RelationshipManagerFormData["status"])
+              }
             >
               <MenuItem value="Active">Active</MenuItem>
               <MenuItem value="Inactive">Inactive</MenuItem>
@@ -181,7 +185,7 @@ export default function SubAdminDialog({
           Cancel
         </CtaButton>
         <CtaButton variant="role" onClick={() => onSave(form)} disabled={!canSave}>
-          {mode === "add" ? "Save Sub Admin" : "Update Sub Admin"}
+          {mode === "add" ? "Save Relationship Manager" : "Update Relationship Manager"}
         </CtaButton>
       </DialogActions>
     </Dialog>

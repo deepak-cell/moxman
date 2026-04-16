@@ -89,7 +89,7 @@ export default function BranchManagerDialog({
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="sm"
+      maxWidth="md"
       fullWidth
       slotProps={{
         transition: {
