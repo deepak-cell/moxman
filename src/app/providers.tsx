@@ -7,6 +7,8 @@ import { makeStore } from "@/lib/store";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import ToastProvider from "@/components/ui/ToastProvider";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [store] = useState<AppStore>(() => makeStore());
@@ -47,7 +49,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <ToastProvider>{children}</ToastProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ToastProvider>{children}</ToastProvider>
+          </LocalizationProvider>
         </ThemeProvider>
       </Provider>
     </AppRouterCacheProvider>

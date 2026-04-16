@@ -1,7 +1,6 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, NoSsr, Typography } from "@mui/material";
 import {
   Bar,
   BarChart,
@@ -28,15 +27,6 @@ type TooltipProps = {
   payload?: Array<{ value: number; dataKey: string; payload: { month: string } }>;
   label?: string;
 };
-
-function useMounted() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  return mounted;
-}
-
 
 function RequestsApprovalsTooltip({ active, payload, label }: TooltipProps) {
   if (!active || !payload || payload.length === 0) return null;
@@ -69,10 +59,9 @@ function RequestsApprovalsTooltip({ active, payload, label }: TooltipProps) {
 }
 
 export function RequestsApprovalsChart({ data }: LineChartProps) {
-  const mounted = useMounted();
   return (
     <Box sx={{ width: "100%", minWidth: 1 }}>
-      {mounted && (
+      <NoSsr>
         <ResponsiveContainer width="100%" height={260}>
           <LineChart
             data={data}
@@ -111,7 +100,7 @@ export function RequestsApprovalsChart({ data }: LineChartProps) {
             />
           </LineChart>
         </ResponsiveContainer>
-      )}
+      </NoSsr>
     </Box>
   );
 }
@@ -124,7 +113,6 @@ type DonutChartProps = {
 const paymentColors = ["#2ecc71", "#f39c12"];
 
 export function PaymentStatusDonut({ paid, pending }: DonutChartProps) {
-  const mounted = useMounted();
   const total = paid + pending;
   const paidPct = total === 0 ? 0 : Math.round((paid / total) * 100);
   const data = [
@@ -134,7 +122,7 @@ export function PaymentStatusDonut({ paid, pending }: DonutChartProps) {
 
   return (
     <Box sx={{ width: "100%", minWidth: 1 }}>
-      {mounted && (
+      <NoSsr>
         <ResponsiveContainer width="100%" height={160}>
           <PieChart>
             <Pie
@@ -187,7 +175,7 @@ export function PaymentStatusDonut({ paid, pending }: DonutChartProps) {
             </text>
           </PieChart>
         </ResponsiveContainer>
-      )}
+      </NoSsr>
     </Box>
   );
 }
@@ -223,10 +211,9 @@ function CustomerGrowthTooltip({ active, payload, label }: TooltipProps) {
 }
 
 export function CustomerGrowthChart({ data }: MiniBarChartProps) {
-  const mounted = useMounted();
   return (
     <Box sx={{ width: "100%", minWidth: 1 }}>
-      {mounted && (
+      <NoSsr>
         <ResponsiveContainer width="100%" height={200}>
           <BarChart data={data} margin={{ top: 12, right: 16, left: 8, bottom: 12 }}>
             <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
@@ -246,7 +233,7 @@ export function CustomerGrowthChart({ data }: MiniBarChartProps) {
             <Bar dataKey="value" fill="var(--primary-color)" radius={[8, 8, 8, 8]} barSize={18} />
           </BarChart>
         </ResponsiveContainer>
-      )}
+      </NoSsr>
     </Box>
   );
 }

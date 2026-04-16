@@ -101,13 +101,6 @@ export default async function DashboardPage() {
             >
               Add Customer
             </CtaButton>
-            <CtaButton
-              variant="outlined"
-              startIcon={<FilterAltOutlinedIcon />}
-              sx={{ color: "var(--primary-color)", borderColor: "rgba(0,0,0,0.2)" }}
-            >
-              Filter Requests
-            </CtaButton>
             <DownloadReportButton role={user?.role} />
           </Box>
         </Box>

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import ListTable, { TableColumn } from "@/components/ui/ListTable";
 import { mockUsers, UserRow } from "@/features/admin/users/data/mockUsers";
 import PartnerDialog, { PartnerFormData } from "@/features/admin/partners/components/PartnerDialog";
+import { branchOptions } from "@/features/admin/partners/data/mockPartnerOptions";
 
 const columns: TableColumn<UserRow>[] = [
   { id: "id", label: "Partner ID", sortable: true },
@@ -45,10 +46,9 @@ export default function PartnersPage() {
 
   const initialData: Partial<PartnerFormData> | undefined = editingRow
     ? {
-        name: editingRow.name,
-        email: editingRow.email,
-        branchId: editingRow.branch,
-        status: editingRow.status,
+        fullName: editingRow.name,
+        emailId: editingRow.email,
+        branchId: branchOptions.find((option) => option.name === editingRow.branch)?.id ?? "",
       }
     : undefined;
 

@@ -1,22 +1,29 @@
 import type { NextRequest } from "next/server";
 import { proxyRequest } from "@/lib/api/gateway";
 
-export async function GET(request: NextRequest, context: { params: { path?: string[] } }) {
-  return proxyRequest(request, "commissions", context.params.path ?? []);
+type RouteContext = { params: Promise<{ path: string[] }> };
+
+export async function GET(request: NextRequest, context: RouteContext) {
+  const { path } = await context.params;
+  return proxyRequest(request, "commissions", path);
 }
 
-export async function POST(request: NextRequest, context: { params: { path?: string[] } }) {
-  return proxyRequest(request, "commissions", context.params.path ?? []);
+export async function POST(request: NextRequest, context: RouteContext) {
+  const { path } = await context.params;
+  return proxyRequest(request, "commissions", path);
 }
 
-export async function PUT(request: NextRequest, context: { params: { path?: string[] } }) {
-  return proxyRequest(request, "commissions", context.params.path ?? []);
+export async function PUT(request: NextRequest, context: RouteContext) {
+  const { path } = await context.params;
+  return proxyRequest(request, "commissions", path);
 }
 
-export async function PATCH(request: NextRequest, context: { params: { path?: string[] } }) {
-  return proxyRequest(request, "commissions", context.params.path ?? []);
+export async function PATCH(request: NextRequest, context: RouteContext) {
+  const { path } = await context.params;
+  return proxyRequest(request, "commissions", path);
 }
 
-export async function DELETE(request: NextRequest, context: { params: { path?: string[] } }) {
-  return proxyRequest(request, "commissions", context.params.path ?? []);
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const { path } = await context.params;
+  return proxyRequest(request, "commissions", path);
 }

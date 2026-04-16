@@ -5,7 +5,8 @@ import { cookies } from "next/headers";
 import { revokeRefreshToken } from "@/lib/token-store";
 
 export async function POST() {
-  const token = cookies().get("refresh_token")?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("refresh_token")?.value;
   if (token) {
     revokeRefreshToken(hashToken(token));
   }

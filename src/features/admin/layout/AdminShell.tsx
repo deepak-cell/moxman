@@ -492,13 +492,15 @@ export default function AdminShell({
             anchorEl={profileAnchorEl}
             open={isProfileMenuOpen}
             onClose={() => setProfileAnchorEl(null)}
-            PaperProps={{
-              sx: {
-                mt: 1.5,
-                borderRadius: "0.688rem",
-                minWidth: 360,
-                width: 360,
-                boxShadow: "0 12px 24px rgba(0,0,0,0.12)",
+            slotProps={{
+              paper: {
+                sx: {
+                  mt: 1.5,
+                  borderRadius: "0.688rem",
+                  minWidth: 360,
+                  width: 360,
+                  boxShadow: "0 12px 24px rgba(0,0,0,0.12)",
+                },
               },
             }}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

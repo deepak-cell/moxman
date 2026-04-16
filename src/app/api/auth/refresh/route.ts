@@ -12,7 +12,8 @@ import { getRefreshToken, revokeRefreshToken, saveRefreshToken } from "@/lib/tok
 export async function POST() {
   const accessTtlSeconds = Number(process.env.ACCESS_TOKEN_TTL ?? 900);
   const refreshTtlSeconds = Number(process.env.REFRESH_TOKEN_TTL ?? 2592000);
-  const token = cookies().get("refresh_token")?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get("refresh_token")?.value;
   if (!token) {
     return NextResponse.json({ error: "Missing refresh token" }, { status: 401 });
   }
