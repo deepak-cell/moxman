@@ -24,7 +24,7 @@ type ActivityItem = {
 
 const summaryCards = [
   {
-    label: "New Requests",
+    label: "Partners Count",
     value: "18",
     change: "12% Higher",
   },

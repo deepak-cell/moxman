@@ -10,7 +10,7 @@ export type UserRow = {
 
 export const mockUsers: UserRow[] = [
   {
-    id: "USR-001",
+    id: "MOX03001",
     name: "Riya Sharma",
     email: "riya.sharma@moxman.local",
     role: "Partner",
@@ -46,7 +46,7 @@ export const mockUsers: UserRow[] = [
     joined: "02 Apr 2026",
   },
   {
-    id: "USR-005",
+    id: "MOX03002",
     name: "Anita Verma",
     email: "anita.verma@moxman.local",
     role: "Partner",
@@ -73,7 +73,7 @@ export const mockUsers: UserRow[] = [
     joined: "14 Feb 2026",
   },
   {
-    id: "USR-008",
+    id: "MOX03003",
     name: "Vikram Patel",
     email: "vikram.patel@moxman.local",
     role: "Partner",

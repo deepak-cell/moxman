@@ -70,39 +70,8 @@ type NavGroup = {
 
 const navGroups: NavGroup[] = [
   {
-    id: "user_mgmt",
-    label: "User Management",
-    icon: <ManageAccountsRoundedIcon />,
-    items: [
-      {
-        label: "Partners",
-        href: "/admin/users/partners",
-        icon: <PersonAddAltRoundedIcon />,
-        roles: ["ADMIN", "SUB_ADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
-      },
-      {
-        label: "Relationship Managers",
-        href: "/admin/users/relationship-managers",
-        icon: <SupervisorAccountRoundedIcon />,
-        roles: ["ADMIN", "SUB_ADMIN", "BRANCH_MANAGER"],
-      },
-      {
-        label: "Branch Managers",
-        href: "/admin/users/branch-managers",
-        icon: <AccountTreeRoundedIcon />,
-        roles: ["ADMIN", "SUB_ADMIN"],
-      },
-      {
-        label: "Sub Admins",
-        href: "/admin/users/sub-admins",
-        icon: <AdminPanelSettingsRoundedIcon />,
-        roles: ["ADMIN"],
-      },
-    ],
-  },
-  {
     id: "operations",
-    label: "Operations",
+    label: "PMS",
     icon: <Inventory2RoundedIcon />,
     items: [
       {
@@ -147,6 +116,37 @@ const navGroups: NavGroup[] = [
           "RELATIONSHIP_MANAGER",
           "PARTNER",
         ],
+      },
+    ],
+  },
+  {
+    id: "user_mgmt",
+    label: "Users",
+    icon: <ManageAccountsRoundedIcon />,
+    items: [
+      {
+        label: "Sub Admins",
+        href: "/admin/users/sub-admins",
+        icon: <AdminPanelSettingsRoundedIcon />,
+        roles: ["ADMIN"],
+      },
+      {
+        label: "Branch Managers",
+        href: "/admin/users/branch-managers",
+        icon: <AccountTreeRoundedIcon />,
+        roles: ["ADMIN", "SUB_ADMIN"],
+      },
+      {
+        label: "Relationship Managers",
+        href: "/admin/users/relationship-managers",
+        icon: <SupervisorAccountRoundedIcon />,
+        roles: ["ADMIN", "SUB_ADMIN", "BRANCH_MANAGER"],
+      },
+      {
+        label: "Partners",
+        href: "/admin/users/partners",
+        icon: <PersonAddAltRoundedIcon />,
+        roles: ["ADMIN", "SUB_ADMIN", "BRANCH_MANAGER", "RELATIONSHIP_MANAGER"],
       },
     ],
   },
