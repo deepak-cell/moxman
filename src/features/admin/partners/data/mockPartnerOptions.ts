@@ -1,9 +1,4 @@
-export const branchOptions = [
-  { id: "BR-01", name: "Mumbai" },
-  { id: "BR-02", name: "Delhi" },
-  { id: "BR-03", name: "Bengaluru" },
-  { id: "BR-04", name: "Pune" },
-];
+export { branchOptions } from "@/features/admin/branches/data/mockBranches";
 
 export const relationshipManagerOptions = [
   { id: "RM-01", name: "Arjun Mehta" },
