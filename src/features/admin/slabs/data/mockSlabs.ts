@@ -1,67 +1,134 @@
-export type Slab = {
+export const incentivePlanDefaults = {
+  basePayPerClient: 750,
+  incentiveBasePerClient: 5000,
+  over200ClientsPercent: 40,
+  over200ClientsThreshold: 200,
+} as const;
+
+export type IncentiveTier = {
   id: string;
-  name: string; // "Slab 1", "Slab 2", etc.
+  name: string; // Category / nomenclature ("Starter", "Pro", etc.)
   minClients: number; // minimum clients to qualify
   maxClients: number | null; // upper bound (exclusive), null = no cap
-  payoutAmount: number; // in INR
-  baseRatePerClient: number; // in INR
+  commissionPercent: number; // percent of incentiveBasePerClient * clients
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
 };
 
-export const mockSlabs: Slab[] = [
+export function calculateTierPayout(params: {
+  clients: number;
+  commissionPercent: number;
+  basePayPerClient?: number;
+  incentiveBasePerClient?: number;
+}) {
+  const basePayPerClient = params.basePayPerClient ?? incentivePlanDefaults.basePayPerClient;
+  const incentiveBasePerClient =
+    params.incentiveBasePerClient ?? incentivePlanDefaults.incentiveBasePerClient;
+
+  const basePay = params.clients * basePayPerClient;
+  const grossIncentiveBase = params.clients * incentiveBasePerClient;
+  const totalPayout = (grossIncentiveBase * params.commissionPercent) / 100;
+  const incentivePayout = Math.max(0, totalPayout - basePay);
+
+  return { basePay, totalPayout, incentivePayout };
+}
+
+export const mockSlabs: IncentiveTier[] = [
   {
     id: "s1",
-    name: "Slab 1",
-    minClients: 10,
-    maxClients: 12,
-    payoutAmount: 7500,
-    baseRatePerClient: 750,
+    name: "Starter",
+    minClients: 1,
+    maxClients: 30,
+    commissionPercent: 15,
     isActive: true,
     createdAt: "05 Apr 2026",
     updatedAt: "16 Apr 2026",
   },
   {
     id: "s2",
-    name: "Slab 2",
-    minClients: 12,
-    maxClients: 20,
-    payoutAmount: 9000,
-    baseRatePerClient: 750,
+    name: "Growth",
+    minClients: 30,
+    maxClients: 40,
+    commissionPercent: 20,
     isActive: true,
     createdAt: "05 Apr 2026",
     updatedAt: "16 Apr 2026",
   },
   {
     id: "s3",
-    name: "Slab 3",
-    minClients: 20,
-    maxClients: 30,
-    payoutAmount: 17000,
-    baseRatePerClient: 750,
+    name: "Pro",
+    minClients: 40,
+    maxClients: 100,
+    commissionPercent: 23,
     isActive: true,
     createdAt: "05 Apr 2026",
     updatedAt: "16 Apr 2026",
   },
   {
     id: "s4",
-    name: "Slab 4",
-    minClients: 30,
+    name: "Elite",
+    minClients: 100,
+    maxClients: 200,
+    commissionPercent: 25,
+    isActive: true,
+    createdAt: "05 Apr 2026",
+    updatedAt: "16 Apr 2026",
+  },
+  {
+    id: "s5",
+    name: "Champion",
+    minClients: 200,
+    maxClients: 201,
+    commissionPercent: 28,
+    isActive: true,
+    createdAt: "05 Apr 2026",
+    updatedAt: "16 Apr 2026",
+  },
+  {
+    id: "s6",
+    name: "Legend",
+    minClients: 201,
     maxClients: null,
-    payoutAmount: 40000,
-    baseRatePerClient: 750,
+    commissionPercent: 40,
     isActive: true,
     createdAt: "05 Apr 2026",
     updatedAt: "16 Apr 2026",
   },
 ];
 
-export function resolveSlabForPartner(clientsJoinedToday: number, slabs: Slab[]): Slab | null {
+export function resolveSlabForPartner(
+  clientsJoinedToday: number,
+  slabs: IncentiveTier[]
+): IncentiveTier | null {
+  if (clientsJoinedToday > incentivePlanDefaults.over200ClientsThreshold) {
+    const existing =
+      slabs.find(
+        (tier) => tier.isActive && tier.minClients > incentivePlanDefaults.over200ClientsThreshold
+      ) ?? null;
+    return (
+      existing ?? {
+        id: "over-200",
+        name: "40% Tier",
+        minClients: incentivePlanDefaults.over200ClientsThreshold + 1,
+        maxClients: null,
+        commissionPercent: incentivePlanDefaults.over200ClientsPercent,
+        isActive: true,
+        createdAt: "—",
+        updatedAt: "—",
+      }
+    );
+  }
+
   const sorted = [...slabs]
-    .filter((slab) => slab.isActive)
+    .filter((tier) => tier.isActive)
     .sort((a, b) => b.minClients - a.minClients);
 
-  return sorted.find((slab) => clientsJoinedToday >= slab.minClients) ?? null;
+  return (
+    sorted.find((tier) => {
+      if (clientsJoinedToday < tier.minClients) return false;
+      if (tier.maxClients == null) return true;
+      return clientsJoinedToday < tier.maxClients;
+    }) ?? null
+  );
 }
-

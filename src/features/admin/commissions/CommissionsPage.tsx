@@ -7,7 +7,7 @@ export default function CommissionsPage() {
         Commissions
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        Review commission calculations and slab assignments.
+        Review commission calculations and tier assignments.
       </Typography>
     </Box>
   );

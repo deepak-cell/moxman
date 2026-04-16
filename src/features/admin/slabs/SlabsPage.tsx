@@ -4,7 +4,12 @@ import { Box, Chip } from "@mui/material";
 import { useMemo, useState } from "react";
 import ListTable, { TableColumn } from "@/components/ui/ListTable";
 import SlabDialog, { SlabFormData } from "@/features/admin/slabs/components/SlabDialog";
-import { mockSlabs, Slab } from "@/features/admin/slabs/data/mockSlabs";
+import {
+  calculateTierPayout,
+  incentivePlanDefaults,
+  IncentiveTier,
+  mockSlabs,
+} from "@/features/admin/slabs/data/mockSlabs";
 
 function formatInr(amount: number) {
   return `₹${amount.toLocaleString("en-IN")}`;
@@ -15,16 +20,16 @@ function formatToday() {
   return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-function nextSlabName(slabs: Slab[]) {
+function nextSlabName(slabs: IncentiveTier[]) {
   const maxN = slabs.reduce((acc, slab) => {
-    const match = /slab\s+(\d+)/i.exec(slab.name);
+    const match = /tier\s+(\d+)/i.exec(slab.name);
     const value = match ? Number(match[1]) : 0;
     return Number.isFinite(value) ? Math.max(acc, value) : acc;
   }, 0);
-  return `Slab ${maxN + 1}`;
+  return `Tier ${maxN + 1}`;
 }
 
-function nextSlabId(slabs: Slab[]) {
+function nextSlabId(slabs: IncentiveTier[]) {
   const maxN = slabs.reduce((acc, slab) => {
     const match = /^s(\d+)$/i.exec(slab.id);
     const value = match ? Number(match[1]) : 0;
@@ -33,9 +38,15 @@ function nextSlabId(slabs: Slab[]) {
   return `s${maxN + 1}`;
 }
 
-const columns: TableColumn<Slab>[] = [
-  { id: "id", label: "Slab ID", sortable: true, minWidth: 90 },
-  { id: "name", label: "Slab Name", sortable: true, minWidth: 140 },
+type TierRow = IncentiveTier & {
+  payoutAtMin: number;
+  baseAtMin: number;
+  incentiveAtMin: number;
+};
+
+const columns: TableColumn<TierRow>[] = [
+  { id: "id", label: "Tier ID", sortable: true, minWidth: 90 },
+  { id: "name", label: "Tier Name", sortable: true, minWidth: 140 },
   { id: "minClients", label: "Min Clients", sortable: true, align: "right", minWidth: 110 },
   {
     id: "maxClients",
@@ -46,20 +57,36 @@ const columns: TableColumn<Slab>[] = [
     render: (row) => (row.maxClients == null ? "No cap" : String(Math.max(0, row.maxClients - 1))),
   },
   {
-    id: "payoutAmount",
-    label: "Payout Amount",
+    id: "commissionPercent",
+    label: "Commission %",
     sortable: true,
     align: "right",
-    minWidth: 140,
-    render: (row) => formatInr(row.payoutAmount),
+    minWidth: 130,
+    render: (row) => `${row.commissionPercent}%`,
   },
   {
-    id: "baseRatePerClient",
-    label: "Base Rate/Client",
-    sortable: true,
+    id: "baseAtMin",
+    label: "Base @ Min",
+    sortable: false,
     align: "right",
-    minWidth: 140,
-    render: (row) => formatInr(row.baseRatePerClient),
+    minWidth: 130,
+    render: (row) => formatInr(row.baseAtMin),
+  },
+  {
+    id: "incentiveAtMin",
+    label: "Incentive @ Min",
+    sortable: false,
+    align: "right",
+    minWidth: 160,
+    render: (row) => formatInr(row.incentiveAtMin),
+  },
+  {
+    id: "payoutAtMin",
+    label: "Total Payout @ Min",
+    sortable: false,
+    align: "right",
+    minWidth: 170,
+    render: (row) => formatInr(row.payoutAtMin),
   },
   {
     id: "isActive",
@@ -77,13 +104,28 @@ const columns: TableColumn<Slab>[] = [
   },
 ];
 
-export default function SlabsPage() {
-  const [slabs, setSlabs] = useState<Slab[]>(() => mockSlabs);
-  const rows = useMemo(() => slabs, [slabs]);
+export default function SlabsPage({ actorRole }: { actorRole?: string | null }) {
+  const [slabs, setSlabs] = useState<IncentiveTier[]>(() => mockSlabs);
+  const rows = useMemo<TierRow[]>(
+    () =>
+      slabs.map((tier) => {
+        const payout = calculateTierPayout({
+          clients: tier.minClients,
+          commissionPercent: tier.commissionPercent,
+        });
+        return {
+          ...tier,
+          payoutAtMin: payout.totalPayout,
+          baseAtMin: payout.basePay,
+          incentiveAtMin: payout.incentivePayout,
+        };
+      }),
+    [slabs]
+  );
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"add" | "edit">("add");
-  const [editingRow, setEditingRow] = useState<Slab | null>(null);
+  const [editingRow, setEditingRow] = useState<IncentiveTier | null>(null);
   const [dialogDefaults, setDialogDefaults] = useState<Partial<SlabFormData> | undefined>(undefined);
 
   const handleAdd = () => {
@@ -91,13 +133,12 @@ export default function SlabsPage() {
     setEditingRow(null);
     setDialogDefaults({
       name: nextSlabName(slabs),
-      baseRatePerClient: 750,
       isActive: true,
     });
     setDialogOpen(true);
   };
 
-  const handleEdit = (row: Slab) => {
+  const handleEdit = (row: TierRow) => {
     setDialogMode("edit");
     setEditingRow(row);
     setDialogDefaults(undefined);
@@ -111,13 +152,12 @@ export default function SlabsPage() {
 
     setSlabs((prev) => {
       if (dialogMode === "edit" && editingRow) {
-        const updated: Slab = {
+        const updated: IncentiveTier = {
           ...editingRow,
           name: data.name,
           minClients: data.minClients,
           maxClients: data.maxClients,
-          payoutAmount: data.payoutAmount,
-          baseRatePerClient: data.baseRatePerClient,
+          commissionPercent: data.commissionPercent,
           isActive: data.isActive,
           updatedAt: now,
         };
@@ -125,13 +165,12 @@ export default function SlabsPage() {
       }
 
       const id = nextSlabId(prev);
-      const created: Slab = {
+      const created: IncentiveTier = {
         id,
         name: data.name,
         minClients: data.minClients,
         maxClients: data.maxClients,
-        payoutAmount: data.payoutAmount,
-        baseRatePerClient: data.baseRatePerClient,
+        commissionPercent: data.commissionPercent,
         isActive: data.isActive,
         createdAt: now,
         updatedAt: now,
@@ -142,9 +181,9 @@ export default function SlabsPage() {
     setDialogOpen(false);
   };
 
-  const handleDelete = (row: Slab) => setSlabs((prev) => prev.filter((s) => s.id !== row.id));
+  const handleDelete = (row: TierRow) => setSlabs((prev) => prev.filter((s) => s.id !== row.id));
 
-  const handleBulkDelete = (selectedRows: Slab[]) => {
+  const handleBulkDelete = (selectedRows: TierRow[]) => {
     const selected = new Set(selectedRows.map((row) => row.id));
     setSlabs((prev) => prev.filter((row) => !selected.has(row.id)));
   };
@@ -155,8 +194,7 @@ export default function SlabsPage() {
         name: editingRow.name,
         minClients: editingRow.minClients,
         maxClients: editingRow.maxClients,
-        payoutAmount: editingRow.payoutAmount,
-        baseRatePerClient: editingRow.baseRatePerClient,
+        commissionPercent: editingRow.commissionPercent,
         isActive: editingRow.isActive,
       }
     : dialogDefaults;
@@ -164,22 +202,23 @@ export default function SlabsPage() {
   return (
     <Box>
       <ListTable
-        title="Slabs"
-        subtitle="Configure slab thresholds and payouts."
+        title="Incentive Tiers"
+        subtitle={`Base pay is fixed at ₹${incentivePlanDefaults.basePayPerClient}/client. Tiers control incentives via Commission %.`}
         rows={rows}
         columns={columns}
-        addLabel="Add Slab"
+        addLabel="Add Tier"
         onAdd={handleAdd}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onBulkDelete={handleBulkDelete}
         rowsPerPageOptions={[5, 10, 20]}
-        searchPlaceholder="Search slabs"
+        searchPlaceholder="Search tiers"
       />
       <SlabDialog
         open={dialogOpen}
         mode={dialogMode}
         initialData={initialData}
+        actorRole={actorRole}
         onClose={handleClose}
         onSave={handleSave}
       />

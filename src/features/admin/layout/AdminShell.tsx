@@ -93,10 +93,10 @@ const navGroups: NavGroup[] = [
         roles: ["ADMIN", "PARTNER"],
       },
       {
-        label: "Slabs",
+        label: "Incentive Tiers",
         href: "/admin/slabs",
         icon: <LayersRoundedIcon />,
-        roles: ["ADMIN"],
+        roles: ["ADMIN", "SUB_ADMIN"],
       },
     ],
   },

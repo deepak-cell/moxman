@@ -15,14 +15,14 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import CtaButton from "@/components/ui/CtaButton";
+import { incentivePlanDefaults } from "@/features/admin/slabs/data/mockSlabs";
 
 export type SlabFormData = {
   id?: string;
   name: string;
   minClients: number;
   maxClients: number | null; // exclusive upper bound
-  payoutAmount: number;
-  baseRatePerClient: number;
+  commissionPercent: number;
   isActive: boolean;
 };
 
@@ -30,6 +30,7 @@ type SlabDialogProps = {
   open: boolean;
   mode: "add" | "edit";
   initialData?: Partial<SlabFormData>;
+  actorRole?: string | null;
   onClose: () => void;
   onSave: (data: SlabFormData) => void;
 };
@@ -38,8 +39,7 @@ type SlabDialogState = {
   name: string;
   minClients: string;
   maxClientsInclusive: string; // empty = no cap
-  payoutAmount: string;
-  baseRatePerClient: string;
+  commissionPercent: string;
   status: "Active" | "Inactive";
 };
 
@@ -47,8 +47,9 @@ const emptyForm: SlabDialogState = {
   name: "",
   minClients: "",
   maxClientsInclusive: "",
-  payoutAmount: "",
-  baseRatePerClient: "750",
+  commissionPercent: String(
+    (incentivePlanDefaults.basePayPerClient / incentivePlanDefaults.incentiveBasePerClient) * 100
+  ),
   status: "Active",
 };
 
@@ -81,9 +82,8 @@ function toInitialState(data?: Partial<SlabFormData>): SlabDialogState {
     name: data?.name ?? emptyForm.name,
     minClients: data?.minClients != null ? String(data.minClients) : emptyForm.minClients,
     maxClientsInclusive: maxInclusive,
-    payoutAmount: data?.payoutAmount != null ? String(data.payoutAmount) : emptyForm.payoutAmount,
-    baseRatePerClient:
-      data?.baseRatePerClient != null ? String(data.baseRatePerClient) : emptyForm.baseRatePerClient,
+    commissionPercent:
+      data?.commissionPercent != null ? String(data.commissionPercent) : emptyForm.commissionPercent,
     status: data?.isActive === false ? "Inactive" : "Active",
   };
 }
@@ -115,6 +115,7 @@ export default function SlabDialog({
   open,
   mode,
   initialData,
+  actorRole,
   onClose,
   onSave,
 }: SlabDialogProps) {
@@ -126,34 +127,46 @@ export default function SlabDialog({
 
   const minClients = parsePositiveInt(form.minClients);
   const maxClientsInclusive = parseNonNegativeInt(form.maxClientsInclusive);
-  const payoutAmount = parseNonNegativeNumber(form.payoutAmount);
-  const baseRatePerClient = parseNonNegativeNumber(form.baseRatePerClient);
+  const commissionPercent = parseNonNegativeNumber(form.commissionPercent);
 
   const isMaxValid =
     maxClientsInclusive == null || (minClients != null && maxClientsInclusive >= minClients);
 
+  const minPercentToCoverBase =
+    (incentivePlanDefaults.basePayPerClient / incentivePlanDefaults.incentiveBasePerClient) * 100;
+  const isPercentValid =
+    commissionPercent != null && commissionPercent >= minPercentToCoverBase && commissionPercent <= 100;
+
+  const isOver200Tier =
+    (minClients ?? initialData?.minClients ?? 0) > incentivePlanDefaults.over200ClientsThreshold;
+
   const canSave =
     form.name.trim() !== "" &&
     minClients != null &&
-    payoutAmount != null &&
-    baseRatePerClient != null &&
-    isMaxValid;
+    commissionPercent != null &&
+    isMaxValid &&
+    isPercentValid;
 
   const handleSave = () => {
-    if (!canSave || minClients == null || payoutAmount == null || baseRatePerClient == null) return;
+    if (!canSave || minClients == null || commissionPercent == null) return;
     const maxExclusive =
       form.maxClientsInclusive.trim() === "" ? null : (maxClientsInclusive ?? minClients) + 1;
+
+    const normalizedPercent = isOver200Tier
+      ? incentivePlanDefaults.over200ClientsPercent
+      : commissionPercent;
 
     onSave({
       id: initialData?.id,
       name: form.name.trim(),
       minClients,
       maxClients: maxExclusive,
-      payoutAmount,
-      baseRatePerClient,
+      commissionPercent: normalizedPercent,
       isActive: form.status === "Active",
     });
   };
+
+  const canEditPercent = actorRole === "ADMIN" && !isOver200Tier;
 
   return (
     <Dialog
@@ -168,12 +181,16 @@ export default function SlabDialog({
       }}
     >
       <DialogTitle sx={{ pb: 0 }}>
-        {mode === "add" ? "Add Slab" : "Edit Slab"}
+        {mode === "add" ? "Add Tier" : "Edit Tier"}
       </DialogTitle>
 
       <DialogContent sx={{ pt: 3 }}>
         <Box sx={{ mb: 2 }}>
-          <Typography sx={sectionTitleSx}>Slab Info</Typography>
+          <Typography sx={sectionTitleSx}>Tier Info</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Base pay is fixed at ₹{incentivePlanDefaults.basePayPerClient}/client. Incentives are calculated from
+            the commission percent.
+          </Typography>
         </Box>
 
         <Box
@@ -184,13 +201,13 @@ export default function SlabDialog({
           }}
         >
           <TextField
-            label="Slab Name"
+            label="Tier Name"
             value={form.name}
             onChange={(e) => setField("name", e.target.value)}
             fullWidth
             required
             sx={{ ...fieldSx, gridColumn: { sm: "1 / -1" } }}
-            placeholder="Slab 5"
+            placeholder="Starter"
           />
 
           <TextField
@@ -217,25 +234,25 @@ export default function SlabDialog({
           />
 
           <TextField
-            label="Payout Amount (₹)"
-            value={form.payoutAmount}
-            onChange={(e) => setField("payoutAmount", e.target.value)}
+            label="Commission %"
+            value={isOver200Tier ? String(incentivePlanDefaults.over200ClientsPercent) : form.commissionPercent}
+            onChange={(e) => setField("commissionPercent", e.target.value)}
             fullWidth
             required
             sx={fieldSx}
             inputMode="numeric"
-            placeholder="7500"
-          />
-
-          <TextField
-            label="Base Rate per Client (₹)"
-            value={form.baseRatePerClient}
-            onChange={(e) => setField("baseRatePerClient", e.target.value)}
-            fullWidth
-            required
-            sx={fieldSx}
-            inputMode="numeric"
-            placeholder="750"
+            placeholder="20"
+            disabled={!canEditPercent}
+            error={!isPercentValid && form.commissionPercent.trim() !== "" && !isOver200Tier}
+            helperText={
+              isOver200Tier
+                ? `For more than ${incentivePlanDefaults.over200ClientsThreshold} clients, commission is fixed at ${incentivePlanDefaults.over200ClientsPercent}%.`
+                : !canEditPercent
+                  ? "Only Admin can edit Commission %."
+                  : !isPercentValid && form.commissionPercent.trim() !== ""
+                    ? `Commission % must be between ${minPercentToCoverBase.toFixed(0)} and 100.`
+                    : " "
+            }
           />
 
           <FormControl fullWidth sx={fieldSx} required>
@@ -258,10 +275,9 @@ export default function SlabDialog({
           Cancel
         </CtaButton>
         <CtaButton variant="role" onClick={handleSave} disabled={!canSave}>
-          {mode === "add" ? "Save Slab" : "Update Slab"}
+          {mode === "add" ? "Save Tier" : "Update Tier"}
         </CtaButton>
       </DialogActions>
     </Dialog>
   );
 }
-
