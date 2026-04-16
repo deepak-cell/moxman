@@ -204,7 +204,7 @@ function CustomerGrowthTooltip({ active, payload, label }: TooltipProps) {
         {label}
       </Typography>
       <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>
-        Customers: {value}
+        Clients: {value}
       </Typography>
     </Box>
   );

@@ -29,7 +29,7 @@ const summaryCards = [
     change: "12% Higher",
   },
   {
-    label: "Approved Customers",
+    label: "Approved Clients",
     value: "64",
     change: "5% Increased",
   },
@@ -43,13 +43,13 @@ const summaryCards = [
 const recentRequests: ActivityItem[] = [
   { name: "Riya Sharma", partner: "Partner A", status: "Pending", date: "12 Apr 2026" },
   { name: "Arjun Mehta", partner: "Partner B", status: "Approved", date: "11 Apr 2026" },
-  { name: "Nisha Verma", partner: "Partner C", status: "Paid", date: "10 Apr 2026" },
+  { name: "Nisha Verma", partner: "Partner C", status: "Pending", date: "10 Apr 2026" },
   { name: "Rahul Singh", partner: "Partner A", status: "Pending", date: "09 Apr 2026" },
   { name: "Meera Iyer", partner: "Partner D", status: "Approved", date: "08 Apr 2026" },
 ];
 
 const actionQueue = [
-  "Approve 6 customer requests",
+  "Approve 6 client requests",
   "Mark 3 payments as paid",
 ];
 
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
               startIcon={<UploadOutlinedIcon />}
               sx={{ color: "var(--primary-color)", borderColor: "rgba(0,0,0,0.2)" }}
             >
-              Add Customer
+              Add Client
             </CtaButton>
             <DownloadReportButton role={user?.role} />
           </Box>
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
                 {userName}!
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.9, mt: 1 }}>
-                You have 18 new customer requests waiting for approval. Approval completion this month is 57%.
+                You have 18 new client requests waiting for approval. Approval completion this month is 57%.
               </Typography>
             </Paper>
 
@@ -209,7 +209,7 @@ export default async function DashboardPage() {
                   Payment Status
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Approved customers by payment state
+                  Approved clients by payment state
                 </Typography>
                 <Box sx={{ width: "100%", minWidth: 240 }}>
                   <PaymentStatusDonut
@@ -235,10 +235,10 @@ export default async function DashboardPage() {
 
               <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
                 <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                  Customer Growth
+                  Client Growth
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  New customers added per month
+                  New clients added per month
                 </Typography>
                 <Box
                   sx={{
@@ -260,7 +260,7 @@ export default async function DashboardPage() {
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Paper sx={{ p: 2.5, borderRadius: "0.688rem" }}>
               <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                Recent Customer Requests
+                Recent Client Requests
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Latest approvals and status updates

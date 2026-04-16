@@ -11,7 +11,7 @@ import {
 const columns: TableColumn<PaymentRow>[] = [
   { id: "id", label: "Payment ID", sortable: true },
   { id: "partner", label: "Partner", sortable: true },
-  { id: "customer", label: "Customer", sortable: true },
+  { id: "customer", label: "Client", sortable: true },
   { id: "amount", label: "Amount", sortable: true, align: "right" },
   { id: "dueDate", label: "Due Date", sortable: true },
   {

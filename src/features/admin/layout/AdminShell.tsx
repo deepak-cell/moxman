@@ -106,7 +106,7 @@ const navGroups: NavGroup[] = [
     icon: <Inventory2RoundedIcon />,
     items: [
       {
-        label: "Customers",
+        label: "Clients",
         href: "/admin/clients",
         icon: <BusinessRoundedIcon />,
         roles: ["ADMIN"],
