@@ -87,8 +87,8 @@ const navGroups: NavGroup[] = [
         roles: ["ADMIN", "SUB_ADMIN"],
       },
       {
-        label: "Policies",
-        href: "/admin/policies",
+        label: "Products",
+        href: "/admin/products",
         icon: <PolicyRoundedIcon />,
         roles: ["ADMIN", "PARTNER"],
       },

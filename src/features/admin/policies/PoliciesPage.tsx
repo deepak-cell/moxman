@@ -3,8 +3,8 @@
 import { Box, Chip } from "@mui/material";
 import { useMemo, useState } from "react";
 import ListTable, { TableColumn } from "@/components/ui/ListTable";
-import PolicyDialog, { PolicyFormData } from "@/features/admin/policies/components/PolicyDialog";
-import { PolicyRow, mockPolicies } from "@/features/admin/policies/data/mockPolicies";
+import PolicyDialog, { PolicyFormData } from "@/features/admin/products/components/PolicyDialog";
+import { PolicyRow, mockPolicies } from "@/features/admin/products/data/mockPolicies";
 
 const columns: TableColumn<PolicyRow>[] = [
   { id: "id", label: "Policy ID", sortable: true },
