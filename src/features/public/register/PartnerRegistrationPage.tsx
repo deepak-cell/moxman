@@ -1,8 +1,8 @@
 import { Box, } from "@mui/material";
 import Image from "next/image";
-import LoginForm from "@/components/login-form";
+import PartnerRegistrationForm from "@/components/partner-registration-form";
 
-export default function LoginPage() {
+export default function PartnerRegistrationPage() {
   return (
     <Box
       sx={{
@@ -108,11 +108,9 @@ export default function LoginPage() {
                 borderTop: { xs: "1px solid rgba(255,255,255,0.12)", md: "none" },
                 borderLeft: { xs: "none", md: "1px solid rgba(255,255,255,0.12)" },
                 p: 4,
-                // ↓ Dark solid background instead of transparent
-                // backgroundColor: "rgba(10, 10, 20, 0.85)",
               }}
             >
-              <LoginForm />
+              <PartnerRegistrationForm />
             </Box>
           </Box>
         </Box>
