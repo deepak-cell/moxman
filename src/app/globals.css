@@ -15,26 +15,32 @@
   --color-surface: var(--bg-color);
 
   /* Palette: Primary (Blues & Neutrals) */
-  --color-deep-blue: #322a78;
-  --color-dark-blue: #16184e;
-  --color-mid-blue: #013fb1;
-  --color-bright-blue: #2aa6dc;
-  --color-light-blue: #ceebf5;
-  --color-ice-blue: #fff4fc;
-  --color-grey: #edf3f7;
+  --color-deep-blue: #152A61;
+  --color-dark-blue: #101636;
+  --color-mid-blue: #046AAA;
+  --color-bright-blue: #23A5D9;
+  --color-light-blue: #B1C5D0;
+  --color-ice-blue: #CED8D7;
+  --color-grey: #D7DBE4;
 
   /* Palette: Accent Colors */
-  --color-turquoise: #45b8b8;
-  --color-petrol: #23778d;
-  --color-summer-green: #39b740;
-  --color-spring-green: #c9e00f;
+  --color-turquoise: #2D929A;
+  --color-petrol: #1E6A82;
+  --color-summer-green: #2E7704;
+  --color-summer-green-light: #428D2E;
+  --color-spring-green: #B9AF00;
+  --color-spring-green-light: #CEC60C;
   --color-autumn-green: #a8750f;
-  --color-lucent-yellow: #ffe100;
-  --color-sundown-orange: #f28011;
-  --color-bright-red: #ea001d;
-  --color-ruby-red: #d42e55;
-  --color-night-violet: #2d2057;
-  --color-light-violet: #9a8ebc;
+  --color-lucent-yellow: #DCBF01;
+  --color-lucent-yellow-light: #E5C208;
+  --color-sundown-orange: #C86708;
+  --color-sundown-orange: #C86708;
+  --color-bright-red: #A00E00;
+  --color-bright-red-light: #D1473C;
+  --color-ruby-red: #B9374F;
+  --color-ruby-red-light: #AE2E47;
+  --color-night-violet:  #231B40;
+  --color-light-violet: #8E7093;
 }
 
 [data-role="ADMIN"] {
@@ -47,34 +53,34 @@
 
 [data-role="SUB_ADMIN"] {
   --bg-color: #f5f4ff;
-  --sidebar-color: #4f46e5;
-  --header-color: #3f37c9;
-  --icon-color: #4338ca;
-  --primary-color: #4f46e5;
+  --sidebar-color: var(--color-mid-blue); 
+  --header-color: var(--color-mid-blue);    
+  --icon-color: #322a78;       
+  --primary-color:var(--color-mid-blue);   
 }
 
 [data-role="BRANCH_MANAGER"] {
-  --bg-color: #fff8e6;
-  --sidebar-color: #f59e0b;
-  --header-color: #d97706;
-  --icon-color: #b45309;
-  --primary-color: #f59e0b;
+  --bg-color: #eef2fb;
+  --sidebar-color: var(--color-light-violet); /* mid blue - vibrant but professional */
+  --header-color: #6d66a0;
+  --icon-color: #5c558a;
+  --primary-color: var(--color-light-violet);
 }
 
 [data-role="RELATIONSHIP_MANAGER"] {
   --bg-color: #ecfdfb;
-  --sidebar-color: #0f766e;
+  --sidebar-color: var(--color-petrol);
   --header-color: #0f5e58;
   --icon-color: #0f6a62;
-  --primary-color: #0f766e;
+  --primary-color: var(--color-petrol);
 }
 
 [data-role="PARTNER"] {
-  --bg-color: #fff5f5;
-  --sidebar-color: #b91c1c;
-  --header-color: #991b1b;
-  --icon-color: #b91c1c;
-  --primary-color: #b91c1c;
+  --bg-color: #faf6f6;
+  --sidebar-color: #AE2E47;
+  --header-color: #7A1F34;
+  --icon-color: #AE2E47;
+  --primary-color: #AE2E47;
 }
 
 * {
