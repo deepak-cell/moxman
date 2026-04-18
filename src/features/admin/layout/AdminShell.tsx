@@ -92,9 +92,22 @@ const navGroups: NavGroup[] = [
         icon: <PolicyRoundedIcon />,
         roles: ["ADMIN", "PARTNER"],
       },
+    ],
+  },
+  {
+    id: "sms",
+    label: "SMS",
+    icon: <LayersRoundedIcon />,
+    items: [
+      {
+        label: "Incentive Plan Settings",
+        href: "/admin/incentive-plan-settings",
+        icon: <LayersRoundedIcon />,
+        roles: ["ADMIN", "SUB_ADMIN"],
+      },
       {
         label: "Incentive Tiers",
-        href: "/admin/slabs",
+        href: "/admin/incentive-tiers",
         icon: <LayersRoundedIcon />,
         roles: ["ADMIN", "SUB_ADMIN"],
       },

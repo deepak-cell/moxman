@@ -104,7 +104,7 @@ const columns: TableColumn<TierRow>[] = [
   },
 ];
 
-export default function SlabsPage({ actorRole }: { actorRole?: string | null }) {
+export default function IncentiveTiersPage({ actorRole }: { actorRole?: string | null }) {
   const [slabs, setSlabs] = useState<IncentiveTier[]>(() => mockSlabs);
   const rows = useMemo<TierRow[]>(
     () =>
