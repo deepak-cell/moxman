@@ -24,6 +24,23 @@ function toDayjs(value: string): Dayjs | null {
   return parsed.isValid() ? parsed : null;
 }
 
+const defaultFieldSx: SxProps<Theme> = {
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "0.5rem",
+    height: 48,
+  },
+  "& .MuiOutlinedInput-input": {
+    paddingTop: "13px",
+    paddingBottom: "13px",
+  },
+  "& .MuiInputLabel-outlined": {
+    transform: "translate(14px, 13px) scale(1)",
+  },
+  "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
+    transform: "translate(14px, -9px) scale(0.75)",
+  },
+};
+
 export default function DatePickerField({
   label,
   value,
@@ -50,10 +67,12 @@ export default function DatePickerField({
         textField: {
           required,
           fullWidth,
-          sx,
+          sx: [defaultFieldSx, sx],
+        },
+        openPickerButton: {
+          size: "small",
         },
       }}
     />
   );
 }
-
