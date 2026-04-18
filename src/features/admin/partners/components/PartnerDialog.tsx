@@ -510,29 +510,33 @@ export default function PartnerDialog({
             <Divider sx={{ mb: 1.5 }} />
             <Typography sx={sectionTitleSx}>Contact Details</Typography>
           </Box>
-          <TextField
-            label="Mobile Number"
-            value={form.mobileNumber}
-            onChange={(e) => setField("mobileNumber", e.target.value)}
-            fullWidth
-            required
-            sx={fieldSx}
-          />
-          <TextField
-            label="Alternate Mobile Number"
-            value={form.alternateMobileNumber}
-            onChange={(e) => setField("alternateMobileNumber", e.target.value)}
-            fullWidth
-            sx={fieldSx}
-          />
-          <TextField
-            label="Email ID"
-            value={form.emailId}
-            onChange={(e) => setField("emailId", e.target.value)}
-            fullWidth
-            required
-            sx={fieldSx}
-          />
+
+          {/* Single row wrapper */}
+          <Box sx={{ gridColumn: "1 / -1", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2 }}>
+            <TextField
+              label="Mobile Number"
+              value={form.mobileNumber}
+              onChange={(e) => setField("mobileNumber", e.target.value)}
+              fullWidth
+              required
+              sx={fieldSx}
+            />
+            <TextField
+              label="Alternate Mobile Number"
+              value={form.alternateMobileNumber}
+              onChange={(e) => setField("alternateMobileNumber", e.target.value)}
+              fullWidth
+              sx={fieldSx}
+            />
+            <TextField
+              label="Email ID"
+              value={form.emailId}
+              onChange={(e) => setField("emailId", e.target.value)}
+              fullWidth
+              required
+              sx={fieldSx}
+            />
+          </Box>
           <Box sx={{ gridColumn: "1 / -1" }}>
             <TextField
               label="Communication Address"

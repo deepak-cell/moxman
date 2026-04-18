@@ -33,6 +33,24 @@ const defaultFieldSx: SxProps<Theme> = {
     paddingTop: "13px",
     paddingBottom: "13px",
   },
+  // MUI X DatePicker uses "sections" instead of a plain <input>, so we also
+  // need to remove the default vertical padding from the sections container.
+  "& .MuiPickersOutlinedInput-root": {
+    borderRadius: "0.5rem",
+    height: 48,
+  },
+  "& .MuiPickersOutlinedInput-sectionsContainer": {
+    paddingTop: 0,
+    paddingBottom: 0,
+    height: "100%",
+    alignItems: "center",
+  },
+  "& .MuiPickersSectionList-root": {
+    paddingTop: 0,
+    paddingBottom: 0,
+    height: "100%",
+    alignItems: "center",
+  },
   "& .MuiInputLabel-outlined": {
     transform: "translate(14px, 13px) scale(1)",
   },
