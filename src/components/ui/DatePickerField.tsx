@@ -71,6 +71,8 @@ export default function DatePickerField({
   minDate,
   maxDate,
 }: DatePickerFieldProps) {
+  const mergedSx = { ...(defaultFieldSx as any), ...(sx as any) };
+
   return (
     <DatePicker
       label={label}
@@ -85,7 +87,7 @@ export default function DatePickerField({
         textField: {
           required,
           fullWidth,
-          sx: [defaultFieldSx, sx],
+          sx: mergedSx,
         },
         openPickerButton: {
           size: "small",

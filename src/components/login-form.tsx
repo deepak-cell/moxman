@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import {
   Box,
@@ -9,6 +10,7 @@ import {
   Divider,
   FormControl,
   IconButton,
+  Link as MuiLink,
   OutlinedInput,
   Typography,
 } from "@mui/material";
@@ -205,6 +207,17 @@ export default function LoginForm() {
         </Button>
 
         <Divider sx={{ borderColor: "rgba(255,255,255,0.1)" }} />
+
+        <Typography variant="body2" sx={{ color: "#a5acb9" }}>
+          New partner?{" "}
+          <MuiLink
+            component={Link}
+            href="/partner-signup"
+            sx={{ color: "var(--primary-color)", fontWeight: 600, textDecoration: "none" }}
+          >
+            Register here
+          </MuiLink>
+        </Typography>
       </Box>
     </Box>
   );

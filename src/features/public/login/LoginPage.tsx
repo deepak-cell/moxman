@@ -1,5 +1,6 @@
-import { Box, } from "@mui/material";
+import { Box } from "@mui/material";
 import Image from "next/image";
+import { Suspense } from "react";
 import LoginForm from "@/components/login-form";
 
 export default function LoginPage() {
@@ -112,7 +113,9 @@ export default function LoginPage() {
                 // backgroundColor: "rgba(10, 10, 20, 0.85)",
               }}
             >
-              <LoginForm />
+              <Suspense fallback={null}>
+                <LoginForm />
+              </Suspense>
             </Box>
           </Box>
         </Box>

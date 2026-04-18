@@ -28,6 +28,7 @@ import DrawIcon from "@mui/icons-material/Draw";
 import { useMemo, useRef, useState } from "react";
 import CtaButton from "@/components/ui/CtaButton";
 import DatePickerField from "@/components/ui/DatePickerField";
+import UploadPreviewBlock from "@/components/ui/UploadPreviewBlock";
 import {
   branchManagerOptions,
   branchOptions,
@@ -170,101 +171,6 @@ const sectionTitleSx = {
   letterSpacing: "0.02em",
   color: "text.primary",
 };
-
-// Reusable upload button + inline image/pdf preview block
-// Shows: upload button → after upload: thumbnail (image) or generic icon (pdf) inline
-function UploadPreviewBlock({
-  label,
-  icon,
-  accept,
-  previewSrc,
-  isPdf,
-  inputRef,
-  onChange,
-}: {
-  label: string;
-  icon: React.ReactNode;
-  accept: string;
-  previewSrc: string;
-  isPdf?: boolean;
-  inputRef: React.RefObject<HTMLInputElement>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap" }}>
-      <input
-        ref={inputRef}
-        type="file"
-        accept={accept}
-        hidden
-        onChange={onChange}
-      />
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={icon}
-        onClick={() => inputRef.current?.click()}
-        sx={{
-          borderRadius: "0.5rem",
-          textTransform: "none",
-          height: 48,
-          fontSize: "0.875rem",
-          whiteSpace: "nowrap",
-          flexShrink: 0,
-        }}
-      >
-        {label}
-      </Button>
-
-      {previewSrc && (
-        isPdf ? (
-          // PDF: show a small icon tile instead of image
-          <Box
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 0.75,
-              px: 1.5,
-              py: 0.75,
-              border: "1px solid",
-              borderColor: "divider",
-              borderRadius: "0.5rem",
-              bgcolor: "background.paper",
-              cursor: "pointer",
-            }}
-            onClick={() => window.open(previewSrc, "_blank")}
-            title="Preview PDF"
-          >
-            <CloudUploadIcon sx={{ fontSize: 20, color: "error.main" }} />
-            <Typography variant="caption" color="text.secondary">
-              PDF uploaded
-            </Typography>
-          </Box>
-        ) : (
-          // Image: inline thumbnail, click to full size
-          <Box
-            component="img"
-            src={previewSrc}
-            alt={`${label} preview`}
-            onClick={() => window.open(previewSrc, "_blank")}
-            sx={{
-              height: 48,
-              maxWidth: 120,
-              objectFit: "contain",
-              borderRadius: "0.5rem",
-              border: "1px solid",
-              borderColor: "divider",
-              cursor: "pointer",
-              bgcolor: "background.paper",
-              p: 0.25,
-            }}
-            title="Click to preview"
-          />
-        )
-      )}
-    </Box>
-  );
-}
 
 export default function PartnerDialog({
   open,
@@ -733,6 +639,7 @@ export default function PartnerDialog({
             accept="image/*,application/pdf"
             previewSrc={form.bankProofPreview}
             isPdf={form.bankProofFile?.type === "application/pdf"}
+            pdfIndicator={<CloudUploadIcon sx={{ fontSize: 20, color: "error.main" }} />}
             inputRef={bankProofInputRef}
             onChange={handleBankProofChange}
           />

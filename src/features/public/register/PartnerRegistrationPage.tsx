@@ -1,4 +1,4 @@
-import { Box, } from "@mui/material";
+import { Box } from "@mui/material";
 import Image from "next/image";
 import PartnerRegistrationForm from "@/components/partner-registration-form";
 
@@ -9,7 +9,7 @@ export default function PartnerRegistrationPage() {
         minHeight: "100vh",
         backgroundImage: "url('/images/explosive-data-stream-dynamic-burst-glowing-particles-digital-energy-futuristic-light.jpg.jpeg')",
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: "top",
       }}
     >
       <Box
@@ -25,8 +25,8 @@ export default function PartnerRegistrationPage() {
         <Box
           sx={{
             width: "100%",
-            maxWidth: 900,
-            minHeight: 560,
+            maxWidth: 1280,
+            minHeight: 720,
             borderRadius: 2,
             backgroundColor: "rgba(255,255,255,0.16)",
             boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
@@ -68,8 +68,8 @@ export default function PartnerRegistrationPage() {
           <Box
             sx={{
               display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              minHeight: 560,
+              gridTemplateColumns: { xs: "1fr", md: "420px 1fr" },
+              minHeight: 720,
               position: "relative",
               zIndex: 1,
             }}
@@ -108,6 +108,7 @@ export default function PartnerRegistrationPage() {
                 borderTop: { xs: "1px solid rgba(255,255,255,0.12)", md: "none" },
                 borderLeft: { xs: "none", md: "1px solid rgba(255,255,255,0.12)" },
                 p: 4,
+                bgcolor: "rgba(255,255,255,0.92)",
               }}
             >
               <PartnerRegistrationForm />
