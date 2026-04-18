@@ -3,12 +3,12 @@
 import { Box, Chip } from "@mui/material";
 import { useMemo, useState } from "react";
 import ListTable, { TableColumn } from "@/components/ui/ListTable";
-import PolicyDialog, { PolicyFormData } from "@/features/admin/products/components/PolicyDialog";
-import { PolicyRow, mockPolicies } from "@/features/admin/products/data/mockPolicies";
+import ProductDialog, { ProductFormData } from "@/features/admin/products/components/ProductDialog";
+import { ProductRow, mockProducts } from "@/features/admin/products/data/mockProducts";
 
-const columns: TableColumn<PolicyRow>[] = [
-  { id: "id", label: "Policy ID", sortable: true },
-  { id: "policyName", label: "Policy Name", sortable: true, minWidth: 200 },
+const columns: TableColumn<ProductRow>[] = [
+  { id: "id", label: "Product ID", sortable: true },
+  { id: "policyName", label: "Product Name", sortable: true, minWidth: 200 },
   { id: "policyType", label: "Type", sortable: true, minWidth: 120 },
   { id: "insurer", label: "Insurer", sortable: true, minWidth: 180 },
   { id: "premium", label: "Premium", sortable: true, align: "right", minWidth: 120 },
@@ -34,14 +34,14 @@ function formatToday() {
   return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-export default function PoliciesPage() {
-  const [policies, setPolicies] = useState<PolicyRow[]>(() => mockPolicies);
+export default function ProductsPage() {
+  const [products, setProducts] = useState<ProductRow[]>(() => mockProducts);
 
-  const rows = useMemo(() => policies, [policies]);
+  const rows = useMemo(() => products, [products]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogMode, setDialogMode] = useState<"add" | "edit">("add");
-  const [editingRow, setEditingRow] = useState<PolicyRow | null>(null);
+  const [editingRow, setEditingRow] = useState<ProductRow | null>(null);
 
   const handleAdd = () => {
     setDialogMode("add");
@@ -49,7 +49,7 @@ export default function PoliciesPage() {
     setDialogOpen(true);
   };
 
-  const handleEdit = (row: PolicyRow) => {
+  const handleEdit = (row: ProductRow) => {
     setDialogMode("edit");
     setEditingRow(row);
     setDialogOpen(true);
@@ -57,11 +57,11 @@ export default function PoliciesPage() {
 
   const handleClose = () => setDialogOpen(false);
 
-  const handleSave = (data: PolicyFormData) => {
-    const payload: PolicyRow = {
+  const handleSave = (data: ProductFormData) => {
+    const payload: ProductRow = {
       id: data.policyId.trim(),
       policyName: data.policyName.trim(),
-      policyType: (data.policyType === "" ? "Health" : data.policyType) as PolicyRow["policyType"],
+      policyType: (data.policyType === "" ? "Health" : data.policyType) as ProductRow["policyType"],
       insurer: data.insurer.trim(),
       premium: data.premium.trim(),
       commissionPercent: data.commissionPercent.trim(),
@@ -69,7 +69,7 @@ export default function PoliciesPage() {
       updatedAt: formatToday(),
     };
 
-    setPolicies((prev) => {
+    setProducts((prev) => {
       if (dialogMode === "edit") return prev.map((row) => (row.id === payload.id ? payload : row));
       if (prev.some((row) => row.id === payload.id)) return prev.map((row) => (row.id === payload.id ? payload : row));
       return [payload, ...prev];
@@ -78,14 +78,14 @@ export default function PoliciesPage() {
     setDialogOpen(false);
   };
 
-  const handleDelete = (row: PolicyRow) => setPolicies((prev) => prev.filter((r) => r.id !== row.id));
+  const handleDelete = (row: ProductRow) => setProducts((prev) => prev.filter((r) => r.id !== row.id));
 
-  const handleBulkDelete = (selectedRows: PolicyRow[]) => {
+  const handleBulkDelete = (selectedRows: ProductRow[]) => {
     const selected = new Set(selectedRows.map((row) => row.id));
-    setPolicies((prev) => prev.filter((row) => !selected.has(row.id)));
+    setProducts((prev) => prev.filter((row) => !selected.has(row.id)));
   };
 
-  const initialData: Partial<PolicyFormData> | undefined = editingRow
+  const initialData: Partial<ProductFormData> | undefined = editingRow
     ? {
         policyId: editingRow.id,
         policyName: editingRow.policyName,
@@ -112,7 +112,7 @@ export default function PoliciesPage() {
         rowsPerPageOptions={[5, 10, 20]}
         searchPlaceholder="Search products"
       />
-      <PolicyDialog
+      <ProductDialog
         open={dialogOpen}
         mode={dialogMode}
         initialData={initialData}

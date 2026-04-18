@@ -101,12 +101,12 @@ export default function PolicyDialog({
       }}
     >
       <DialogTitle sx={{ pb: 0 }}>
-        {mode === "add" ? "Add Policy" : "Edit Policy"}
+        {mode === "add" ? "Add Product" : "Edit Product"}
       </DialogTitle>
 
       <DialogContent sx={{ pt: 3 }}>
         <Box sx={{ mb: 2 }}>
-          <Typography sx={sectionTitleSx}>Policy Details</Typography>
+          <Typography sx={sectionTitleSx}>Product Details</Typography>
         </Box>
 
         <Box
@@ -117,13 +117,13 @@ export default function PolicyDialog({
           }}
         >
           <TextField
-            label="Policy ID"
+            label="Product ID"
             value={form.policyId}
             onChange={(e) => setField("policyId", e.target.value)}
             fullWidth
             required
             sx={fieldSx}
-            placeholder="POL-2004"
+            placeholder="PRD-2004"
             disabled={mode === "edit"}
           />
 
@@ -142,20 +142,20 @@ export default function PolicyDialog({
           </FormControl>
 
           <TextField
-            label="Policy Name"
+            label="Product Name"
             value={form.policyName}
             onChange={(e) => setField("policyName", e.target.value)}
             fullWidth
             required
             sx={{ ...fieldSx, gridColumn: { sm: "1 / -1" } }}
-            placeholder="Enter policy name"
+            placeholder="Enter product name"
           />
 
           <FormControl fullWidth sx={fieldSx} required>
-            <InputLabel id="policy-type-label">Policy Type</InputLabel>
+            <InputLabel id="policy-type-label">Product Type</InputLabel>
             <Select
               labelId="policy-type-label"
-              label="Policy Type"
+              label="Product Type"
               value={form.policyType}
               onChange={(e) => setField("policyType", e.target.value as PolicyFormData["policyType"])}
             >
@@ -200,10 +200,9 @@ export default function PolicyDialog({
           Cancel
         </CtaButton>
         <CtaButton variant="role" onClick={() => onSave(form)} disabled={!canSave}>
-          {mode === "add" ? "Save Policy" : "Update Policy"}
+          {mode === "add" ? "Save Product" : "Update Product"}
         </CtaButton>
       </DialogActions>
     </Dialog>
   );
 }
-
